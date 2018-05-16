@@ -20,13 +20,15 @@
 #define EN 8 // stepper motor enable , active low
 #define X_DIR 5 // X -axis stepper motor direction control
 #define Y_DIR 6 // y -axis stepper motor direction control
-#define Z_DIR 7 // z axis stepper motor direction control
 #define X_STP 2 // x -axis stepper control
 #define Y_STP 3 // y -axis stepper control
-#define Z_STP 4 // z -axis stepper control
 
 // Relay pins
-#define RELAY 10
+#define RELAY 7
+
+// Bluetooth pins
+#define BT_RX 10
+#define BT_TX 11
 
 // White chessboard
 #define WHITE_PAWN_1    0

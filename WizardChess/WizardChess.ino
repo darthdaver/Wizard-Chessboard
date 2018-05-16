@@ -16,27 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <SoftwareSerial.h>
 #include "Config.h"
 
 // Functions declaration
 void stepperMovement (boolean, byte, byte, int);
 
+
 // Chessoboard state track
-String chessBoard[32] = {"a2","b2","c2","d2","e2","f2","g2","h2",
-                         "a1","b1","c1","d1","e1","f1","g1","h1",
-                         "a7","b7","c7","d7","e7","f7","g7","h7",
-                         "a8","b8","c8","d8","e8","f8","g8","h8",};
+String chessBoard[32] = {"A2","B2","C2","D2","E2","F2","G2","H2",
+                         "A1","B1","C1","D1","E1","F1","G1","H1",
+                         "A7","B7","C7","D7","E7","F7","G7","H7",
+                         "A8","B8","C8","D8","E8","F8","G8","H8"};
+
+// Player turn (true means "move white" - false means "move black")
+boolean turn = true;
+
+// Bluetooth: define software serial
+SoftwareSerial BT(BT_RX, BT_TX);
 
 void setup() {
 
   // Serial setup
   Serial.begin(9600);
+
+  // Software serial setup
+  BT.begin(9600);
   
   // NEMA 17 pins setup
   pinMode (X_DIR, OUTPUT); pinMode (X_STP, OUTPUT);
   pinMode (Y_DIR, OUTPUT); pinMode (Y_STP, OUTPUT);
-  pinMode (Z_DIR, OUTPUT); pinMode (Z_STP, OUTPUT);
   pinMode (EN, OUTPUT);
   digitalWrite (EN, LOW);
 
@@ -60,12 +69,12 @@ void loop(){
     
     // Check if there is an available byte to read
     // Cycle waiting for a communication with the speech source
-    while (Serial.available()){ 
+    while (BT.available()){ 
       // Delay added to make thing stable
       delay(10);
       
       // Conduct a serial read
-      char c = Serial.read();
+      char c = BT.read();
 
       // Add the character read to the speech-to-text string
       voice += c;
@@ -85,7 +94,7 @@ void loop(){
    if (voice.length() > 0){
 
     // Transform voice in a string in lowercase characters to avoid misunderstanding
-    voice.toLowerCase();
+    voice.toUpperCase();
 
     // Split of the first 
     playerMove[0] = strtok(voice.c_str(), " ");
@@ -96,21 +105,34 @@ void loop(){
       }
     }
 
-    
-     // Code block for debugging purposes
+    // Code block for debugging purposes
       for(int i = 0; i <= 9; i++){
         if(playerMove[i] != NULL){
           Serial.println(playerMove[i]);
         }
       }
   }
-
+  
   /* 
    *  Command interpretation and move execution phase
    *  Analysis of the single words splitted in the previous phase.
    *  If the move is validated, it is performed.
    */
-  
+   if(playerMove[0] == "PEDINA"){
+    
+   } else if(playerMove[0] == "TORRE"){
+    
+   } else if(playerMove[0] == "ALFIERE"){
+    
+   } else if(playerMove[0] == "CAVALLO"){
+    
+   } else if(playerMove[0] == "REGINA"){
+   
+   } else if(playerMove[0] == "RE"){
+    
+   } else{
+      Serial.println("Command not recognized.");
+   }
 }
 
 // Stepper movement function implementation
@@ -124,3 +146,4 @@ void stepperMovement (boolean dir, byte dirPin, byte stepperPin, int steps){
     delayMicroseconds (800);
   } 
 }
+
