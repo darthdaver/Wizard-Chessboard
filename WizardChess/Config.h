@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef CONFIG_H
+#define CONFIG_H
+
 // NEMA 17 pins
 #define EN 8 // stepper motor enable , active low
 #define X_DIR 5 // X -axis stepper motor direction control
@@ -42,8 +45,8 @@
 #define WHITE_ROOK_1    8
 #define WHITE_KNIGHT_1  9
 #define WHITE_BISHOP_1  10
-#define WHITE_KING      11
-#define WHITE_QUEEN     12
+#define WHITE_QUEEN     11
+#define WHITE_KING      12
 #define WHITE_BISHOP_2  13
 #define WHITE_KNIGHT_2  14
 #define WHITE_ROOK_2    15
@@ -60,8 +63,10 @@
 #define BLACK_ROOK_1    24
 #define BLACK_KNIGHT_1  25
 #define BLACK_BISHOP_1  26
-#define BLACK_KING      27
-#define BLACK_QUEEN     28
+#define BLACK_QUEEN     27
+#define BLACK_KING      28
 #define BLACK_BISHOP_2  29
 #define BLACK_KNIGHT_2  30
 #define BLACK_ROOK_2    31
+
+#endif
