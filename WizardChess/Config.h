@@ -34,39 +34,19 @@
 #define BT_TX 11
 
 // White chessboard
-#define WHITE_PAWN_1    0
-#define WHITE_PAWN_2    1
-#define WHITE_PAWN_3    2
-#define WHITE_PAWN_4    3
-#define WHITE_PAWN_5    4
-#define WHITE_PAWN_6    5
-#define WHITE_PAWN_7    6
-#define WHITE_PAWN_8    7
-#define WHITE_ROOK_1    8
-#define WHITE_KNIGHT_1  9
-#define WHITE_BISHOP_1  10
-#define WHITE_QUEEN     11
-#define WHITE_KING      12
-#define WHITE_BISHOP_2  13
-#define WHITE_KNIGHT_2  14
-#define WHITE_ROOK_2    15
+#define WHITE_PAWN      0
+#define WHITE_ROOK      0
+#define WHITE_KNIGHT    0
+#define WHITE_BISHOP    0
+#define WHITE_QUEEN     0
+#define WHITE_KING      0
 
 // Black chessboard
-#define BLACK_PAWN_1    16
-#define BLACK_PAWN_2    17
-#define BLACK_PAWN_3    18
-#define BLACK_PAWN_4    19
-#define BLACK_PAWN_5    20
-#define BLACK_PAWN_6    21
-#define BLACK_PAWN_7    22
-#define BLACK_PAWN_8    23
-#define BLACK_ROOK_1    24
-#define BLACK_KNIGHT_1  25
-#define BLACK_BISHOP_1  26
-#define BLACK_QUEEN     27
-#define BLACK_KING      28
-#define BLACK_BISHOP_2  29
-#define BLACK_KNIGHT_2  30
-#define BLACK_ROOK_2    31
+#define BLACK_PAWN      1
+#define BLACK_ROOK      1
+#define BLACK_KNIGHT    1
+#define BLACK_BISHOP    1
+#define BLACK_QUEEN     1
+#define BLACK_KING      1
 
 #endif

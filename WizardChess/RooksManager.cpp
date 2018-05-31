@@ -1,5 +1,5 @@
 /*
- * Header file for the ChessBoard class.
+ * RooksManager class implementation
  *
  * Copyright (c) 2018 Davide Molinelli.
  *
@@ -16,8 +16,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
- #include "ManagerInterface.h"
- #include "Managers.h"
+#include "Manager.h"
+#include "Managers.h"
+#include "Pieces.h"
+#include "Config.h"
 
- 
- 
+// Constructor
+RooksManager::RooksManager(): Manager() {
+  rooks[WHITE_ROOK][0] = Rook::Rook("A1");
+  rooks[WHITE_ROOK][1] = Rook::Rook("H1");
+  rooks[BLACK_ROOK][0] = Rook::Rook("A8");
+  rooks[BLACK_ROOK][1] = Rook::Rook("H8");
+};
+
+// checkCandidates implementation
+StackList <int> RooksManager::checkCandidates(const char * from, const char * destination){
+
+  StackList <int> stack;
+  stack.push(0);
+
+  return stack;
+};

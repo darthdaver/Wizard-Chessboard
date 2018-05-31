@@ -1,5 +1,5 @@
 /*
- * Header file for the ChessBoard class.
+ * Header file for the Manager classes.
  *
  * Copyright (c) 2018 Davide Molinelli.
  *
@@ -19,28 +19,187 @@
 #ifndef MANAGERS_H
 #define MANAGERS_H
 
-  class PawnManager: public ManagerInterface{
-    
-  };
+#include "Manager.h"
+#include "Pieces.h"
 
-  class BishopManager: public ManagerInterface{
-    
-  };
+class BishopsManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      BishopsManager();
 
-  class KnightManager: public ManagerInterface{
-    
-  };
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
 
-  class KingManager: public ManagerInterface{
-    
-  };
+  public:
+      /*
+       * bishops : represents the list of pawns.
+       *           Note: the first row refers to the white pawns, while the second
+       *           row refers to the black ones
+       */
+      Bishop bishops [2][2];
+};
 
-  class QueenManager: public ManagerInterface{
-    
-  };
+class KingsManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      KingsManager();
 
-  class RookManager: public ManagerInterface{
-    
-  };
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
+
+   public:
+     /*
+      * kings : represents the list of pawns.
+      *         Note: the first row refers to the white pawns, while the second
+      *         row refers to the black ones
+      */
+     King kings [2][1];
+};
+
+class KnightsManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      KnightsManager();
+
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
+
+  public:
+    /*
+     * knights : represents the list of pawns.
+     *           Note: the first row refers to the white pawns, while the second
+     *           row refers to the black ones
+     */
+    Knight knights [2][2];
+};
+
+class QueensManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      QueensManager();
+
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
+
+   public:
+      /*
+       * queens : represents the list of pawns.
+       *          Note: the first row refers to the white pawns, while the second
+       *          row refers to the black ones
+       */
+      Queen queens [2][1];
+};
+
+class PawnsManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      PawnsManager();
+
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
+
+  public:
+      /*
+       * pawns : represents the list of pawns.
+       *         Note: the first row refers to the white pawns, while the second
+       *         row refers to the black ones
+       */
+      Pawn pawns [2][8];
+};
+
+class RooksManager: public Manager{
+  public:
+      /**
+       * Define the default constructor of the class
+       *
+       * - Return: an initialized instance of the class
+       */
+      RooksManager();
+
+      /**
+       * Implement the virtual function with the scope to found the candidates
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       */
+      StackList <int> checkCandidates(const char * from, const char * destination);
+
+  public:
+     /*
+      * rooks : represents the list of rooks.
+      *         Note: the first row refers to the white rooks, while the second
+      *         row refers to the black ones
+      */
+     Rook rooks [2][2];
+};
 
 #endif

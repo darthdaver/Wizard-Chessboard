@@ -1,7 +1,7 @@
 /*
- * ManagerInterface abstract class implementation.
+ * PieceInterface abstract class implementation.
  *
- * Copyright (c) 2018 Alessandro Castiglioni, Davide Molinelli.
+ * Copyright (c) 2018 Davide Molinelli.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ManagerInterface.h"
+#include "Piece.h"
 
+Piece::Piece(){};
 
+Piece::Piece(const char * initialPosition){
+  //Serial.println(initialPosition);
+  position = initialPosition;
+}
+
+String Piece::getPosition(){
+  return position;
+};
+
+void Piece::setPosition(const char * newCoordinates){
+  position = newCoordinates;
+};
