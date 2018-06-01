@@ -18,7 +18,6 @@
 
 #include "ChessBoard.h"
 #include "Config.h"
-#include <StackList.h>
 
 // Constructor
 ChessBoard::ChessBoard() {

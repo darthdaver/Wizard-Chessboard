@@ -20,7 +20,7 @@
 #define MANAGER_H
 
 #include <Arduino.h>
-#include <StackList.h>
+#include <QueueArray.h>
 
 class Manager {
 
@@ -35,12 +35,17 @@ public:
      * Found the candidates for which the move can be performed
      *
      * - Parameters:
+     *      - turn        : indicates if move the white (true) or the black (false)
      *      - source      : indicates the source cell of the piece that the player wants to move
      *      - destination : indicates the destination cell of the piece that the player wants to move
      *
-     * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+     * - Returns: an integer representing the index of the piece on which the move could be performed.
+     *            N.B.: The function return -1 if:
+     *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+     *                by the player (it is required to specify which of the candidate piece the player want to move)
+     *              - there is not candidate.
      */
-    virtual StackList <int> checkCandidates(const char * from, const char * destination) = 0;
+    virtual int checkCandidates(boolean turn, const char * from, const char * destination) = 0;
 };
 
 #endif

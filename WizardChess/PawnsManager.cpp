@@ -23,7 +23,7 @@
 
 // Constructor
 PawnsManager::PawnsManager(): Manager() {
-  
+
   pawns[WHITE_PAWN][0] = Pawn::Pawn("A2");
   pawns[WHITE_PAWN][1] = Pawn::Pawn("B2");
   pawns[WHITE_PAWN][2] = Pawn::Pawn("C2");
@@ -43,10 +43,92 @@ PawnsManager::PawnsManager(): Manager() {
 };
 
 // checkCandidates implementation
-StackList <int> PawnsManager::checkCandidates(const char * from, const char * destination){
+char * PawnsManager::checkCandidates(boolean turn, const char * from, const char * destination){
+  int numCandidates = 0;
+  int indexCandidate;
+  char * candidatePosition[3];
+  boolean removeEnpassant = false;
 
-  StackList <int> stack;
-  stack.push(0);
+  if(from == NULL){
+    for(int i = 0; i < 8; i++){
+      if(destination[0] - pawns[abs(turn - 1)][i].getPosition()[0]) == 0 &&
+            (destination[1] - pawns[abs(turn - 1)][i].getPosition()[1]) == 1){
+              if(/*check path is free*/){
+                numCandidates++;
+                indexCandidate = i;
+                strcpy(candidatePosition,pawns[abs(turn - 1)][i].getPosition());
+              }
+              if(turn){
+                strcpy(enPassantBlack, NULL);
+              } else{
+                strcpy(enPassantWhite, NULL);
+              }
+      } else if(pawns[abs(turn - 1)][i].getFirstMove() && (destination[0] - pawns[abs(turn - 1)][i].getPosition()[0]) == 0 &&
+            (destination[1] - pawns[abs(turn - 1)][i].getPosition()[1]) == 2){
+              if(/*check path is free*/){
+                numCandidates++;
+                indexCandidate = i;
+                strcpy(candidatePosition,pawns[abs(turn - 1)][i].getPosition());
+                if(turn){
+                  strcpy(enPassantWhite, destination);
+                } else{
+                  strcpy(enPassantBlack, destination);
+                }
+              }
+      } else if(pawns[abs(turn - 1)][i].getFirstMove() && abs(destination[0] - pawns[abs(turn - 1)][i].getPosition()[0]) == 1 &&
+            (destination[1] - pawns[abs(turn - 1)][i].getPosition()[1]) == 1){
+              if(/* NOT check path is free*/){
+                numCandidates++;
+                indexCandidate = i;
+                strcpy(candidatePosition,pawns[abs(turn - 1)][i].getPosition());
+              }
+              if(turn){
+                strcpy(enPassantBlack, NULL);
+              } else{
+                strcpy(enPassantWhite, NULL);
+              }
+      } else if(turn && enPassantBlack != NULL && abs(destination[0] - pawns[abs(turn - 1)][i].getPosition()[0]) == 1 &&
+              (destination[1] - pawns[abs(turn - 1)][i].getPosition()[1]) == 0){
 
-  return stack;
+        if(strcmp(enPassantBlack,destination) == 0){
+          numCandidates++;
+          indexCandidate = i;
+          strcpy(candidatePosition,pawns[abs(turn - 1)][i].getPosition());
+          removeEnpassant = true;
+        }
+      } else if(!turn && enPassantWhite != NULL && abs(destination[0] - pawns[abs(turn - 1)][i].getPosition()[0]) == 1 &&
+              (destination[1] - pawns[abs(turn - 1)][i].getPosition()[1]) == 0){
+
+        if(strcmp(enPassantWhite,destination) == 0){
+          numCandidates++;
+          indexCandidate = i;
+          strcpy(candidatePosition,pawns[abs(turn - 1)][i].getPosition());
+          removeEnpassant = true;
+        }
+      }
+    }
+
+    if(numCandidates == 1){
+      pawns[abs(turn - 1)][indexCandidate].setFirstMove();
+      pawns[abs(turn - 1)][indexCandidate].setPosition(destination);
+
+      if (turn && removeEnpassant) {
+        enPassantBlack = NULL;
+      } else if (!turn && removeEnpassant){
+        enPassantWhite = NULL;
+      }
+
+      return candidatePosition;
+    } else {
+      return NULL;
+    }
+  }
+};
+
+char * PawnsManager::checkPromotedCandidates(boolean turn, const char * promotion, const char * from, const char * destination){
+
+  QueueArray <int> queue;
+  queue.push(0);
+
+  return queue;
 };

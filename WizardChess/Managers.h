@@ -32,18 +32,23 @@ class BishopsManager: public Manager{
       BishopsManager();
 
       /**
-       * Implement the virtual function with the scope to found the candidates
+       * Implement the virtual function with the scope to found the candidate
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the bishop on which the move could be performed.
+       *            N.B.: The function return NULL if:
+       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+       *                by the player (it is required to specify which of the two bishops the player want to move)
+       *              - there is not a candidate.
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
 
-  public:
+  private:
       /*
        * bishops : represents the list of pawns.
        *           Note: the first row refers to the white pawns, while the second
@@ -66,14 +71,16 @@ class KingsManager: public Manager{
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the king on which the move could be performed.
+       *            N.B.: The function return NULL if the king cannot be moved to the destination required
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
 
-   public:
+   private:
      /*
       * kings : represents the list of pawns.
       *         Note: the first row refers to the white pawns, while the second
@@ -92,18 +99,23 @@ class KnightsManager: public Manager{
       KnightsManager();
 
       /**
-       * Implement the virtual function with the scope to found the candidates
+       * Implement the virtual function with the scope to found the candidate
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the knight on which the move could be performed.
+       *            N.B.: The function return NULL if:
+       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+       *                by the player (it is required to specify which of the two knight the player want to move)
+       *              - there is not a candidate.
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
 
-  public:
+  private:
     /*
      * knights : represents the list of pawns.
      *           Note: the first row refers to the white pawns, while the second
@@ -126,14 +138,16 @@ class QueensManager: public Manager{
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the queen on which the move could be performed.
+       *            N.B.: The function return NULL if the queen cannot be moved to the destination required
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
 
-   public:
+   private:
       /*
        * queens : represents the list of pawns.
        *          Note: the first row refers to the white pawns, while the second
@@ -152,24 +166,58 @@ class PawnsManager: public Manager{
       PawnsManager();
 
       /**
+       * Implement the virtual function with the scope to found the candidate
+       * for which the move can be performed
+       *
+       * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
+       *      - source      : indicates the source cell of the piece that the player wants to move
+       *      - destination : indicates the destination cell of the piece that the player wants to move
+       *
+       * - Returns: a char pointer pointing to the coordinates of the pawn on which the move could be performed.
+       *            N.B.: The function return NULL if:
+       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+       *                by the player (it is required to specify which of the candidate pawns the player want to move)
+       *              - there is not candidate.
+       */
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
+
+      /**
        * Implement the virtual function with the scope to found the candidates
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the pawn on which the move could be performed.
+       *            N.B.: The function return NULL if:
+       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+       *                by the player (it is required to specify which of the candidate pawns the player want to move)
+       *              - there is not candidate.
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkPromotedCandidates(boolean turn, const char * promoType, const char * from, const char * destination);
 
-  public:
+  private:
       /*
-       * pawns : represents the list of pawns.
-       *         Note: the first row refers to the white pawns, while the second
-       *         row refers to the black ones
+       * pawns          : represents the list of pawns.
+       *                  Note: the first row refers to the white pawns, while the second
+       *                  row refers to the black ones
+       * enPassantWhite : indicates which pawn has eventually execute a 2 steps first move
+       *                  at the previous white adversary move.
+       *                  N.B.: it contains the position of the pawn and it is set to NULL
+       *                  if in the previous move the adversary did not perform a 2 steps
+       *                  first move
+       * enPassantBlack : indicates which pawn has eventually execute a 2 steps first move
+       *                  at the previous white adversary move.
+       *                  N.B.: it contains the position of the pawn and it is set to NULL
+       *                  if in the previous move the adversary did not perform a 2 steps
+       *                  first move
        */
       Pawn pawns [2][8];
+      char enPassantWhite[3];
+      char enPassantBlack[3];
 };
 
 class RooksManager: public Manager{
@@ -182,18 +230,23 @@ class RooksManager: public Manager{
       RooksManager();
 
       /**
-       * Implement the virtual function with the scope to found the candidates
+       * Implement the virtual function with the scope to found the candidate
        * for which the move can be performed
        *
        * - Parameters:
+       *      - turn        : indicates if move the white (true) or the black (false)
        *      - source      : indicates the source cell of the piece that the player wants to move
        *      - destination : indicates the destination cell of the piece that the player wants to move
        *
-       * - Returns: a boolean value indicating if the path is feasible (true) or not (false)
+       * - Returns: a char pointer pointing to the coordinates of the rook on which the move could be performed.
+       *            N.B.: The function return NULL if:
+       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+       *                by the player (it is required to specify which of the two rook the player want to move)
+       *              - there is not a candidate.
        */
-      StackList <int> checkCandidates(const char * from, const char * destination);
+      char * checkCandidates(boolean turn, const char * from, const char * destination);
 
-  public:
+  private:
      /*
       * rooks : represents the list of rooks.
       *         Note: the first row refers to the white rooks, while the second

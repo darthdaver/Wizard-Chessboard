@@ -30,9 +30,9 @@ KnightsManager::KnightsManager(): Manager() {
 };
 
 // checkCandidates implementation
-StackList <int> KnightsManager::checkCandidates(const char* from, const char* destination){
+char * KnightsManager::checkCandidates(const char* from, const char* destination){
 
-  StackList <int> stack;
+  QueueArray <int> stack;
   stack.push(0);
 
   return stack;

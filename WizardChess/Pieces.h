@@ -73,7 +73,7 @@ class King: public Piece {
        *
        * - Return: a not initialized instance of the class
        */
-       King();
+      King();
 
       /**
        * Define the constructor of the class
@@ -248,7 +248,7 @@ class Pawn: public Piece {
        *            While, for example, "QUEEN" means the corresponding pawn has
        *            been promoted to a queen piece)
        */
-      String getPromotion();
+      char * getPromotion();
 
       /**
        * Getter for firstMove variable
@@ -286,7 +286,7 @@ class Pawn: public Piece {
        *                 of this variable is referred to the possibility to
        *                 perform an en passant or a first "two-cells" motion)
        */
-      String pawnPosition;
+      char pawnPromotion[8];
       boolean pawnFirstMove;
 };
 

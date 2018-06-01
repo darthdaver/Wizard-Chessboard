@@ -28,8 +28,8 @@ KingsManager::KingsManager(): Manager() {
 };
 
 // checkCandidates implementation
-StackList <int> KingsManager::checkCandidates(const char * from, const char * destination){
-  StackList <int> stack;
+char * KingsManager::checkCandidates(const char * from, const char * destination){
+  QueueArray <int> stack;
   stack.push(0);
 
   return stack;

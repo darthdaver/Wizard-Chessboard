@@ -30,9 +30,9 @@ RooksManager::RooksManager(): Manager() {
 };
 
 // checkCandidates implementation
-StackList <int> RooksManager::checkCandidates(const char * from, const char * destination){
+char * RooksManager::checkCandidates(const char * from, const char * destination){
 
-  StackList <int> stack;
+  QueueArray <int> stack;
   stack.push(0);
 
   return stack;

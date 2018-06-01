@@ -30,9 +30,9 @@ BishopsManager::BishopsManager(): Manager(){
 };
 
 // checkCandidates implementation
-StackList <int> BishopsManager::checkCandidates(const char * from, const char * destination){
+char * BishopsManager::checkCandidates(const char * from, const char * destination){
 
-  StackList <int> stack;
+  QueueArray <int> stack;
 
   stack.push(0);
 

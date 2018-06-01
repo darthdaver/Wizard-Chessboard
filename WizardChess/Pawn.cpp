@@ -24,6 +24,8 @@ Pawn::Pawn(){};
 
 // Constructor
 Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
+  pawnPromotion = "PEDINA";
+  pawnFirstMove = true:
 };
 
 boolean Pawn::checkPathIsFree(const char * destination){
@@ -34,4 +36,22 @@ void Pawn::toString(){
   Serial.println("Type     : Pawn");
   Serial.print("Position : ");
   Serial.println(getPosition());
+};
+
+char * getPromotion(char * promotion){
+  strcpy(promotion,pawnPromotion);
+
+  return promotion;
+};
+
+boolean getFirstMove(){
+  return pawnFirstMove;
+};
+
+void setPromotion(const char * newType){
+  strcpy(pawnPromotion,newType);
+};
+
+void setFirstMove(){
+  pawnFirstMove = false;
 };
