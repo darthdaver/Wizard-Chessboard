@@ -26,7 +26,7 @@ Knight::Knight(){};
 Knight::Knight(const char * initialPosition): Piece(initialPosition) {
 };
 
-boolean Knight::checkPathIsFree(const char * destination){
+bool Knight::checkPathIsFree(const char * destination){
   return true;
 };
 

@@ -31,10 +31,11 @@ BishopsManager::BishopsManager(): Manager(){
 
 // checkCandidates implementation
 char * BishopsManager::checkCandidates(const char * from, const char * destination){
-
   QueueArray <int> stack;
-
   stack.push(0);
 
   return stack;
+};
+
+virtual bool checkPathIsFree(const char * from, const char * destination){
 };

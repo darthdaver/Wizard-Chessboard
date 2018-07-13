@@ -25,8 +25,11 @@ Piece::Piece(const char * initialPosition){
   position = initialPosition;
 }
 
-String Piece::getPosition(){
-  return position;
+char * Piece::getPosition(){
+  char * pos;
+
+  strcpy(pos,position);
+  return pos;
 };
 
 void Piece::setPosition(const char * newCoordinates){

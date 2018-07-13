@@ -21,16 +21,12 @@
 
 // Constructor
 ChessBoard::ChessBoard() {
-
-    // Turn controller inizialization
-    turn = true;
-
-    // Solenoid position initialization
-    solenoid = "A1";
+    // Turn controller inizialization (start the white player - WHITE --> 0)
+    turn = false;
 };
 
 // Stepper movement function implementation
-void ChessBoard::stepperMovement (boolean dir, byte dirPin, byte stepperPin, int steps){
+void ChessBoard::stepperMovement (bool dir, byte dirPin, byte stepperPin, int steps){
     digitalWrite (dirPin, dir);
     delay (50);
 
@@ -43,11 +39,11 @@ void ChessBoard::stepperMovement (boolean dir, byte dirPin, byte stepperPin, int
 };
 
 // Electromagnet function implementation
-void ChessBoard::electromagnet(boolean condition){
+void ChessBoard::electromagnet(bool condition){
     digitalWrite(RELAY,condition);
 };
 
 // GetTurnPlayer implementation
-boolean ChessBoard::getTurnPlayer(){
+bool ChessBoard::getTurnPlayer(){
     return turn;
 };

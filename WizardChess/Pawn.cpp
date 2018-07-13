@@ -28,7 +28,7 @@ Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
   pawnFirstMove = true:
 };
 
-boolean Pawn::checkPathIsFree(const char * destination){
+bool Pawn::checkPathIsFree(const char * destination){
   return true;
 };
 
@@ -40,11 +40,10 @@ void Pawn::toString(){
 
 char * getPromotion(char * promotion){
   strcpy(promotion,pawnPromotion);
-
   return promotion;
 };
 
-boolean getFirstMove(){
+bool getFirstMove(){
   return pawnFirstMove;
 };
 

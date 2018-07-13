@@ -26,7 +26,7 @@ King::King(){};
 King::King(const char * initialPosition): Piece(initialPosition) {
 };
 
-boolean King::checkPathIsFree(const char * destination){
+bool King::checkPathIsFree(const char * destination){
   return true;
 };
 

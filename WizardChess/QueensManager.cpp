@@ -35,3 +35,6 @@ char * QueensManager::checkCandidates(const char * from, const char * destinatio
 
   return stack;
 };
+
+virtual bool checkPathIsFree(const char * from, const char * destination){
+};

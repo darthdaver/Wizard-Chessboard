@@ -23,236 +23,338 @@
 #include "Pieces.h"
 
 class BishopsManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      BishopsManager();
+    public:
+        /**
+         * Define the default constructor of the class
+         *
+         * - Return: an initialized instance of the class
+         */
+        BishopsManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidate
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the bishop on which the move could be performed.
-       *            N.B.: The function return NULL if:
-       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-       *                by the player (it is required to specify which of the two bishops the player want to move)
-       *              - there is not a candidate.
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidate
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the bishop on which the move could be performed.
+         *            N.B.: The function return NULL if:
+         *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+         *                by the player (it is required to specify which of the two bishops the player want to move)
+         *              - there is not a candidate.
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
-  private:
-      /*
-       * bishops : represents the list of pawns.
-       *           Note: the first row refers to the white pawns, while the second
-       *           row refers to the black ones
-       */
-      Bishop bishops [2][2];
+    private:
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /*
+         * bishops : represents the list of pawns.
+         *           Note: the first row refers to the white pawns, while the second
+         *           row refers to the black ones
+         */
+        Bishop bishops [2][2];
 };
 
 class KingsManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      KingsManager();
+    public:
+        /**
+          * Define the default constructor of the class
+          *
+          * - Return: an initialized instance of the class
+          */
+        KingsManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidates
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the king on which the move could be performed.
-       *            N.B.: The function return NULL if the king cannot be moved to the destination required
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidates
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the king on which the move could be performed.
+         *            N.B.: The function return NULL if the king cannot be moved to the destination required
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
-   private:
-     /*
-      * kings : represents the list of pawns.
-      *         Note: the first row refers to the white pawns, while the second
-      *         row refers to the black ones
-      */
-     King kings [2][1];
+    private:
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /*
+         * kings : represents the list of pawns.
+         *         Note: the first row refers to the white pawns, while the second
+         *         row refers to the black ones
+         */
+        King kings [2][1];
 };
 
 class KnightsManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      KnightsManager();
+    public:
+        /**
+         * Define the default constructor of the class
+         *
+         * - Return: an initialized instance of the class
+         */
+        KnightsManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidate
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the knight on which the move could be performed.
-       *            N.B.: The function return NULL if:
-       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-       *                by the player (it is required to specify which of the two knight the player want to move)
-       *              - there is not a candidate.
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidate
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the knight on which the move could be performed.
+         *            N.B.: The function return NULL if:
+         *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+         *                by the player (it is required to specify which of the two knight the player want to move)
+         *              - there is not a candidate.
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
-  private:
-    /*
-     * knights : represents the list of pawns.
-     *           Note: the first row refers to the white pawns, while the second
-     *           row refers to the black ones
-     */
-    Knight knights [2][2];
+    private:
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /*
+         * knights : represents the list of pawns.
+         *           Note: the first row refers to the white pawns, while the second
+         *           row refers to the black ones
+         */
+        Knight knights [2][2];
 };
 
 class QueensManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      QueensManager();
+    public:
+        /**
+         * Define the default constructor of the class
+         *
+         * - Return: an initialized instance of the class
+         */
+        QueensManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidates
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the queen on which the move could be performed.
-       *            N.B.: The function return NULL if the queen cannot be moved to the destination required
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidates
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the queen on which the move could be performed.
+         *            N.B.: The function return NULL if the queen cannot be moved to the destination required
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
    private:
-      /*
-       * queens : represents the list of pawns.
-       *          Note: the first row refers to the white pawns, while the second
-       *          row refers to the black ones
-       */
-      Queen queens [2][1];
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /*
+         * queens : represents the list of pawns.
+         *          Note: the first row refers to the white pawns, while the second
+         *          row refers to the black ones
+         */
+        Queen queens [2][1];
 };
 
 class PawnsManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      PawnsManager();
+    public:
+        /**
+         * Define the default constructor of the class
+         *
+         * - Return: an initialized instance of the class
+         */
+        PawnsManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidate
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the pawn on which the move could be performed.
-       *            N.B.: The function return NULL if:
-       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-       *                by the player (it is required to specify which of the candidate pawns the player want to move)
-       *              - there is not candidate.
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidate
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the pawn on which the move could be performed.
+         *            N.B.: The function return NULL if:
+         *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+         *                by the player (it is required to specify which of the candidate pawns the player want to move)
+         *              - there is not candidate.
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
-      /**
-       * Implement the virtual function with the scope to found the candidates
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the pawn on which the move could be performed.
-       *            N.B.: The function return NULL if:
-       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-       *                by the player (it is required to specify which of the candidate pawns the player want to move)
-       *              - there is not candidate.
-       */
-      char * checkPromotedCandidates(boolean turn, const char * promoType, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the promoted candidates
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - promotype   : indicates the promotion type of the pawn
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the promoted pawn on which the move could be performed.
+         *            N.B.: The function return NULL if:
+         *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+         *                by the player (it is required to specify which of the candidate pawns the player want to move)
+         *              - there is not candidate.
 
-  private:
-      /*
-       * pawns          : represents the list of pawns.
-       *                  Note: the first row refers to the white pawns, while the second
-       *                  row refers to the black ones
-       * enPassantWhite : indicates which pawn has eventually execute a 2 steps first move
-       *                  at the previous white adversary move.
-       *                  N.B.: it contains the position of the pawn and it is set to NULL
-       *                  if in the previous move the adversary did not perform a 2 steps
-       *                  first move
-       * enPassantBlack : indicates which pawn has eventually execute a 2 steps first move
-       *                  at the previous white adversary move.
-       *                  N.B.: it contains the position of the pawn and it is set to NULL
-       *                  if in the previous move the adversary did not perform a 2 steps
-       *                  first move
-       */
-      Pawn pawns [2][8];
-      char enPassantWhite[3];
-      char enPassantBlack[3];
+         *            N.B.: The function, differently from the checkCandidates function, verifies only if exists a promoted
+         *                  pawn of type equal to the specified promoType parameter and if the from parameter is ≠ NULL
+         *                  the function check if in that position really exists that type of mromoted pawn.
+         *                  The other checks (path is correct and free, etc.) will be performed by the maneger of the
+         *                  promoType (the class PawnManager has not control on other type of pieces different from Pawn).
+         */
+        char * checkPromotedCandidates(bool turn, const char * promoType, const char * from);
+
+    private:
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /**
+         * Verify that a pawn move always forward
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a bool indicating if (or not) the pawn move forward
+         */
+        bool checkDirection(bool turn, const char * from, const char * destination);
+
+        /**
+         * Verify that in a move in which the parameter named from is specified (is ≠ NULL), it refers to a
+         * source in which a pawn is really present
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *
+         * - Returns: a bool indicating if (or not) the pawn move forward
+         */
+        bool checkSource(bool turn, const char * from, const char * destination);
+
+        /*
+         * pawns          : represents the list of pawns.
+         *                  Note: the first row refers to the white pawns, while the second
+         *                  row refers to the black ones
+         * enPassantWhite : indicates which pawn has eventually execute a 2 steps first move
+         *                  at the previous black adversary move.
+         *                  N.B.: it contains the position of the pawn and it is set to NULL
+         *                  if in the previous move the adversary did not perform a 2 steps
+         *                  first move
+         * enPassantBlack : indicates which pawn has eventually execute a 2 steps first move
+         *                  at the previous white adversary move.
+         *                  N.B.: it contains the position of the pawn and it is set to NULL
+         *                  if in the previous move the adversary did not perform a 2 steps
+         *                  first move
+         */
+        Pawn pawns [2][8];
+        char enPassantWhite[3];
+        char enPassantBlack[3];
 };
 
 class RooksManager: public Manager{
-  public:
-      /**
-       * Define the default constructor of the class
-       *
-       * - Return: an initialized instance of the class
-       */
-      RooksManager();
+    public:
+        /**
+         * Define the default constructor of the class
+         *
+         * - Return: an initialized instance of the class
+         */
+        RooksManager();
 
-      /**
-       * Implement the virtual function with the scope to found the candidate
-       * for which the move can be performed
-       *
-       * - Parameters:
-       *      - turn        : indicates if move the white (true) or the black (false)
-       *      - source      : indicates the source cell of the piece that the player wants to move
-       *      - destination : indicates the destination cell of the piece that the player wants to move
-       *
-       * - Returns: a char pointer pointing to the coordinates of the rook on which the move could be performed.
-       *            N.B.: The function return NULL if:
-       *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-       *                by the player (it is required to specify which of the two rook the player want to move)
-       *              - there is not a candidate.
-       */
-      char * checkCandidates(boolean turn, const char * from, const char * destination);
+        /**
+         * Implement the virtual function with the scope to find the candidate
+         * for which the move can be performed
+         *
+         * - Parameters:
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a char pointer pointing to the coordinates of the rook on which the move could be performed.
+         *            N.B.: The function return NULL if:
+         *              - more than 1 candidate has been found so there is ambiguity on the command expressed
+         *                by the player (it is required to specify which of the two rook the player want to move)
+         *              - there is not a candidate.
+         */
+        char * checkCandidates(bool turn, const char * from, const char * destination);
 
-  private:
-     /*
-      * rooks : represents the list of rooks.
-      *         Note: the first row refers to the white rooks, while the second
-      *         row refers to the black ones
-      */
-     Rook rooks [2][2];
+    private:
+        /**
+         * Check if path from source to destination is free, i.e. there are not opponent's pieces
+         * along the way
+         *
+         * - Parameters:
+         *      - from        : indicates the source cell of the piece that the player wants to move
+         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *
+         * - Returns: a boolean representing if the path is free (true) or not (false)
+         */
+        virtual bool checkPathIsFree(const char * from, const char * destination);
+
+        /*
+         * rooks : represents the list of rooks.
+         *         Note: the first row refers to the white rooks, while the second
+         *         row refers to the black ones
+         */
+        Rook rooks [2][2];
 };
 
 #endif

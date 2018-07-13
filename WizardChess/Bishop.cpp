@@ -16,22 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
- #include "Piece.h"
- #include "Pieces.h"
+#include "Piece.h"
+#include "Pieces.h"
 
+// Default constructor
+Bishop::Bishop(){};
+// Constructor
+Bishop::Bishop(const char * initialPosition): Piece(initialPosition){};
 
- // Default constructor
- Bishop::Bishop(){};
+bool Bishop::checkPathIsFree(const char * destination){
+  return true;
+};
 
- // Constructor
- Bishop::Bishop(const char * initialPosition): Piece(initialPosition){};
-
- boolean Bishop::checkPathIsFree(const char * destination){
-   return true;
- };
-
- void Bishop::toString(){
-   Serial.println("Type     : Bishop");
-   Serial.print("Position : ");
-   Serial.println(getPosition());
- };
+void Bishop::toString(){
+  Serial.println("Type     : Bishop");
+  Serial.print("Position : ");
+  Serial.println(getPosition());
+};

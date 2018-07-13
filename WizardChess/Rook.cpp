@@ -25,7 +25,7 @@ Rook::Rook(){};
 // Constructor
 Rook::Rook(const char * initialPosition): Piece(initialPosition) {};
 
-boolean Rook::checkPathIsFree(const char * destination){
+bool Rook::checkPathIsFree(const char * destination){
   return true;
 };
 

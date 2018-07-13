@@ -1,5 +1,5 @@
 /*
- * PieceInterface abstract class implementation.
+ * Manager abstract class implementation.
  *
  * Copyright (c) 2018 Davide Molinelli.
  *

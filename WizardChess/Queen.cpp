@@ -26,7 +26,7 @@ Queen::Queen(){};
 Queen::Queen(const char * initialPosition): Piece(initialPosition) {
 };
 
-boolean Queen::checkPathIsFree(const char * destination){
+bool Queen::checkPathIsFree(const char * destination){
   return true;
 };
 

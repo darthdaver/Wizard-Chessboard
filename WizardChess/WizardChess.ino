@@ -25,7 +25,7 @@ SoftwareSerial BT(BT_RX, BT_TX);
 ChessBoard chessBoard;
 
 // Auxiliary functions declaration
-boolean recognizePromotion(char *);
+bool recognizePromotion(char *);
 
 void setup() {
 
@@ -54,8 +54,8 @@ void setup() {
 void loop(){
 
   // Speech to text auxiliary variables
-  boolean command = true;
-  boolean promotion = false;
+  bool command = true;
+  bool promotion = false;
   int index = 0;
   char voice[256] = "";
   QueueArray <char *> queue;
@@ -64,12 +64,10 @@ void loop(){
    *  Speech recognition and speech-to-text translation phase
    *  Reading of the characters coming from the speech source and received
    *  via bluetooth communication.
-   *  The carachters are stored in the voice variable (String type).
+   *  The charachters are stored in the voice variable (String type).
   */
-
   // Speech recognition phase
   while(command){
-
     // Check if there is an available byte to read
     // Cycle waiting for a communication with the speech source
     while (BT.available()){
@@ -113,42 +111,50 @@ void loop(){
    *  Analysis of the single words splitted in the previous phase.
    *  If the move is validated, it is performed.
    */
-   char * piece = queue.dequeue();
+  char * piece = queue.dequeue();
 
-   if(strcmp(piece,"PEDINA") == 0 && queue.count() == 5){
-       char * promotion = queue.dequeue();
-       promotion = true;
+  if(strcmp(piece,"PEDINA") == 0){
+    if(queue.count() == 5){
+      char * promotion = queue.dequeue();
+      promotion = true;
+    } else if(queue.count() == 3 && queue.front() == "TORRE" || queue.front() == "CAVALLO" ||
+                queue.front() == "ALFIERE" || queue.front() == "REGINA"){
+      char * promotion = queue.dequeue();
+      promotion = true;
     }
+  }
 
+  //superfluous word (preposition)
+  queue.dequeue();
+
+  //account for ambiguous cases
+  if (queue.count() == 3){
+    char * from = queue.dequeue();
     queue.dequeue();
+    char * destination = queue.dequeue();
+  } else if(queue.count() == 1){ //ordinary cases
+    char * from = NULL;
+    char * destination = queue.dequeue();
+  }
 
-    if (queue.count() == 3){
-      char * from = queue.dequeue();
-      queue.dequeue();
-      char * destination = queue.dequeue();
-    } else if(queue.count() == 1){
-      char * from = NULL;
-      char * destination = queue.dequeue();
-    }
-
-    if(strcmp(piece,"PEDINA") == 0){
-      if(promotion){
-          chessBoard.pawnsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-      } else{
-        chessBoard.pawnsManager.checkPromotedCandidates(chessBoard.getTurnPlayer(),promotion,from,destination);
-      }
-    } else if(strcmp(piece,"TORRE") == 0){
-        chessBoard.rooksManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"ALFIERE") == 0){
-        chessBoard.bishopsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"CAVALLO") == 0){
-        chessBoard.knightsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"REGINA") == 0){
-        chessBoard.queensManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"RE") == 0){
-        chessBoard.kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else {
-      Serial.println("Unrecognized command. Please, try again!");
-    }
-   }
+  if(strcmp(piece,"PEDINA") == 0){
+    if(promotion){
+      chessBoard.pawnsManager.checkPromotedCandidates(chessBoard.getTurnPlayer(),promotion,from,destination);
+    } else{
+      chessBoard.pawnsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  }
+  } else if(strcmp(piece,"TORRE") == 0){
+      chessBoard.rooksManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  } else if(strcmp(piece,"ALFIERE") == 0){
+      chessBoard.bishopsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  } else if(strcmp(piece,"CAVALLO") == 0){
+      chessBoard.knightsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  } else if(strcmp(piece,"REGINA") == 0){
+      chessBoard.queensManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  } else if(strcmp(piece,"RE") == 0){
+      chessBoard.kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+  } else {
+    Serial.println("Unrecognized command. Please, try again!");
+  }
+   
 }

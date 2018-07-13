@@ -37,3 +37,6 @@ char * KnightsManager::checkCandidates(const char* from, const char* destination
 
   return stack;
 };
+
+virtual bool checkPathIsFree(const char * from, const char * destination){
+};

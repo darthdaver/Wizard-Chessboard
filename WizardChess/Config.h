@@ -40,6 +40,7 @@
 #define WHITE_BISHOP    0
 #define WHITE_QUEEN     0
 #define WHITE_KING      0
+#define WHITE 0
 
 // Black chessboard
 #define BLACK_PAWN      1
@@ -48,5 +49,6 @@
 #define BLACK_BISHOP    1
 #define BLACK_QUEEN     1
 #define BLACK_KING      1
+#define BLACK 1
 
 #endif

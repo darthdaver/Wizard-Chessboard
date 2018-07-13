@@ -23,8 +23,7 @@
 #include "Managers.h"
 
 class ChessBoard {
-
-  public:
+    public:
       /**
        * Define the default constructor of the class
        *
@@ -36,9 +35,9 @@ class ChessBoard {
        * Identify the element on which the player move must be performed
        *
        * - Parameters:
-       *      - command : the string obtained from the speech to text conversion, that represents the command expressed by a player
+       *      - command : the char * obtained from the speech to text conversion, that represents the command expressed by a player
        *
-       * - Return: a String that represents the type of the pawn to move
+       * - Return: a pointer to a char * of characters that represents the type of the pawn to move
        *      - PEDINA (PAWN)
        *      - TORRE (ROOK)
        *      - CAVALLO (KNIGHT)
@@ -46,7 +45,7 @@ class ChessBoard {
        *      - REGINA (QUEEN)
        *      - RE (KING)
        */
-      float identifyElement(String command);
+      float identifyElement(char * command); //?????????????????????
 
       /**
        * Generate the stepper motor movement in order to transport the piece from the source cell to the destination cell,
@@ -66,7 +65,7 @@ class ChessBoard {
        *      -steps       : define the number of the steps necessary to move from xa --> xb (if the movement is performed along
        *                     the X axis) or from ya --> yb (if the movement is performed along the Y axis)
        */
-      void stepperMovement (boolean dir, byte dirPin, byte stepperPin, int steps);
+      void stepperMovement (bool dir, byte dirPin, byte stepperPin, int steps);
 
       /**
        * Activate (deactivate) the electromagnet in order to attract (release) the pawn.
@@ -75,19 +74,19 @@ class ChessBoard {
        * - Parameters:
        *      - condition : if true activate the cathing, if false release the catching
        */
-      void electromagnet(boolean condition);
+      void electromagnet(bool condition);
 
       /**
        * Getter of the turn variable
        *
-       * - Return: a boolean representing the player who has the right to move
-       *      - true  : move the white
-       *      - false : move the black
+       * - Return: a bool representing the player who has the right to move
+       *      - true  : move the black
+       *      - false : move the white
        *
        */
-      boolean getTurnPlayer();
+      bool getTurnPlayer();
 
-  public:
+    public:
       /**
        * Chessboard variables
        *
@@ -105,22 +104,21 @@ class ChessBoard {
        * pawnPromotion : keep track if a pawn has been promoted to another type of pawn
        *                 Note: the first eight elements refer to the white pawns, while the second eight
        *                 refer to the black pawns
-       * turn          : keep track if moves the white (true) or the black (false)
+       * turn          : keep track if moves the white (false) or the black (true)
        * solenoid      : keep track the position of the solenoid
        */
-      boolean cemetery[2][16]={{true,true,true,true,true,true,true,true,
+      bool cemetery[2][16]={{true,true,true,true,true,true,true,true,
                    true,true,true,true,true,true,true,true},
                   {true,true,true,true,true,true,true,true,
                    true,true,true,true,true,true,true,true}};
-      boolean turn;
-      String solenoid;
+      bool turn;
+      char * solenoid = "A1";
       BishopsManager bishopsManager;
       KingsManager kingsManager;
       KnightsManager knightsManager;
       QueensManager queensManager;
       RooksManager rooksManager;
       PawnsManager pawnsManager;
-
 };
 
 #endif
