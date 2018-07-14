@@ -54,18 +54,6 @@ class Piece {
         void setPosition(const char * newCoordinates);
 
         /**
-         * Check if the destination path is free and the move can potentially be performed for the piece
-         *
-         * - Parameters:
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
-         *
-         * - Return : a bool value indicating if the path is feasible (true)
-         *            for the piece or not (false)
-         */
-        virtual bool checkPathIsFree(const char * destination) = 0;
-
-        /**
          * Show a string representation of the object
          *
          * - Return : a string representation of the object

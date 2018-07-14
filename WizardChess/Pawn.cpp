@@ -28,19 +28,16 @@ Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
   pawnFirstMove = true:
 };
 
-bool Pawn::checkPathIsFree(const char * destination){
-  return true;
-};
-
 void Pawn::toString(){
   Serial.println("Type     : Pawn");
   Serial.print("Position : ");
   Serial.println(getPosition());
 };
 
-char * getPromotion(char * promotion){
-  strcpy(promotion,pawnPromotion);
-  return promotion;
+char * getPromotion(){
+  char * promoType;
+  strcpy(promoType,pawnPromotion);
+  return promoType;
 };
 
 bool getFirstMove(){

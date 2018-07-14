@@ -17,15 +17,13 @@
  */
 
 #include <SoftwareSerial.h>
+#include <QueueArray.h>
 #include "ChessBoard.h"
 
 // Bluetooth: define software serial
 SoftwareSerial BT(BT_RX, BT_TX);
 
 ChessBoard chessBoard;
-
-// Auxiliary functions declaration
-bool recognizePromotion(char *);
 
 void setup() {
 
@@ -46,6 +44,7 @@ void setup() {
   // RELAY pins setup
   pinMode(RELAY, OUTPUT);
 
+  // Instanciate a chessboard
   chessBoard = ChessBoard();
 
   delay(1000);
@@ -55,10 +54,9 @@ void loop(){
 
   // Speech to text auxiliary variables
   bool command = true;
-  bool promotion = false;
   int index = 0;
   char voice[256] = "";
-  QueueArray <char *> queue;
+  QueueArray <char *> wordsQueue;
 
   /*
    *  Speech recognition and speech-to-text translation phase
@@ -94,67 +92,19 @@ void loop(){
     */
     if (strlen(voice) > 0){
       char * temp = strtok(voice, " ");
-      queue.enqueue(temp);
+      wordsQueue.enqueue(temp);
 
       while(temp != NULL){
         temp = strtok(NULL," ");
 
         if(temp != NULL){
-          queue.enqueue(temp);
+          wordsQueue.enqueue(temp);
         }
       }
     }
   }
 
-  /*
-   *  Command interpretation and move execution phase
-   *  Analysis of the single words splitted in the previous phase.
-   *  If the move is validated, it is performed.
-   */
-  char * piece = queue.dequeue();
+  chessBoard.move(wordsQueue);
 
-  if(strcmp(piece,"PEDINA") == 0){
-    if(queue.count() == 5){
-      char * promotion = queue.dequeue();
-      promotion = true;
-    } else if(queue.count() == 3 && queue.front() == "TORRE" || queue.front() == "CAVALLO" ||
-                queue.front() == "ALFIERE" || queue.front() == "REGINA"){
-      char * promotion = queue.dequeue();
-      promotion = true;
-    }
-  }
-
-  //superfluous word (preposition)
-  queue.dequeue();
-
-  //account for ambiguous cases
-  if (queue.count() == 3){
-    char * from = queue.dequeue();
-    queue.dequeue();
-    char * destination = queue.dequeue();
-  } else if(queue.count() == 1){ //ordinary cases
-    char * from = NULL;
-    char * destination = queue.dequeue();
-  }
-
-  if(strcmp(piece,"PEDINA") == 0){
-    if(promotion){
-      chessBoard.pawnsManager.checkPromotedCandidates(chessBoard.getTurnPlayer(),promotion,from,destination);
-    } else{
-      chessBoard.pawnsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  }
-  } else if(strcmp(piece,"TORRE") == 0){
-      chessBoard.rooksManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  } else if(strcmp(piece,"ALFIERE") == 0){
-      chessBoard.bishopsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  } else if(strcmp(piece,"CAVALLO") == 0){
-      chessBoard.knightsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  } else if(strcmp(piece,"REGINA") == 0){
-      chessBoard.queensManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  } else if(strcmp(piece,"RE") == 0){
-      chessBoard.kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-  } else {
-    Serial.println("Unrecognized command. Please, try again!");
-  }
-   
+  // else Serial.println("Unrecognized command. Please, try again!");
 }

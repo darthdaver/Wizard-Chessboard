@@ -44,10 +44,11 @@ PawnsManager::PawnsManager(): Manager() {
 
 // checkCandidates implementation
 char * PawnsManager::checkCandidates(bool turn, const char * from, const char * destination){
+  // auxiliary variables
   int numCandidates = 0;
   int indexCandidate;
-  char candidatePosition[3];
   bool removeEnpassant = false;
+  char * candidatePosition;
 
   // ordinary cases without ambiguity
   if(from == NULL){
@@ -59,12 +60,12 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
                     checkPathIsFree(pawns[turn][i].getPosition(), destination)){
                 numCandidates++;
                 indexCandidate = i;
-                strcpy(candidatePosition,pawns[turn][i].getPosition());
+                candidatePosition = Position,pawns[turn][i].getPosition());
               }
               if(turn){   // if move white
-                strcpy(enPassantBlack, NULL);
+                enPassantBlack = NULL;
               } else{     // if move black
-                strcpy(enPassantWhite, NULL);
+                enPassantWhite = NULL;
               }
       } else if(pawns[turn][i].getFirstMove() && (destination[0] - pawns[turn][i].getPosition()[0]) == 0 &&
             abs((destination[1] - pawns[turn][i].getPosition()[1])) == 2){   // double step move
@@ -72,7 +73,7 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
                     checkPathIsFree(pawns[turn][i].getPosition(), destination)){
                 numCandidates++;
                 indexCandidate = i;
-                strcpy(candidatePosition,pawns[turn][i].getPosition());
+                candidatePosition = pawns[turn][i].getPosition();
                 if(turn){
                   strcpy(enPassantWhite, destination);
                 } else{
@@ -85,7 +86,7 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
                     !checkPathIsFree(pawns[turn][i].getPosition(), destination)){
                 numCandidates++;
                 indexCandidate = i;
-                strcpy(candidatePosition,pawns[turn][i].getPosition());
+                candidatePosition = pawns[turn][i].getPosition();
               }
               if(turn){
                 strcpy(enPassantBlack, NULL);
@@ -97,7 +98,7 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
         if(strcmp(enPassantBlack,destination) == 0){
           numCandidates++;
           indexCandidate = i;
-          strcpy(candidatePosition,pawns[turn][i].getPosition());
+          candidatePosition = pawns[turn][i].getPosition();
           removeEnpassant = true;
         }
       } else if(!turn && enPassantWhite != NULL && abs(destination[0] - pawns[turn][i].getPosition()[0]) == 1 &&
@@ -105,7 +106,7 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
         if(strcmp(enPassantWhite,destination) == 0){
           numCandidates++;
           indexCandidate = i;
-          strcpy(candidatePosition,pawns[turn][i].getPosition());
+          candidatePosition = pawns[turn][i].getPosition();
           removeEnpassant = true;
         }
       }
@@ -131,26 +132,26 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
             abs((destination[1] - from[1])) == 1){   // classical move
         if(checkDirection(turn, from, destination) &&
               checkPathIsFree(from,destination)){
-          strcpy(candidatePosition, from);
+          candidatePosition = from;
           return candidatePosition;
         }
       } else if(((turn && from[1] == "7") ||  (!turn && from[1] == "2") && (destination[0] - from[0]) == 0 &&
             abs((destination[1] - from[1])) == 2){   // double step move at first move
         if(checkDirection(turn, from, destination) && 
               checkPathIsFree(from, destination))){
-          strcpy(candidatePosition, from);
+          candidatePosition = from;
           return candidatePosition;
         }
       } else if(turn && enPassantBlack != NULL && abs(destination[0] - from[0]) == 1 &&
               (destination[1] - from[1]) == 0){   // en passant black --> white
         if(strcmp(enPassantBlack,destination) == 0){
-          strcpy(candidatePosition, from);
+          candidatePosition = from;
           return candidatePosition;
         }
       } else if(!turn && enPassantWhite != NULL && abs(destination[0] - from[0]) == 1 &&
               (destination[1] - from[1]) == 0){   // en passant black --> white
         if(strcmp(enPassantWhite,destination) == 0){
-          strcpy(candidatePosition, from);
+          candidatePosition = from;
           return candidatePosition;
         }
     } else{
@@ -163,7 +164,7 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
 char * PawnsManager::checkPromotedCandidates(bool turn, const char * promoType, const char * from){
   int numCandidates = 0;
   int indexCandidate;
-  char candidatePosition[3];
+  char * candidatePosition;
 
   // unambiguous cases
   for(int i = 0; i < 8; i++){
@@ -177,7 +178,7 @@ char * PawnsManager::checkPromotedCandidates(bool turn, const char * promoType, 
   }
 
   if(numCandidates == 1){
-    strcpy(candidatePosition,pawns[turn][indexCandidate].getPosition());
+    candidatePosition = pawns[turn][indexCandidate].getPosition();
     return candidatePosition;
   } else{
     return NULL;
@@ -215,8 +216,42 @@ virtual bool checkPathIsFree(const char * from, const char * destination){
   // calculate the horizontal difference xd - xf
   hDiff = destination[0] - from[0];
 
-  // move the Black player
-  if(vDiff == -1 && hDiff == 0){  // one step forward (ordinary case)
-    char cell[3] = 
+  if(abs(vDiff) <= 1 && abs(hDiff) <= 1){  // one-step forward (ordinary case), diagonal movement or en passant
+    for(int i = 0; i < 2; i++){
+      for(int j = 0; i < 8; i++){
+        //cell occupied by another piece
+        if(strcmp(destination,pawns[i][j].getPosition()) == 0){
+          if(hDiff == 0 && abs(vDiff) == 1){
+            return false;
+          } else{
+            return true;
+          }
+        }
+      }
+    }
+    if(hDiff == 0 && abs(vDiff) == 1){
+      return true;
+    } else{
+      return false;
+    }
+  } else if((abs(vDiff) == 0 && abs(hDiff) == 2){ //first 2-step forward movement
+    char forwardCell[3];
+    if(vdiff == 2){
+      forwardCell[0] = destination[0] + 1;
+    } else {
+      forwardCell[0] = destination[1] - 1;
+    }
+    forwardCell[1] = destination[1];
+    forwardCell[2] = '\0';
+
+    for(int i = 0; i < 2; i++){
+      for(int j = 0; i < 8; i++){
+        //cell occupied by another piece
+        if(strcmp(forwardCell,pawns[i][j].getPosition()) == 0 || strcmp(destination, pawns[i][j].getPosition()) == 0){
+          return false;
+        }
+      }
+    }
   }
+  return true;
 };

@@ -27,7 +27,6 @@ Piece::Piece(const char * initialPosition){
 
 char * Piece::getPosition(){
   char * pos;
-
   strcpy(pos,position);
   return pos;
 };

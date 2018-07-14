@@ -32,31 +32,18 @@ class Manager {
         /**
          * Found the candidates for which the move can be performed
          *
-         * - Parameters:
+         * - Parameters :
          *      - turn        : indicates if move the white (true) or the black (false)
          *      - from        : indicates the source cell of the piece that the player wants to move
          *      - destination : indicates the destination cell of the piece that the player wants to move
          *
-         * - Returns: an integer representing the index of the piece on which the move could be performed.
+         * - Return : an integer representing the index of the piece on which the move could be performed.
          *            N.B.: The function return -1 if:
          *              - more than 1 candidate has been found so there is ambiguity on the command expressed
          *                by the player (it is required to specify which of the candidate piece the player want to move)
          *              - there is not a candidate.
          */
         virtual int checkCandidates(bool turn, const char * from, const char * destination) = 0;
-
-    private:
-        /**
-         * Check if path from source to destination is free, i.e. there are not opponent's pieces
-         * along the way
-         *
-         * - Parameters:
-         *      - from        : indicates the source cell of the piece that the player wants to move
-         *      - destination : indicates the destination cell of the piece that the player wants to move
-         *
-         * - Returns: a boolean representing if the path is free (true) or not (false)
-         */
-        virtual bool checkPathIsFree(const char * from, const char * destination) = 0;
 };
 
 #endif

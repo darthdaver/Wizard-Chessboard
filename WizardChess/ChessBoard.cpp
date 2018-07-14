@@ -25,16 +25,76 @@ ChessBoard::ChessBoard() {
     turn = false;
 };
 
+// Move function implementation
+void move(Queue <char *> wordsQueue){
+    // Auxiliary variables
+    bool promotion = false;
+    char * promoType = new char[8];
+    char * from = new char[3];
+    char * destination = new char[3];
+    char * candidate = new char[3];
+
+    /*
+     *  Command interpretation and move execution phase
+     *  Analysis of the single words splitted in the previous phase.
+     *  If the move is validated, it is performed.
+     */
+    char * piece = wordsQueue.dequeue();
+
+    if(strcmp(piece,"PEDINA") == 0){
+        if(wordsQueue.count() == 5 || (wordsQueue.count() == 3 && wordsQueue.front() == "TORRE" ||
+                wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA")){
+            promoType = wordsQueue.dequeue());
+            promotion = true;
+        } else if(){
+            promoType = wordsQueue.dequeue();
+            promotion = true;
+        }
+    }
+
+    // Superfluous word (preposition)
+    wordsQueue.dequeue();
+
+    // Analyze the cases
+    if (wordsQueue.count() == 3){       // ambiguous cases
+        from = wordsQueue.dequeue();
+        // Superfluous word (preposition)
+        wordsQueue.dequeue();
+        destination = wordsQueue.dequeue();
+    } else if(wordsQueue.count() == 1){ // ordinary cases
+        from = NULL;
+        destination = wordsQueue.dequeue();
+    }
+
+    if(strcmp(piece,"PEDINA") == 0){
+        if(promotion){
+            candidate = pawnsManager.checkPromotedCandidates(chessBoard.getTurnPlayer(),promotion,from,destination);
+        } else{
+            candidate = pawnsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+        }
+    } else if(strcmp(piece,"TORRE") == 0){
+        candidate = rooksManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+    } else if(strcmp(piece,"ALFIERE") == 0){
+        candidate = bishopsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+    } else if(strcmp(piece,"CAVALLO") == 0){
+        candidate = knightsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+    } else if(strcmp(piece,"REGINA") == 0){
+        candidate = queensManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+    } else if(strcmp(piece,"RE") == 0){
+        candidate = kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
+    }
+}   
+
 // Stepper movement function implementation
 void ChessBoard::stepperMovement (bool dir, byte dirPin, byte stepperPin, int steps){
     digitalWrite (dirPin, dir);
     delay (50);
 
     for (int i = 0; i < steps; i++) {
-      digitalWrite (stepperPin, HIGH);
-      delayMicroseconds (800);
-      digitalWrite (stepperPin, LOW);
-      delayMicroseconds (800);
+        digitalWrite (stepperPin, HIGH);
+        delayMicroseconds (800);
+        digitalWrite (stepperPin, LOW);
+        delayMicroseconds (800);
     }
 };
 
@@ -43,7 +103,12 @@ void ChessBoard::electromagnet(bool condition){
     digitalWrite(RELAY,condition);
 };
 
-// GetTurnPlayer implementation
+// GetTurnPlayer function implementation
 bool ChessBoard::getTurnPlayer(){
     return turn;
 };
+
+// SetTurnPlayer function implementation
+void ChessBoard::setTurnPlayer(){
+    turn = !turn;
+}

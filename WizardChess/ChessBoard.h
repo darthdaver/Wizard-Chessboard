@@ -20,6 +20,7 @@
 #define CHESSBOARD_H
 
 #include <Arduino.h>
+#include <QueueArray.h>
 #include "Managers.h"
 
 class ChessBoard {
@@ -27,17 +28,17 @@ class ChessBoard {
       /**
        * Define the default constructor of the class
        *
-       * - Return: an initialized instance of the class
+       * - Return : an initialized instance of the class
        */
       ChessBoard();
 
       /**
        * Identify the element on which the player move must be performed
        *
-       * - Parameters:
+       * - Parameters :
        *      - command : the char * obtained from the speech to text conversion, that represents the command expressed by a player
        *
-       * - Return: a pointer to a char * of characters that represents the type of the pawn to move
+       * - Return : a pointer to a char * of characters that represents the type of the pawn to move
        *      - PEDINA (PAWN)
        *      - TORRE (ROOK)
        *      - CAVALLO (KNIGHT)
@@ -48,13 +49,32 @@ class ChessBoard {
       float identifyElement(char * command); //?????????????????????
 
       /**
+       * Getter of the turn variable
+       *
+       * - Return : a bool representing the player who has the right to move
+       *      - true  : move the black
+       *      - false : move the white
+       *
+       */
+      bool getTurnPlayer();
+
+      /**
+       * Verifies if it is possible to make the move expressed by the player and, in that case, executes it
+       * 
+       * - Parameters :
+       *      - wordsQueue : a queue containing the words relative to the move that the player want to perform
+       */
+      void move(QueueArray <char *> wordsQueue);
+
+    private:
+      /**
        * Generate the stepper motor movement in order to transport the piece from the source cell to the destination cell,
        * performing a player move. The function move the solenoid (that catches the piece) along a single axis (X or Y) so to
        * perform a movement from (xa,ya) to (xb,yb) the function must be called twice:
        * 1. (xa,ya) --> (xb,ya)
        * 2. (xb,ya) --> (xb,yb))
        *
-       * - Parameters:
+       * - Parameters :
        *      - dir        : defines the direction of rotation of the stepper motor (true = counterclockwise, false = clockwise)
        *      - dirPin     : define the stepper motor on which to act (X_DIR act on the stepper motor predisposed to move
        *                     the solenoid on the X axis while Y_DIR act on the stepper motor predisposed to move the solenoid
@@ -71,41 +91,36 @@ class ChessBoard {
        * Activate (deactivate) the electromagnet in order to attract (release) the pawn.
        * The action is performed giving/removing voltage to the relay connected to the solenoid
        *
-       * - Parameters:
+       * - Parameters :
        *      - condition : if true activate the cathing, if false release the catching
        */
       void electromagnet(bool condition);
 
       /**
-       * Getter of the turn variable
-       *
-       * - Return: a bool representing the player who has the right to move
-       *      - true  : move the black
-       *      - false : move the white
-       *
+       * Change the player turn
+       * 
        */
-      bool getTurnPlayer();
+      void setTurnPlayer();
 
-    public:
       /**
-       * Chessboard variables
-       *
-       * chessBoard    : keep track of the state of the chessboard (any cell of the array contains
-       *                 the coordinates of the position of the corresponding pawn).
-       *                 Note: the first 16 elements refer to the white pawns, while the second eight
-       *                 refer to the black pawns (the elements are ordered in the array as reported in the
-       *                 Config.h file)
-       * cemetery      : keep track of the state of the white and black cemetery spaces where the eliminated
-       *                 pawns are positioned (true = free space, false = busy space)
-       * pawnFirstMove : keep track if a pawn has been just moved or not (the scope of this variable is
-       *                 referred to the possibility to perform an en passant or a first "two-cells" motion).
-       *                 Note: the first eight elements refer to the white pawns, while the second eight
-       *                 refer to the black pawns
-       * pawnPromotion : keep track if a pawn has been promoted to another type of pawn
-       *                 Note: the first eight elements refer to the white pawns, while the second eight
-       *                 refer to the black pawns
-       * turn          : keep track if moves the white (false) or the black (true)
-       * solenoid      : keep track the position of the solenoid
+       * Public Chessboard variables
+       * 
+       * cemetery       : keep track of the state of the white and black cemetery spaces where the eliminated
+       *                  pawns are positioned (true = free space, false = busy space)
+       * solenoid       : keep track the position of the solenoid
+       * turn           : keep track if moves the white (false) or the black (true)
+       * bishopsManager : keep track the position of any bishop in the chessboard and manage any phase of a move
+       *                  which involve a bishop
+       * kingsManager   : keep track the position of any king in the chessboard and manage any phase of a move
+       *                  which involve a king
+       * knightsManager : keep track the position of any knight in the chessboard and manage any phase of a move
+       *                  which involve a knight
+       * queensManager  : keep track the position of any queen in the chessboard and manage any phase of a move
+       *                  which involve a queen
+       * rooksManager   : keep track the position of any rook in the chessboard and manage any phase of a move
+       *                  which involve a rook
+       * pawnsManager   : keep track the position of any pawn in the chessboard and manage any phase of a move
+       *                  which involve a pawn
        */
       bool cemetery[2][16]={{true,true,true,true,true,true,true,true,
                    true,true,true,true,true,true,true,true},
