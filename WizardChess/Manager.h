@@ -33,6 +33,7 @@ class Manager {
          * Found the candidates for which the move can be performed
          *
          * - Parameters :
+         *      - cbState     : indicates the position of all the pieces on the chessboard
          *      - turn        : indicates if move the white (true) or the black (false)
          *      - from        : indicates the source cell of the piece that the player wants to move
          *      - destination : indicates the destination cell of the piece that the player wants to move
@@ -43,7 +44,22 @@ class Manager {
          *                by the player (it is required to specify which of the candidate piece the player want to move)
          *              - there is not a candidate.
          */
-        virtual int checkCandidates(bool turn, const char * from, const char * destination) = 0;
+        virtual int checkCandidates(bool * cbState,bool turn, const char * from, const char * destination) = 0;
+
+    private:
+        /**
+         * Implement the virtual function with the scope to check if the destination path is
+         * free and the move can potentially be performed for the piece
+         *
+         * - Parameters :
+         *      - cbState     : indicates the position of all the pieces on the chessboard
+         *      - destination : indicates the destination cell of the piece that
+         *                      the player wants to move
+         *
+         * - Return : a bool value indicating if the path is feasible (true)
+         *            for the piece or not (false)
+         */
+        virtual bool checkPathIsFree(bool * cbState, const char * destination) = 0;
 };
 
 #endif

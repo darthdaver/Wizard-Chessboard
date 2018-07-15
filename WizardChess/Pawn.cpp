@@ -35,9 +35,7 @@ void Pawn::toString(){
 };
 
 char * getPromotion(){
-  char * promoType;
-  strcpy(promoType,pawnPromotion);
-  return promoType;
+  return pawnPromotion;
 };
 
 bool getFirstMove(){

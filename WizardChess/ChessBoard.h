@@ -66,6 +66,28 @@ class ChessBoard {
        */
       void move(QueueArray <char *> wordsQueue);
 
+      /**
+       * Public Chessboard variables
+       * 
+       * cellsOccupied  : keep track of the state of the white and black pieces in the chessboard cells
+       * cemetery       : keep track of the state of the white and black cemetery spaces where the eliminated
+       *                  pawns are positioned (true = free space, false = busy space)
+       * turn           : keep track if moves the white (false) or the black (true)
+       */
+      bool cellsOccupied[8][8] = {{true,true,true,true,true,true,true,true},
+                   {true,true,true,true,true,true,true,true},
+                   {false,false,false,false,false,false,false,false},
+                   {false,false,false,false,false,false,false,false},
+                   {false,false,false,false,false,false,false,false},
+                   {false,false,false,false,false,false,false,false},
+                   {true,true,true,true,true,true,true,true},
+                   {true,true,true,true,true,true,true,true}};
+      bool cemetery[2][16]={{true,true,true,true,true,true,true,true,
+                   true,true,true,true,true,true,true,true},
+                  {true,true,true,true,true,true,true,true,
+                   true,true,true,true,true,true,true,true}};
+      bool turn;
+
     private:
       /**
        * Generate the stepper motor movement in order to transport the piece from the source cell to the destination cell,
@@ -103,8 +125,9 @@ class ChessBoard {
       void setTurnPlayer();
 
       /**
-       * Public Chessboard variables
+       * Private Chessboard variables
        * 
+       * cellsOccupied  : keep track of the state of the white and black pieces in the chessboard cells
        * cemetery       : keep track of the state of the white and black cemetery spaces where the eliminated
        *                  pawns are positioned (true = free space, false = busy space)
        * solenoid       : keep track the position of the solenoid
@@ -122,11 +145,6 @@ class ChessBoard {
        * pawnsManager   : keep track the position of any pawn in the chessboard and manage any phase of a move
        *                  which involve a pawn
        */
-      bool cemetery[2][16]={{true,true,true,true,true,true,true,true,
-                   true,true,true,true,true,true,true,true},
-                  {true,true,true,true,true,true,true,true,
-                   true,true,true,true,true,true,true,true}};
-      bool turn;
       char * solenoid = "A1";
       BishopsManager bishopsManager;
       KingsManager kingsManager;

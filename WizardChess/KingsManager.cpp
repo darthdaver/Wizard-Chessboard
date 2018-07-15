@@ -35,5 +35,5 @@ char * KingsManager::checkCandidates(const char * from, const char * destination
   return stack;
 };
 
-virtual bool checkPathIsFree(const char * from, const char * destination){
+virtual bool checkPathIsFree(bool * cbState, const char * from, const char * destination){
 };

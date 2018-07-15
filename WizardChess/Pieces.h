@@ -41,19 +41,6 @@ class Bishop: public Piece {
          */
         Bishop(const char * initialPosition);
 
-       /**
-        * Implement the virtual function with the scope to check if the destination path is
-        * free and the move can potentially be performed for the piece
-        *
-        * - Parameters:
-        *      - destination : indicates the destination cell of the piece that
-        *                      the player wants to move
-        *
-        * - Return : a bool value indicating if the path is feasible (true)
-        *            for the piece or not (false)
-        */
-       bool checkPathIsFree(const char * destination);
-
         /**
          * Implement the virtual function with the scope to show a string representation
          * of the object
@@ -83,19 +70,6 @@ class King: public Piece {
          * - Return : an initialized instance of the class
          */
         King(const char * initialPosition);
-
-        /**
-         * Implement the virtual function with the scope to check if the destination path is
-         * free and the move can potentially be performed for the piece
-         *
-         * - Parameters :
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
-         *
-         * - Return : a bool value indicating if the path is feasible (true)
-         *            for the piece or not (false)
-         */
-        bool checkPathIsFree(const char * destination);
 
         /**
          * Implement the virtual function with the scope to show a string representation
@@ -128,19 +102,6 @@ class Knight: public Piece {
       Knight(const char * initialPosition);
 
       /**
-       * Implement the virtual function with the scope to check if the destination path is
-       * free and the move can potentially be performed for the piece
-       *
-       * - Parameters :
-       *      - destination : indicates the destination cell of the piece that
-       *                      the player wants to move
-       *
-       * - Return : a bool value indicating if the path is feasible (true)
-       *            for the piece or not (false)
-       */
-      bool checkPathIsFree(const char * destination);
-
-      /**
        * Implement the virtual function with the scope to show a string representation
        * of the object
        *
@@ -171,19 +132,6 @@ class Queen: public Piece {
       Queen(const char * initialPosition);
 
       /**
-       * Implement the virtual function with the scope to check if the destination path is
-       * free and the move can potentially be performed for the piece
-       *
-       * - Parameters :
-       *      - destination : indicates the destination cell of the piece that
-       *                      the player wants to move
-       *
-       * - Return : a bool value indicating if the path is feasible (true)
-       *            for the piece or not (false)
-       */
-      bool checkPathIsFree(const char * destination);
-
-      /**
        * Implement the virtual function with the scope to show a string representation
        * of the object
        *
@@ -211,19 +159,6 @@ class Pawn: public Piece {
          * - Return : an initialized instance of the class
          */
         Pawn(const char * initialPosition);
-
-        /**
-         * Implement the virtual function with the scope to check if the destination path is
-         * free and the move can potentially be performed for the piece
-         *
-         * - Parameters :
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
-         *
-         * - Returns : a bool value indicating if the path is feasible (true)
-         *             for the piece or not (false)
-         */
-        bool checkPathIsFree(const char * destination);
 
         /**
          * Getter for promotion variable
@@ -302,19 +237,6 @@ class Rook: public Piece {
          * - Return : an initialized instance of the class
          */
         Rook(const char * initialPosition);
-
-        /**
-         * Implement the virtual function with the scope to check if the destination path is
-         * free and the move can potentially be performed for the piece
-         *
-         * - Parameters :
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
-         *
-         * - Return : a bool value indicating if the path is feasible (true)
-         *            for the piece or not (false)
-         */
-        bool checkPathIsFree(const char * destination);
 
         /**
          * Implement the virtual function with the scope to show a string representation

@@ -118,8 +118,10 @@ char * PawnsManager::checkCandidates(bool turn, const char * from, const char * 
 
       if (turn && removeEnpassant) {
         enPassantBlack = NULL;
+        removeEnpassant = false;
       } else if (!turn && removeEnpassant){
         enPassantWhite = NULL;
+        removeEnpassant = false;
       }
 
       return candidatePosition;
@@ -208,7 +210,7 @@ bool checkSource(bool turn, const * from){
   return false;
 }
 
-virtual bool checkPathIsFree(const char * from, const char * destination){
+virtual bool checkPathIsFree(bool * cbState, const char * from, const char * destination){
   // consider the parameters from and destination as points ( from = (xf,yf), destination = (xd,yd))
 
   // calculate the vertical difference yd - yf
@@ -237,11 +239,11 @@ virtual bool checkPathIsFree(const char * from, const char * destination){
   } else if((abs(vDiff) == 0 && abs(hDiff) == 2){ //first 2-step forward movement
     char forwardCell[3];
     if(vdiff == 2){
-      forwardCell[0] = destination[0] + 1;
+      forwardCell[1] = destination[1] + 1;
     } else {
-      forwardCell[0] = destination[1] - 1;
+      forwardCell[1] = destination[1] - 1;
     }
-    forwardCell[1] = destination[1];
+    forwardCell[0] = destination[0];
     forwardCell[2] = '\0';
 
     for(int i = 0; i < 2; i++){
