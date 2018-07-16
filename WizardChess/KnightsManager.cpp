@@ -30,13 +30,9 @@ KnightsManager::KnightsManager(): Manager() {
 };
 
 // checkCandidates implementation
-char * KnightsManager::checkCandidates(const char* from, const char* destination){
-
-  QueueArray <int> stack;
-  stack.push(0);
-
-  return stack;
+char * KnightsManager::checkCandidates(bool cbState[][8], bool turn,bool cbState[][8], const char* from, const char* destination){
+  
 };
 
-virtual bool checkPathIsFree(bool * cbState, bool * cbState, const char * from, const char * destination){
+virtual bool checkPathIsFree(bool cbState[][8], bool * cbState, const char * from, const char * destination){
 };

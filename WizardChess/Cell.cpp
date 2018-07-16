@@ -1,5 +1,5 @@
 /*
- * PieceInterface abstract class implementation.
+ * Pawn class implementation
  *
  * Copyright (c) 2018 Davide Molinelli.
  *
@@ -7,7 +7,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the   hope that it will be useful, but
+ * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
@@ -17,23 +17,36 @@
  */
 
 #include "Piece.h"
+#include "Pieces.h"
 
-Piece::Piece(){};
+// Constructor
+Cell::Cell(){};
 
-Piece::Piece(const char * initialPosition){
-  //Serial.println(initialPosition);
-  position = initialPosition;
-  alive = true;
+// Constructor
+Cell::Cell(bool initialBusy, char initialColor) {
+  busy  = initialBusy;
+  color = initialColor:
 };
 
-char * Piece::getPosition(){
-  return position;
+bool getBusy(){
+  return busy;
 };
 
-bool Piece::getAlive(){
-  return alive;
+char getColor(){
+  return color;
 };
 
-void Piece::setPosition(const char * newCoordinates){
-  position = newCoordinates;
+void setBusy(){
+  busy = !busy;
+};
+
+void setColor(char newColor){
+  color = newColor;
+};
+
+void Cell::toString(){
+  Serial.println("Busy   :");
+  Serial.println(getBusy());
+  Serial.print("Color : ");
+  Serial.println(getColor());
 };

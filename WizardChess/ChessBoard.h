@@ -33,22 +33,6 @@ class ChessBoard {
       ChessBoard();
 
       /**
-       * Identify the element on which the player move must be performed
-       *
-       * - Parameters :
-       *      - command : the char * obtained from the speech to text conversion, that represents the command expressed by a player
-       *
-       * - Return : a pointer to a char * of characters that represents the type of the pawn to move
-       *      - PEDINA (PAWN)
-       *      - TORRE (ROOK)
-       *      - CAVALLO (KNIGHT)
-       *      - ALFIERE (BISHOP)
-       *      - REGINA (QUEEN)
-       *      - RE (KING)
-       */
-      float identifyElement(char * command); //?????????????????????
-
-      /**
        * Getter of the turn variable
        *
        * - Return : a bool representing the player who has the right to move
@@ -60,7 +44,7 @@ class ChessBoard {
 
       /**
        * Verifies if it is possible to make the move expressed by the player and, in that case, executes it
-       * 
+       *
        * - Parameters :
        *      - wordsQueue : a queue containing the words relative to the move that the player want to perform
        */
@@ -68,24 +52,32 @@ class ChessBoard {
 
       /**
        * Public Chessboard variables
-       * 
-       * cellsOccupied  : keep track of the state of the white and black pieces in the chessboard cells
-       * cemetery       : keep track of the state of the white and black cemetery spaces where the eliminated
-       *                  pawns are positioned (true = free space, false = busy space)
-       * turn           : keep track if moves the white (false) or the black (true)
+       *
+       * cells    : keep track of the state of the white and black pieces in the chessboard cells
+       *            Matrix:
+       *                                  1  2  3  4  5  6  7  8
+       *                               A                          A
+       *                               B                          B
+       *                               C                          C
+       *                               D                          D
+       *                               E                          E
+       *                               F                          F
+       *                               G                          G
+       *                               H                          H
+       *                                  1  2  3  4  5  6  7  8
+       *
+       *                                    white ------->
+       *                                        <------- black
+       *
+       * cemetery : keep track of the state of the white and black cemetery spaces where the eliminated
+       *            pawns are positioned (true = free space, false = busy space)
+       * turn     : keep track if moves the white (false) or the black (true)
        */
-      bool cellsOccupied[8][8] = {{true,true,true,true,true,true,true,true},
-                   {true,true,true,true,true,true,true,true},
-                   {false,false,false,false,false,false,false,false},
-                   {false,false,false,false,false,false,false,false},
-                   {false,false,false,false,false,false,false,false},
-                   {false,false,false,false,false,false,false,false},
-                   {true,true,true,true,true,true,true,true},
-                   {true,true,true,true,true,true,true,true}};
-      bool cemetery[2][16]={{true,true,true,true,true,true,true,true,
-                   true,true,true,true,true,true,true,true},
-                  {true,true,true,true,true,true,true,true,
-                   true,true,true,true,true,true,true,true}};
+      Cell * cells[8][8];
+      bool cemetery[2][16]    = {{true,true,true,true,true,true,true,true,
+                                  true,true,true,true,true,true,true,true},
+                                 {true,true,true,true,true,true,true,true,
+                                  true,true,true,true,true,true,true,true}};
       bool turn;
 
     private:
@@ -120,13 +112,13 @@ class ChessBoard {
 
       /**
        * Change the player turn
-       * 
+       *
        */
       void setTurnPlayer();
 
       /**
        * Private Chessboard variables
-       * 
+       *
        * cellsOccupied  : keep track of the state of the white and black pieces in the chessboard cells
        * cemetery       : keep track of the state of the white and black cemetery spaces where the eliminated
        *                  pawns are positioned (true = free space, false = busy space)

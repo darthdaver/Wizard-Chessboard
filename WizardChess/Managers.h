@@ -47,7 +47,7 @@ class BishopsManager: public Manager{
          *                by the player (it is required to specify which of the two bishops the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -62,7 +62,7 @@ class BishopsManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Private variables
@@ -96,7 +96,7 @@ class KingsManager: public Manager{
          * - Return : a char pointer pointing to the coordinates of the king on which the move could be performed.
          *            N.B.: The function return NULL if the king cannot be moved to the destination required
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -111,7 +111,7 @@ class KingsManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Private variables
@@ -148,7 +148,7 @@ class KnightsManager: public Manager{
          *                by the player (it is required to specify which of the two knight the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -163,7 +163,7 @@ class KnightsManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Private variables
@@ -197,7 +197,7 @@ class QueensManager: public Manager{
          * - Return : a char pointer pointing to the coordinates of the queen on which the move could be performed.
          *            N.B.: The function return NULL if the queen cannot be moved to the destination required
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
    private:
         /**
@@ -212,7 +212,7 @@ class QueensManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Private variables
@@ -249,7 +249,7 @@ class PawnsManager: public Manager{
          *                by the player (it is required to specify which of the candidate pawns the player want to move)
          *              - there is not candidate.
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
         /**
          * Implement the virtual function with the scope to find the promoted candidates
@@ -273,7 +273,7 @@ class PawnsManager: public Manager{
          *                  The other checks (path is correct and free, etc.) will be performed by the maneger of the
          *                  promoType (the class PawnManager has not control on other type of pieces different from Pawn).
          */
-        char * checkPromotedCandidates(bool * cbstate, bool turn, const char * promoType, const char * from);
+        char * checkPromotedCandidates(bool cbState[][8], bool turn, const char * promoType, const char * from);
 
     private:
         /**
@@ -288,7 +288,7 @@ class PawnsManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Verify that a pawn move always forward
@@ -362,7 +362,7 @@ class RooksManager: public Manager{
          *                by the player (it is required to specify which of the two rook the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool * cbState, bool turn, const char * from, const char * destination);
+        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -377,7 +377,7 @@ class RooksManager: public Manager{
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool * cbState, const char * destination);
+        bool checkPathIsFree(bool cbState[][8], const char * destination);
 
         /**
          * Private variables

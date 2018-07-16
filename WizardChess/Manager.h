@@ -44,7 +44,7 @@ class Manager {
          *                by the player (it is required to specify which of the candidate piece the player want to move)
          *              - there is not a candidate.
          */
-        virtual int checkCandidates(bool * cbState,bool turn, const char * from, const char * destination) = 0;
+        virtual int checkCandidates(bool cbState[][8],bool turn, const char * from, const char * destination) = 0;
 
     private:
         /**

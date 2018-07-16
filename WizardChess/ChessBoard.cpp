@@ -23,6 +23,18 @@
 ChessBoard::ChessBoard() {
     // Turn controller inizialization (start the white player - WHITE --> 0)
     turn = false;
+
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; i < 8; i++){
+            if(j == 0 || j == 1){
+                cells[i][j] = new Cell(true,'W');
+            } else if(){
+                cells[i][j] = new Cell(true,'B');
+            } else{
+                cells[i][j] = new Cell(false,'E');
+            }
+        }
+    }
 };
 
 // Move function implementation
@@ -83,7 +95,7 @@ void move(Queue <char *> wordsQueue){
     } else if(strcmp(piece,"RE") == 0){
         candidate = kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
     }
-}   
+}
 
 // Stepper movement function implementation
 void ChessBoard::stepperMovement (bool dir, byte dirPin, byte stepperPin, int steps){

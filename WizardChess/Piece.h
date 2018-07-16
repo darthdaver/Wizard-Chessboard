@@ -32,7 +32,9 @@ class Piece {
 
         /**
          * Define the constructor of the class
-         *
+         * - Parameters :
+         *      - initialPosition : represents the initial position of the piece on the chessboard
+         * 
          * - Return : an initialized instance of the class
          */
         Piece(const char * initialPosition);
@@ -45,6 +47,13 @@ class Piece {
         char * getPosition();
 
         /**
+         * Getter for alive variable
+         *
+         * - Return : the boolean state of the piece (true -> alive , false -> dead)
+         */
+        bool getAlive();
+
+        /**
          * Setter for position variable
          *
          * - Parameters :
@@ -52,6 +61,12 @@ class Piece {
          *                         of the piece
          */
         void setPosition(const char * newCoordinates);
+
+        /**
+         * Setter for alive variable
+         *
+         */
+        void setAlive();
 
         /**
          * Show a string representation of the object
@@ -63,11 +78,13 @@ class Piece {
     protected:
         /**
          * Piece variables
-         *
-         * position : string that represents the coordinates of the position
-         *            of the piece
+         *  
+         * - Parameters :
+         *      - position : string that represents the coordinates of the position
+         *                   of the piece
          */
         char position[3];
+        bool alive;
 };
 
 #endif
