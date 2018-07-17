@@ -28,52 +28,60 @@ QueensManager::QueensManager(): Manager() {
 };
 
 // checkCandidates implementation
-char * QueensManager::checkCandidates(bool cbState[][8], bool turn,bool cbState[][8], const char * from, const char * destination){
-  if(from == NULL){
+char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
+  /// auxiliary variables
+  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
+  int row = destination[0] - 65;
+  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
+  int col = destination[1] - 49;
+
+  // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
+  if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
+    // calculate the vertical difference yd - yf
+    vDiff = destination[1] - queens[turn][0].getPosition()[1];
+    // calculate the horizontal difference xd - xf
+    hDiff = destination[0] - queens[turn][0].getPosition()[0];
+  } else{               // ambiguous cases --> from ≠ NULL
+    // control if actually a pawn of the player occupy the position expressed by the variable from
+    if(checkSource(cbState, turn, from)){
+      return NULL;
+    }
+    // calculate the vertical difference yd - yf
+    vDiff = destination[1] - from[1];
+    // calculate the horizontal difference xd - xf
+    hDiff = destination[0] - from[0];
+  }
+
+  // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
+  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){
+    // the queen is unique for any player so the case from = NULL and from ≠ NULL is manageable
+    // in a single case (considering from = NULL in any case)
+
     // check the queen is alive
     if(queens[turn][0].getAlive()){
       // check if path is licit
-      if(checkPathIsFree(cbState, queens[turn][i].getPosition(), destination)){
-        return queens[turn][i].getPosition();
-      }
-    }
-  } else {    // manage pawn promotion and ambiguous cases --> from ≠ NULL
-      // check the path is lecit
-      if(checkPathIsFree(cbState, from, destination)){
+      if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
         return queens[turn][i].getPosition();
       }
     }
   }
-
   // move not valid
   return NULL;
 };
 
-virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * destination){
-  // consider the parameters from and destination as points ( from = (xf,yf), destination = (xd,yd))
-
-  // auxiliary variables
-  // calculate the vertical difference yd - yf
-  int vDiff = destination[1] - from[1];
-  // calculate the horizontal difference xd - xf
-  int hDiff = destination[0] - from[0];
-  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
-  int row = from[0] - 65;
-  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
-  int col = from[1] - 49;
-
+virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // horizontal or vertical movement
   if(abs(vDiff) != abs(hDiff)){
     if(abs(vDiff) > 0 && hDiff == 0){           // vertical movement
       for(int i = 1; i < abs(vDiff); i++){
         if(vDiff > 0){
           // cell busy
-          if(!cbState[row][col + i]){
+          if(cbState[row][col + i].getBusy()){
             return false;
           }
         } else {
           // cell busy
-          if(!cbState[row][col - i]){
+          if(cbState[row][col - i].getBusy()){
             return false;
           }
         }
@@ -82,12 +90,12 @@ virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * 
       for(int i = 1; i < abs(hDiff); i++){
         if(hDiff > 0){
           // cell busy
-          if(!cbState[row + i][col]){
+          if(cbState[row + i][col].getBusy()){
             return false;
           }
         } else {
           // cell busy
-          if(!cbState[row - i][col]){
+          if(cbState[row - i][col].getBusy()){
             return false;
           }
         }
@@ -98,22 +106,22 @@ virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * 
     for(int i = 1; i < abs(vDiff); i++){
       if(vDiff > 0 && hDiff > 0){         // up - right real chessboard (from white player point of view)
         // cell busy
-        if(!cbState[row + i][col + i]){
+        if(cbState[row + i][col + i].getBusy()){
           return false;
         }
       } else if(vDiff > 0 && hDiff < 0){  // up - left real chessboard (from white player point of view)
         // cell busy
-        if(!cbState[row + i][col - i]){
+        if(cbState[row + i][col - i].getBusy()){
           return false;
         }
       } else if(vDiff < 0 && hDiff > 0){  // down - right real chessboard (from white player point of view)
         // cell busy
-        if(!cbState[row - i][col + i]){
+        if(cbState[row - i][col + i].getBusy()){
           return false;
         }
       } else if(vDiff < 0 && hDiff < 0){  // down - left real chessboard (from white player point of view)
         // cell busy
-        if(!cbState[row - i][col - i]){
+        if(cbState[row - i][col - i].getBusy()){
           return false;
         }
       }

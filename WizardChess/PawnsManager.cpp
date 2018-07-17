@@ -42,153 +42,128 @@ PawnsManager::PawnsManager(): Manager() {
 };
 
 // checkCandidates implementation
-char * PawnsManager::checkCandidates(bool turn, const char * from, const char * destination){
+char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   // auxiliary variables
   int numCandidates = 0;
   int indexCandidate;
   bool removeEnpassant = false;
+  int row;
+  int col;
+  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
+  int row = destination[0] - 65;
+  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
+  int col = destination[1] - 49;
 
-  // ordinary cases without ambiguity --> from set to NULL
-  if(from == NULL){
+  // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
+  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){
     // control the position of any pawn of the player in order to find a possible candidate
     for(int i = 0; i < 8; i++){
       // check the queen is alive
       if(pawns[turn][i].getAlive()){
-        if(destination[0] - pawns[turn][i].getPosition()[0]) == 0 &&
-              abs((destination[1] - pawns[turn][i].getPosition()[1])) == 1){   // classical move
-          // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
-          if(checkDirection(turn, pawns[turn][i].getPosition(), destination) &&
-                checkPathIsFree(cbState, pawns[turn][i].getPosition(), destination)){
-            numCandidates++;
-            indexCandidate = i;
+        if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
+          // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
+          // calculate the vertical difference yd - yf
+          vDiff = destination[1] - pawns[turn][i].getPosition()[1];
+          // calculate the horizontal difference xd - xf
+          hDiff = destination[0] - pawns[turn][i].getPosition()[0];
+        } else {               // ambiguous cases --> from ≠ NULL
+          // control if actually a pawn of the player occupy the position expressed by the variable from 
+          if(checkSource(cbState, turn, from)){
+            return NULL;
           }
-          // a one-step movement eliminate previous eventual en passant
-          if(turn){   // if move black
-            enPassantBlack = NULL;
-          } else{     // if move white
-            enPassantWhite = NULL;
-          }
-        } else if(pawns[turn][i].getFirstMove() && (destination[0] - pawns[turn][i].getPosition()[0]) == 0 &&
-                    abs((destination[1] - pawns[turn][i].getPosition()[1])) == 2){   // double step move
+          // calculate the vertical difference yd - yf
+          vDiff = destination[1] - from[1];
+          // calculate the horizontal difference xd - xf
+          hDiff = destination[0] - from[0];
+        }
+        if(hDiff) == 0 && abs(vDiff) == 1){   // classical move
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
-          if(checkDirection(turn, pawns[turn][i].getPosition(), destination) &&
-                checkPathIsFree(cbState, pawns[turn][i].getPosition(), destination)){
-            numCandidates++;
-            indexCandidate = i;
+          if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+            // a one-step movement eliminate previous eventual en passant
+            if(turn){   // if move black
+              enPassantBlack = NULL;
+            } else{     // if move white
+              enPassantWhite = NULL;
+            }
+            // add candidate
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else {
+              return from;
+            }
+          }
+        } else if(pawns[turn][i].getFirstMove() && (hDiff) == 0 && abs(vDiff) == 2){   // double step move
+          // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
+          if(checkDirection(turn, vDiff) && checkPathIsFree(cbState[][8], vDiff, hDiff, row, col)){
             // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
             if(turn){   // if move black
               strcpy(enPassantWhite, destination);
             } else{     // if move white
               strcpy(enPassantBlack, destination);
             }
+            // add candidate
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else {
+              return from;
+            }
+            
           }
-        } else if(abs(destination[0] - pawns[turn][i].getPosition()[0]) == 1 &&
-                    abs((destination[1] - pawns[turn][i].getPosition()[1])) == 1){    // eat the opposing piece
+        } else if(abs(hDiff) == 1 && abs(vDiff == 1){    // eat the opposing piece
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
-          if(checkDirection(turn, pawns[turn][i].getPosition(), destination) &&
-                !checkPathIsFree(cbState, pawns[turn][i].getPosition(), destination)){
-            numCandidates++;
-            indexCandidate = i;
+          if(checkDirection(turn, vDiff) && !checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+            // a eat move eliminate previous eventual en passant
+            if(turn){   // if move black
+              enPassantBlack = NULL;
+            } else{     // if move white
+              enPassantWhite = NULL;
+            }
+            // add candidate
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else {
+              return from;
+            }
           }
-          // a eat move eliminate previous eventual en passant
-          if(turn){   // if move black
-            enPassantBlack = NULL;
-          } else{     // if move white
-            enPassantWhite = NULL;
-          }
-        } else if(turn && enPassantBlack != NULL && abs(destination[0] - pawns[turn][i].getPosition()[0]) == 1 &&
-                (destination[1] - pawns[turn][i].getPosition()[1]) == 0){    // en passant black --> white
+        } else if(turn && enPassantBlack != NULL && abs(hDiff) == 1 && vDiff == 0){    // en passant black --> white
           // verify immediatly if the path is correct (the destination must be busy by another pawn in order to perform an en passant)
           if(strcmp(enPassantBlack,destination) == 0){
-            numCandidates++;
-            indexCandidate = i;
             enPassantBlack = NULL;
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else {  
+              return from;
+            }
+            
           }
-        } else if(!turn && enPassantWhite != NULL && abs(destination[0] - pawns[turn][i].getPosition()[0]) == 1 &&
-                (destination[1] - pawns[turn][i].getPosition()[1]) == 0){   // en passant white --> black
+        } else if(!turn && enPassantWhite != NULL && abs(hDiff) == 1 && vDiff == 0){   // en passant white --> black
           // verify immediatly if the path is correct (the destination must be busy by another pawn in order to perform an en passant)
           if(strcmp(enPassantWhite,destination) == 0){
-            numCandidates++;
-            indexCandidate = i;
             enPassantWhite = NULL;
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else {
+              return from;
+            }
           }
         }
       }
     }
-
-    // verify there is only one candidate
-    if(numCandidates == 1){   // only one candidate
+    // in case from = NULL verify that the search of candidates return only one candidate
+    if(numCandidates == 1){
       return pawns[turn][indexCandidate].getPosition();
-    } else {    // more than one candidate: ambiguity!
-      return NULL;
-    }
-  } else{   // manage ambiguous cases --> from ≠ NULL
-    // control if from is a valid position
-    if(checkSource(turn, from)){
-      if(destination[0] - from[0]) == 0 &&
-            abs((destination[1] - from[1])) == 1){   // classical move
-        // check direction and path is licit : if yes, return the candidate
-        if(checkDirection(turn, from, destination) &&
-              checkPathIsFree(cbState, from,destination)){
-          // a one-step movement eliminate previous eventual en passant
-          if(turn){   // if move black
-            enPassantBlack = NULL;
-          } else{     // if move white
-            enPassantWhite = NULL;
-          }
-          return from;
-        }
-      } else if(((turn && from[1] == '7') ||  (!turn && from[1] == '2') && (destination[0] - from[0]) == 0 &&
-            abs((destination[1] - from[1])) == 2){   // double step move at first move
-        // note: in the above else if condition '7' and '2' refers to the fact that if it's the first move
-        // for the pawn, in the case move the black, the row of the pawn must be 7, while in the case
-        // move the white, the row must be 2
-
-        // check direction and path is licit : if yes, return the candidate
-        if(checkDirection(turn, from, destination) &&
-              checkPathIsFree(cbState, from, destination))){
-          // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
-          if(turn){   // if move black
-            strcpy(enPassantWhite,destination);
-          } else{     // if move white
-            strcpy(enPassantBlack,destination);
-          }
-          return from;
-        }
-      } else if(abs(destination[0] - from[0]) == 1 &&
-                  abs((destination[1] - from[1]) == 1){    // eat the opposing piece
-        // check direction and path is licit : if yes, return the candidate
-        if(checkDirection(turn, from, destination) &&
-              !checkPathIsFree(cbState, from, destination)){
-          // a eat move eliminate previous eventual en passant
-          if(turn){   // if move black
-            enPassantBlack = NULL;
-          } else{     // if move white
-            enPassantWhite = NULL;
-          }
-          return from;
-        }
-      } else if(turn && enPassantBlack != NULL && abs(destination[0] - from[0]) == 1 &&
-              (destination[1] - from[1]) == 0){   // en passant black --> white
-        if(strcmp(enPassantBlack,destination) == 0){
-          enPassantBlack = NULL;
-          return from;
-        }
-      } else if(!turn && enPassantWhite != NULL && abs(destination[0] - from[0]) == 1 &&
-              (destination[1] - from[1]) == 0){   // en passant black --> white
-        if(strcmp(enPassantWhite,destination) == 0){
-          enPassantWhite = NULL;
-          return from;
-        }
-      } else{
-        // not valid move
-        return NULL;
-      }
     }
   }
+  //move not valid
+  return NULL;
 };
 
-char * PawnsManager::checkPromotedCandidates(bool cbState[][8], bool turn, const char * promoType, const char * from){
+char * PawnsManager::checkPromotedCandidates(Cell * cbState[][8], bool turn, const char * promoType, const char * from){
   int numCandidates = 0;
   int indexCandidate;
 
@@ -201,7 +176,7 @@ char * PawnsManager::checkPromotedCandidates(bool cbState[][8], bool turn, const
       if(strcmp(promotype, "PEDINA") == 0){
         return NULL;
       }
-      if(from != NULL && checkSource(from)){
+      if(from != NULL && checkSource(cbState, turn, from)){
         return from;
       } else {
         numCandidates ++;
@@ -216,55 +191,34 @@ char * PawnsManager::checkPromotedCandidates(bool cbState[][8], bool turn, const
   }
 };
 
-bool checkDirection(bool turn, const char * from, const char * destination){
+bool checkDirection(bool turn, int vDiff){
   if(turn){   // if move black
-    if(destination[1] - pawns[turn][i].getPosition()[1])) < 0){
+    if(hDiff) < 0){
       return false;
     }
     return true;
   } else {    // if move white
-    if(destination[1] - pawns[turn][i].getPosition()[1])) > 0){
+    if(hDiff) > 0){
       return true;
     }
     return false;
   }
 }
 
-bool checkSource(bool turn, const * from){
-  // control if actually a pawn of the player occupy the position expressed by the variable from
-  for(int i = 0; i < 8; i++){
-    if(strcmp(from,pawns[turn][i].getPosition()) == 0){
-      return true;
-    }
-  }
-  return false;
-}
-
-virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * destination){
-  // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
+virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // note that the case of en passant is not considered because the control is already performed
   // in the main function through the variable enPassantWhite (or enPassantBlack)
 
-  // auxiliary variables
-  // calculate the vertical difference yd - yf
-  int vDiff = destination[1] - from[1];
-  // calculate the horizontal difference xd - xf
-  int hDiff = destination[0] - from[0];
-  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
-  int row = destination[0] - 65;
-  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
-  int col = destination[1] - 49;
-
   if(abs(vDiff) <= 1 && abs(hDiff) <= 1){  // one-step forward (ordinary case) or diagonal movement
-    // verify if the destination cell busy by another piece
-    if(cbState[row][column]){
+    // verify if the destination cell is not busy by another piece
+    if(!cbState[row][column].getBusy()){
       // if the one-step movement is performed in vertical, the destination cell must be empty
       if(hDiff == 0 && abs(vDiff) == 1){
         return true;
       } else{
         return false;
       }
-    } else{
+    } else{   // the destination is busy
       // if the one-step movement is performed in diagonal, the destination cell must be busy
       if((abs(hDiff) == 1 && abs(vDiff) == 1)){
         return true;
@@ -284,7 +238,7 @@ virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * 
     rowForward = destination[0] - 65;
 
     // if both the next cells are empty the path is free
-    if(cbState[rowForward][colForward] && cbState[row][col]){
+    if(!cbState[rowForward][colForward].getBusy() && !cbState[row][col].getBusy()){
       return true;
     } else{
       return false;

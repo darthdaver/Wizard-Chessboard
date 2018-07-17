@@ -28,7 +28,7 @@ ChessBoard::ChessBoard() {
         for(int j = 0; i < 8; i++){
             if(j == 0 || j == 1){
                 cells[i][j] = new Cell(true,'W');
-            } else if(){
+            } else if(j == 7 || j == 8){
                 cells[i][j] = new Cell(true,'B');
             } else{
                 cells[i][j] = new Cell(false,'E');
@@ -69,30 +69,42 @@ void move(Queue <char *> wordsQueue){
 
     // Analyze the cases
     if (wordsQueue.count() == 3){       // ambiguous cases
-        from = wordsQueue.dequeue();
+        if(strlen(wordsQueue.front()) == 2){
+            from = wordsQueue.dequeue();
+        } else {
+            errorFlag = true;
+        }
         // Superfluous word (preposition)
         wordsQueue.dequeue();
-        destination = wordsQueue.dequeue();
+        if(strlen(wordsQueue.front()) == 2){
+            destination = wordsQueue.dequeue();
+        } else{
+            errorFlag = true;
+        }
     } else if(wordsQueue.count() == 1){ // ordinary cases
         from = NULL;
-        destination = wordsQueue.dequeue();
+        if(strlen(wordsQueue.front()) == 2){
+            destination = wordsQueue.dequeue();
+        } else{
+            errorFlag = true;
+        }
     }
 
-    if(strcmp(piece,"PEDINA") == 0){
+    if(strcmp(piece,"PEDINA") == 0 && !errorFlag){
         if(promotion){
             candidate = pawnsManager.checkPromotedCandidates(chessBoard.getTurnPlayer(),promotion,from,destination);
         } else{
             candidate = pawnsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
         }
-    } else if(strcmp(piece,"TORRE") == 0){
+    } else if(strcmp(piece,"TORRE") == 0 && !errorFlag){
         candidate = rooksManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"ALFIERE") == 0){
+    } else if(strcmp(piece,"ALFIERE") == && !errorFlag){
         candidate = bishopsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"CAVALLO") == 0){
+    } else if(strcmp(piece,"CAVALLO") == && !errorFlag){
         candidate = knightsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"REGINA") == 0){
+    } else if(strcmp(piece,"REGINA") == && !errorFlag){
         candidate = queensManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
-    } else if(strcmp(piece,"RE") == 0){
+    } else if(strcmp(piece,"RE") == && !errorFlag){
         candidate = kingsManager.checkCandidates(chessBoard.getTurnPlayer(),from,destination);
     }
 }

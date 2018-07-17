@@ -47,7 +47,7 @@ class BishopsManager: public Manager{
          *                by the player (it is required to specify which of the two bishops the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -55,18 +55,20 @@ class BishopsManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Private variables
-         * 
+         *
          * bishops : represents the list of pawns.
          *           Note: the first row refers to the white pawns, while the second
          *           row refers to the black ones
@@ -96,7 +98,7 @@ class KingsManager: public Manager{
          * - Return : a char pointer pointing to the coordinates of the king on which the move could be performed.
          *            N.B.: The function return NULL if the king cannot be moved to the destination required
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -104,18 +106,20 @@ class KingsManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Private variables
-         * 
+         *
          * kings : represents the list of pawns.
          *         Note: the first row refers to the white pawns, while the second
          *         row refers to the black ones
@@ -148,7 +152,7 @@ class KnightsManager: public Manager{
          *                by the player (it is required to specify which of the two knight the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -156,18 +160,20 @@ class KnightsManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Private variables
-         * 
+         *
          * knights : represents the list of pawns.
          *           Note: the first row refers to the white pawns, while the second
          *           row refers to the black ones
@@ -197,7 +203,7 @@ class QueensManager: public Manager{
          * - Return : a char pointer pointing to the coordinates of the queen on which the move could be performed.
          *            N.B.: The function return NULL if the queen cannot be moved to the destination required
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
    private:
         /**
@@ -205,18 +211,20 @@ class QueensManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Private variables
-         * 
+         *
          * queens : represents the list of pawns.
          *          Note: the first row refers to the white pawns, while the second
          *          row refers to the black ones
@@ -249,7 +257,7 @@ class PawnsManager: public Manager{
          *                by the player (it is required to specify which of the candidate pawns the player want to move)
          *              - there is not candidate.
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
         /**
          * Implement the virtual function with the scope to find the promoted candidates
@@ -273,7 +281,7 @@ class PawnsManager: public Manager{
          *                  The other checks (path is correct and free, etc.) will be performed by the maneger of the
          *                  promoType (the class PawnManager has not control on other type of pieces different from Pawn).
          */
-        char * checkPromotedCandidates(bool cbState[][8], bool turn, const char * promoType, const char * from);
+        char * checkPromotedCandidates(Cell * cbState[][8], bool turn, const char * promoType, const char * from);
 
     private:
         /**
@@ -281,43 +289,31 @@ class PawnsManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Verify that a pawn move always forward
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - turn        : indicates if move the white (false) or the black (true)
-         *      - from        : indicates the source cell of the piece that the player wants to move
-         *      - destination : indicates the destination cell of the piece that the player wants to move
+         *      - turn  : indicates if move the white (false) or the black (true)
+         *      - vDiff : indicates how many vertical steps there are from source to destination of a move
          *
          * - Return : a bool indicating if (or not) the pawn move forward
          */
-        bool checkDirection(bool turn, const char * from, const char * destination);
-
-        /**
-         * Verify that in a move in which the parameter named from is specified (is ≠ NULL), it refers to a
-         * source in which a pawn is really present
-         *
-         * - Parameters :
-         *      - turn        : indicates if move the white (false) or the black (true)
-         *      - from        : indicates the source cell of the piece that the player wants to move
-         *
-         * - Return : a bool indicating if (or not) the pawn move forward
-         */
-        bool checkSource(bool turn, const char * from, const char * destination);
+        bool checkDirection(bool turn, int vDiff);
 
         /**
          * Private variables
-         * 
+         *
          * pawns          : represents the list of pawns.
          *                  Note: the first row refers to the white pawns, while the second
          *                  row refers to the black ones
@@ -362,7 +358,7 @@ class RooksManager: public Manager{
          *                by the player (it is required to specify which of the two rook the player want to move)
          *              - there is not a candidate.
          */
-        char * checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination);
+        char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
     private:
         /**
@@ -370,18 +366,20 @@ class RooksManager: public Manager{
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        bool checkPathIsFree(bool cbState[][8], const char * destination);
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
 
         /**
          * Private variables
-         * 
+         *
          * rooks : represents the list of rooks.
          *         Note: the first row refers to the white rooks, while the second
          *         row refers to the black ones

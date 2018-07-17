@@ -44,7 +44,7 @@ class Manager {
          *                by the player (it is required to specify which of the candidate piece the player want to move)
          *              - there is not a candidate.
          */
-        virtual int checkCandidates(bool cbState[][8],bool turn, const char * from, const char * destination) = 0;
+        virtual int checkCandidates(Cell * cbState[][8],bool turn, const char * from, const char * destination) = 0;
 
     private:
         /**
@@ -52,14 +52,29 @@ class Manager {
          * free and the move can potentially be performed for the piece
          *
          * - Parameters :
-         *      - cbState     : indicates the position of all the pieces on the chessboard
-         *      - destination : indicates the destination cell of the piece that
-         *                      the player wants to move
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - vDiff   : indicates how many vertical steps there are from source to destination of a move
+         *      - hDiff   : indicates how many horizontal steps there are from source to destination of a move
+         *      - row     : indicates the destination row in the cbState matrix
+         *      - col     : indicates the destination col in the cbState matrix
          *
          * - Return : a bool value indicating if the path is feasible (true)
          *            for the piece or not (false)
          */
-        virtual bool checkPathIsFree(bool * cbState, const char * destination) = 0;
+        virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col) = 0;
+
+        /**
+         * Verify that in a move in which the parameter named from is specified (is ≠ NULL), it refers to a
+         * source in which a piece is really present
+         *
+         * - Parameters :
+         *      - cbState : indicates the position of all the pieces on the chessboard
+         *      - turn    : indicates if move the white (false) or the black (true)
+         *      - from    : indicates the source cell of the piece that the player wants to move
+         *
+         * - Return : a bool indicating if (or not) the pawn move forward
+         */
+        bool checkSource(Cell * cbState[][8], bool, turn, const char * from);
 };
 
 #endif

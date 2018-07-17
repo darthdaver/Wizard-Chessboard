@@ -30,37 +30,55 @@ RooksManager::RooksManager(): Manager() {
 };
 
 // checkCandidates implementation
-char * RooksManager::checkCandidates(bool cbState[][8], bool turn, const char * from, const char * destination){
-  // auxiliary variables
-  int numCandidates = 0;
-  int indexCandidate;
+char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
+  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
+  int row = destination[0] - 65;
+  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
+  int col = destination[1] - 49;
 
-  // ordinary cases without ambiguity --> from set to NULL
-  if(from == NULL){
+  // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
+  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){  
+    // auxiliary variables
+    int numCandidates = 0;
+    int indexCandidate;
+
     // control the position of any rook of the player in order to find a possible candidate
     for(int i = 0; i < 2; i++){
+      // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
+      if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
+        // calculate the vertical difference yd - yf
+        vDiff = destination[1] - rooks[turn][i].getPosition()[1];
+        // calculate the horizontal difference xd - xf
+        hDiff = destination[0] - rooks[turn][i].getPosition()[0];
+      } else{               // ambiguous cases --> from ≠ NULL
+        // control if actually a pawn of the player occupy the position expressed by the variable from
+        if(checkSource(cbState, turn, from)){
+          return NULL;
+        }
+        // calculate the vertical difference yd - yf
+        vDiff = destination[1] - from[1];
+        // calculate the horizontal difference xd - xf
+        hDiff = destination[0] - from[0];
+      }
       // check the queen is alive
       if(rooks[turn][i].getAlive()){
         // vertical or horizontal move
-        if((destination[0] - rooks[turn][i].getPosition()[0] == 0 &&
-            abs(destination[1] - rooks[turn][i].getPosition()[1]) > 0) ||
-              (abs(destination[0] - rooks[turn][i].getPosition()[0]) > 0 &&
-                destination[1] - rooks[turn][i].getPosition()[1] == 0)){
+        if((hDiff == 0 && abs(vDiff) > 0) || (abs(hDiff) > 0 && vDiff == 0)){
           // check path is licit
-          if(checkPathIsFree(cbState, rooks[turn][i].getPosition(), destination)){
-            numCandidates++;
-            indexCandidate = i;
+          if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+            if(from == NULL){
+              numCandidates++;
+              indexCandidate = i;
+            } else{
+              return from;
+            }
           }
         }
-    }
-    }
-  } else{   //manage pawn promotion and ambiguous cases --> from ≠ NULL
-    if((destination[0] - from[0] == 0 && abs(destination[1] - from[1]) > 0) ||
-          (abs(destination[0] - from[0]) > 0 && destination[1] - from[1] == 0)){
-      // check path is licit
-      if(checkPathIsFree(cbState, from, destination)){
-        return from;
       }
+    }
+    // in case from = NULL verify that the search of candidates return only one candidate
+    if(numCandidates == 1){
+      return bishops[turn][i].getPosition();
     }
   }
   // move not valid
@@ -68,29 +86,19 @@ char * RooksManager::checkCandidates(bool cbState[][8], bool turn, const char * 
 };
 
 // checkPathIsFree implementation
-virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * destination){
+virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // consider the parameters from and destination as points ( from = (xf,yf), destination = (xd,yd))
-
-  // auxiliary variables
-  // calculate the vertical difference yd - yf
-  int vDiff = destination[1] - from[1];
-  // calculate the horizontal difference xd - xf
-  int hDiff = destination[0] - from[0];
-  // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
-  int row = from[0] - 65;
-  // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
-  int col = from[1] - 49;
 
   if(abs(vDiff) > 0 && hDiff == 0){           // vertical movement
     for(int i = 1; i < abs(vDiff); i++){
       if(vDiff > 0){
         // cell busy
-        if(!cbState[row][col + i]){
+        if(cbState[row][col + i].getBusy()){
           return false;
         }
       } else {
         // cell busy
-        if(!cbState[row][col - i]){
+        if(cbState[row][col - i].getBusy()){
           return false;
         }
       }
@@ -99,18 +107,17 @@ virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * 
     for(int i = 1; i < abs(hDiff); i++){
       if(hDiff > 0){
         // cell busy
-        if(!cbState[row + i][col]){
+        if(cbState[row + i][col].getBusy()){
           return false;
         }
       } else {
         // cell busy
-        if(!cbState[row - i][col]){
+        if(cbState[row - i][col].getBusy()){
           return false;
         }
       }
     }
   }
-
   // all constraints, overcome
   return true;
 };

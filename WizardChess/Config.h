@@ -26,29 +26,22 @@
 #define X_STP 2 // x -axis stepper control
 #define Y_STP 3 // y -axis stepper control
 
-// Relay pins
-#define RELAY 7
+// Relay pin to control the switching on and off of the electromagnet
+#define POWER_MAGNET 7
+// Relay pin to control the switching on and off of the CNC shield V3
+#define POWER_CNC 9
 
 // Bluetooth pins
 #define BT_RX 10
 #define BT_TX 11
 
 // White chessboard
-#define WHITE_PAWN      0
-#define WHITE_ROOK      0
-#define WHITE_KNIGHT    0
-#define WHITE_BISHOP    0
-#define WHITE_QUEEN     0
-#define WHITE_KING      0
 #define WHITE 0
 
 // Black chessboard
-#define BLACK_PAWN      1
-#define BLACK_ROOK      1
-#define BLACK_KNIGHT    1
-#define BLACK_BISHOP    1
-#define BLACK_QUEEN     1
-#define BLACK_KING      1
 #define BLACK 1
+
+// Number of steps to cross a cell and go to the next
+#define STEPS 130
 
 #endif

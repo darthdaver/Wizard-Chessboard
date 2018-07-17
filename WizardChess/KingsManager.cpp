@@ -28,41 +28,51 @@ KingsManager::KingsManager(): Manager() {
 };
 
 // checkCandidates implementation
-char * KingsManager::checkCandidates(bool cbState[][8], bool turn,bool cbState[][8], const char * from, const char * destination){
-  if(from == NULL){
-    // check the king is alive
-    if(kings[turn][0].getAlive()){
-      // check if path is licit
-      if(checkPathIsFree(cbState, kings[turn][i].getPosition(), destination)){
-        return kings[turn][i].getPosition();
-      }
-    }
-  } else {    // manage pawn promotion and ambiguous cases --> from ≠ NULL
-      // check the path is lecit
-      if(checkPathIsFree(cbState, from, destination)){
-        return kings[turn][i].getPosition();
-      }
-    }
-  }
-
-  // move not valid
-  return NULL;
-};
-
-virtual bool checkPathIsFree(bool cbState[][8], const char * from, const char * destination){
+char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   // auxiliary variables
-  // calculate the vertical difference yd - yf
-  int vDiff = destination[1] - from[1];
-  // calculate the horizontal difference xd - xf
-  int hDiff = destination[0] - from[0];
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
   int col = destination[1] - 49;
 
-  if(abs(vDiff) == 1 && abs(hDiff) == 1){
-    if(!cbState[row][col]){
-      
+  // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
+  if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
+    // calculate the vertical difference yd - yf
+    vDiff = destination[1] - kings[turn][0].getPosition()[1];
+    // calculate the horizontal difference xd - xf
+    hDiff = destination[0] - kings[turn][0].getPosition()[0];
+  } else{               // ambiguous cases --> from ≠ NULL
+    // control if actually a pawn of the player occupy the position expressed by the variable from
+    if(checkSource(cbState, turn, from)){
+      return NULL;
     }
+    // calculate the vertical difference yd - yf
+    vDiff = destination[1] - from[1];
+    // calculate the horizontal difference xd - xf
+    hDiff = destination[0] - from[0];
+  }
+
+  // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
+  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){
+    // the king is unique for any player so the case from = NULL and from ≠ NULL is manageable
+    // in a single case (considering from = NULL in any case)
+
+    // check the king is alive
+    if(kings[turn][0].getAlive()){
+      // check if path is licit
+      if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+        return kings[turn][i].getPosition();
+      }
+    }
+  }
+  // move not valid
+  return NULL;
+};
+
+virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+  if(abs(vDiff) <= 1 && abs(hDiff) <= 1){
+    return true;
+  } else{
+    return false;
   }
 };
