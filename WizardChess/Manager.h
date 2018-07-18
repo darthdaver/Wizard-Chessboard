@@ -21,6 +21,7 @@
 
 #include <Arduino.h>
 #include <QueueArray.h>
+#include "Cell.h"
 
 class Manager {
     public:
@@ -38,13 +39,13 @@ class Manager {
          *      - from        : indicates the source cell of the piece that the player wants to move
          *      - destination : indicates the destination cell of the piece that the player wants to move
          *
-         * - Return : an integer representing the index of the piece on which the move could be performed.
-         *            N.B.: The function return -1 if:
+         * - Return : a char pointer pointing to the coordinates of the piece on which the move could be performed.
+         *            N.B.: The function return NULL if:
          *              - more than 1 candidate has been found so there is ambiguity on the command expressed
-         *                by the player (it is required to specify which of the candidate piece the player want to move)
+         *                by the player (it is required to specify which of the two pieces the player want to move)
          *              - there is not a candidate.
          */
-        virtual int checkCandidates(Cell * cbState[][8],bool turn, const char * from, const char * destination) = 0;
+        virtual char * checkCandidates(Cell * cbState[][8],bool turn, const char * from, const char * destination) = 0;
 
         /**
          * Find the king to be remove and set it as dead
@@ -53,7 +54,7 @@ class Manager {
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the king to be removed
          */
-        void findAndRemove(bool turn, const char * destination) = 0;
+        virtual void findAndRemove(bool turn, const char * destination) = 0;
 
         /**
          * Set to dead the piece in the position expressed by the parameter
@@ -70,7 +71,7 @@ class Manager {
          */
         virtual void toString() = 0;
 
-    private:
+    protected:
         /**
          * Implement the virtual function with the scope to check if the destination path is
          * free and the move can potentially be performed for the piece
@@ -99,7 +100,7 @@ class Manager {
          *
          * - Return : a bool indicating if (or not) the pawn move forward
          */
-        bool checkSource(Cell * cbState[][8], bool, turn, const char * from, char type);
+        bool checkSource(Cell * cbState[][8], bool turn, const char * from, char type);
 
         /* Set the new position of the unique candidate
          *
@@ -108,7 +109,7 @@ class Manager {
          *      - from        : the coordinates of the old position
          *      - destination : the coordinates of the new position
          */
-        void setNewPosition(bool turn, const char * from, const char * destination) = 0;
+        virtual void setNewPosition(bool turn, const char * from, const char * destination) = 0;
 };
 
 #endif

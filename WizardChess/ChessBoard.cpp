@@ -27,18 +27,46 @@ ChessBoard::ChessBoard() {
     for(int i = 0; i < 8; i++){
         for(int j = 0; i < 8; i++){
             if(j == 0 || j == 1){
-                cells[i][j] = new Cell(true,'W');
+              if(j == 0){
+                cbState[i][j] = new Cell(true,'W', 'P');    // cell busy by white pawns
+              } else {
+                if(i == 0 || i == 7){
+                  cbState[i][j] = new Cell(true,'W', 'R');  // cell busy by white rooks
+                } else if(i == 1 || i == 6){
+                  cbState[i][j] = new Cell(true,'W', 'B');  // cell busy by white bishops
+                } else if(i == 2 || i == 5){
+                  cbState[i][j] = new Cell(true,'W', 'H');  // cell busy by white knights
+                } else if(i == 3){
+                  cbState[i][j] = new Cell(true,'W', 'Q');  // cell busy by white queen
+                } else if(i == 4){
+                  cbState[i][j] = new Cell(true,'W', 'K');  // cell busy by white king
+                }
+              }
             } else if(j == 7 || j == 8){
-                cells[i][j] = new Cell(true,'B');
+              if(j == 7){
+                cbState[i][j] = new Cell(true,'B', 'P');    // cell busy by black pawns
+              } else {
+                if(i == 0 || i == 7){
+                  cbState[i][j] = new Cell(true,'B', 'R');  // cell busy by black rooks
+                } else if(i == 1 || i == 6){
+                  cbState[i][j] = new Cell(true,'B', 'B');  // cell busy by black bishops
+                } else if(i == 2 || i == 5){
+                  cbState[i][j] = new Cell(true,'B', 'H');  // cell busy by black knights
+                } else if(i == 3){
+                  cbState[i][j] = new Cell(true,'B', 'Q');  // cell busy by black queen
+                } else if(i == 4){
+                  cbState[i][j] = new Cell(true,'B', 'K');  // cell busy by black king
+                }
+              } 
             } else{
-                cells[i][j] = new Cell(false,'E');
+                cbState[i][j] = new Cell(false,'E','E');    // empty cbState 
             }
         }
     }
 };
 
 // Move function implementation
-void ChessBoard::move(Queue <char *> wordsQueue){
+void ChessBoard::move(QueueArray <char *> wordsQueue){
     // Auxiliary variables
     bool promotion = false;
     bool errorFlag = false;
@@ -56,11 +84,8 @@ void ChessBoard::move(Queue <char *> wordsQueue){
 
     // If the piece is a pawn, verify if the move refers to a promoted pawn
     if(strcmp(piece,"PEDINA") == 0){
-        if(wordsQueue.count() == 5 || (wordsQueue.count() == 3 && wordsQueue.front() == "TORRE" ||
-                wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA")){
-            promoType = wordsQueue.dequeue());
-            promotion = true;
-        } else if(){
+        if((wordsQueue.count() == 5 || wordsQueue.count() == 3) && wordsQueue.front() == "TORRE" ||
+                wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA"){
             promoType = wordsQueue.dequeue();
             promotion = true;
         }
@@ -98,37 +123,37 @@ void ChessBoard::move(Queue <char *> wordsQueue){
     // verify if there is a candidate for the move
     if(strcmp(piece,"PEDINA") == 0 && !errorFlag){
         if(promotion){
-            candidate = pawnsManager.checkPromotedCandidates(turn,promoType,from,destination);
+            candidate = pawnsManager.checkPromotedCandidates(cbState, turn, promoType, from);
             if(candidate != NULL){
                 if(promoType == "TORRE"){
                     from = candidate;
-                    candidate = rooksManager.checkPromotedCandidates(turn,promoType,from,destination);
+                    candidate = rooksManager.checkCandidates(cbState,turn,from,destination);
                 } else if(promoType == "ALFIERE"){
                     from = candidate;
-                    candidate = bishopsManager.checkPromotedCandidates(turn,promoType,from,destination);
+                    candidate = bishopsManager.checkCandidates(cbState,turn,from,destination);
                 } else if(promoType == "CAVALLO"){
                     from = candidate;
-                    candidate = knightsManager.checkPromotedCandidates(turn,promoType,from,destination);
+                    candidate = knightsManager.checkCandidates(cbState,turn,from,destination);
                 } else if(promoType == "REGINA"){
                     from = candidate;
-                    candidate = queensManager.checkPromotedCandidates(turn,promoType,from,destination);
+                    candidate = queensManager.checkCandidates(cbState,turn,from,destination);
                 } else if(promoType == "RE"){
                     from = candidate;
-                    candidate = kingsManager.checkPromotedCandidates(turn,promoType,from,destination);
-                } 
+                    candidate = kingsManager.checkCandidates(cbState,turn,from,destination);
+                }
             }
         } else{
-            candidate = pawnsManager.checkCandidates(turn,from,destination);
+            candidate = pawnsManager.checkCandidates(cbState,turn,from,destination);
         }
     } else if(strcmp(piece,"TORRE") == 0 && !errorFlag){
         candidate = rooksManager.checkCandidates(cbState, turn,from,destination);
-    } else if(strcmp(piece,"ALFIERE") == && !errorFlag){
+    } else if(strcmp(piece,"ALFIERE") == 0 && !errorFlag){
         candidate = bishopsManager.checkCandidates(cbState, turn,from,destination);
-    } else if(strcmp(piece,"CAVALLO") == && !errorFlag){
+    } else if(strcmp(piece,"CAVALLO") == 0 && !errorFlag){
         candidate = knightsManager.checkCandidates(cbState, turn,from,destination);
-    } else if(strcmp(piece,"REGINA") == && !errorFlag){
+    } else if(strcmp(piece,"REGINA") == 0 && !errorFlag){
         candidate = queensManager.checkCandidates(cbState, turn,from,destination);
-    } else if(strcmp(piece,"RE") == && !errorFlag){
+    } else if(strcmp(piece,"RE") == 0 && !errorFlag){
         candidate = kingsManager.checkCandidates(cbState, turn,from,destination);
     }
 
@@ -139,7 +164,7 @@ void ChessBoard::move(Queue <char *> wordsQueue){
       // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
       int col = destination[1] - 49;
       // verify if a piece must be transported to the cemetery
-      if(cbState[row][col].getColor() == 'D'){
+      if(cbState[row][col]->getColor() == 'D'){
         // switch on alert led for 5s
 
         removeDead(destination, row, col);
@@ -155,7 +180,12 @@ void ChessBoard::move(Queue <char *> wordsQueue){
     }
 
     Serial.println();
-    Serial.println(piece + " moved from " + candidate + "to " + destination " succesfully executed.");
+    Serial.println(piece);
+    Serial.print(" moved from ");
+    Serial.print(candidate);
+    Serial.print(" to ");
+    Serial.print(destination);
+    Serial.print(" succesfully executed.");
     Serial.println();
     toString();
 };
@@ -163,7 +193,7 @@ void ChessBoard::move(Queue <char *> wordsQueue){
 void ChessBoard::performMove(char type, char * from, char * to) {
   // transport the electromagnet in the cell where is positioned the piece that has to be moved
   direct("A1", from);
-  
+
   // for all the pieces different from the knight
   if(type != 'H'){
         // transport the piece to the destination cell through the navigate function
@@ -199,13 +229,13 @@ bool ChessBoard::navigate(char * from, char * to) {
   if (deltaX == deltaY) {
     // diagonal
     for (int i = 0; i < deltaX * STEPS/5; i++) {
-      step (dirX, X_DIR, X_STP, 5);
-      step (dirY, Y_DIR, Y_STP, 5);
+      stepperMovement(dirX, X_DIR, X_STP, 5);
+      stepperMovement(dirY, Y_DIR, Y_STP, 5);
     }
   } else {
     if (deltaX * deltaX == 0) {     // horizontal or vertical move
-      step (dirX, X_DIR, X_STP, STEPS * deltaX);
-      step (dirY, Y_DIR, Y_STP, STEPS * deltaY);
+      stepperMovement(dirX, X_DIR, X_STP, STEPS * deltaX);
+      stepperMovement(dirY, Y_DIR, Y_STP, STEPS * deltaY);
     } else {      // move not valid
       // switch off the electromagnet
       digitalWrite (POWER_MAGNET, LOW);
@@ -236,11 +266,11 @@ void ChessBoard::direct(char * from, char * to) {
   bool dirX = to[0] > from[0]; // es: C > A --> true
   bool dirY = to[1] < from[1]; // es: 3 > 1 --> true
   // es: navigate from A1 to C3
-  int deltaY = abs(to[0] - from[0]);  // es: C - A = 2
+  int deltaX = abs(to[0] - from[0]);  // es: C - A = 2
   int deltaY = abs(to[1] - from[1]);  // es: 3 - 1 = 2
 
-  step (dirX, X_DIR, X_STP, STEPS * deltaY);
-  step (dirY, Y_DIR, Y_STP, STEPS * deltaY);
+  stepperMovement(dirX, X_DIR, X_STP, STEPS * deltaY);
+  stepperMovement(dirY, Y_DIR, Y_STP, STEPS * deltaY);
 
   // wait the CNC to finish
   delay(500);
@@ -264,23 +294,23 @@ void ChessBoard::stepperMovement (bool dir, byte dirPin, byte stepperPin, int st
 
 // Remove dead implementation
 void ChessBoard::removeDead(char * destination, int row, int col){
-    if(cbState[row][col].getPiece() == 'P'){
-      pawnsManager.finAndRemove();
-    } else if(cbState[row][col].getPiece() == 'R'){
-      rooksManager.finAndRemove();
-    } else if(cbState[row][col].getPiece() == 'B'){
-      bishopsManager.finAndRemove();
-    } else if(cbState[row][col].getPiece() == 'H'){
-      knightsManager.finAndRemove();
-    } else if(cbState[row][col].getPiece() == 'Q'){
-      queensManager.finAndRemove();
-    } else if(cbState[row][col].getPiece() == 'K'){
-      kingsManager.finAndRemove();
+    if(cbState[row][col]->getPiece() == 'P'){
+      pawnsManager.findAndRemove(turn, destination);
+    } else if(cbState[row][col]->getPiece() == 'R'){
+      rooksManager.findAndRemove(turn, destination);
+    } else if(cbState[row][col]->getPiece() == 'B'){
+      bishopsManager.findAndRemove(turn, destination);
+    } else if(cbState[row][col]->getPiece() == 'H'){
+      knightsManager.findAndRemove(turn, destination);
+    } else if(cbState[row][col]->getPiece() == 'Q'){
+      queensManager.findAndRemove(turn, destination);
+    } else if(cbState[row][col]->getPiece() == 'K'){
+      kingsManager.findAndRemove(turn, destination);
     }
 
-    cbState[row][col].setBusy();
-    cbState[row][col].setColor('E');
-    cbState[row][col].setPiece('E');
+    cbState[row][col]->setBusy();
+    cbState[row][col]->setColor('E');
+    cbState[row][col]->setPiece('E');
 
     // implementation of the algorithm to remove the piece
 
@@ -301,10 +331,10 @@ void ChessBoard::updateState(const char * oldPosition, const char * newPosition)
   int colNew = newPosition[1] - 49;
 
   // set the old position to empty
-  cbState[rowOld][colOld].setBusy();
+  cbState[rowOld][colOld]->setBusy();
   // set the new position to busy
-  cbState[rowNew][colNew].setBusy();
-  
+  cbState[rowNew][colNew]->setBusy();
+
   // change the turn of the player
   setTurnPlayer();
 };
@@ -314,7 +344,7 @@ void ChessBoard::setTurnPlayer(){
     turn = !turn;
 };
 
-void toString(){
+void ChessBoard::toString(){
     Serial.println();
     Serial.println("--- Game State ---");
     Serial.println();
@@ -327,7 +357,7 @@ void toString(){
             Serial.println("Cell   : ");
             Serial.print(char(i + 65));
             Serial.println(char(j + 48));
-            Serial.println(cbState[i][j].toString());
+            cbState[i][j]->toString();
         }
     }
     Serial.println();

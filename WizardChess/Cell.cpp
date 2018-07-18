@@ -16,8 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Piece.h"
-#include "Pieces.h"
+#include "Cell.h"
 
 // Constructor
 Cell::Cell(){};
@@ -25,7 +24,7 @@ Cell::Cell(){};
 // Constructor
 Cell::Cell(bool initialBusy, char initialColor, char initialType) {
   busy  = initialBusy;
-  color = initialColor:
+  color = initialColor;
   piece = initialType;
 };
 
@@ -59,5 +58,5 @@ void Cell::toString(){
   Serial.print("Color : ");
   Serial.println(getColor());
   Serial.print("Type : ");
-  Serial.println(getPiece);
+  Serial.println(getPiece());
 };

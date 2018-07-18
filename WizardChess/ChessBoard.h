@@ -21,6 +21,7 @@
 
 #include <Arduino.h>
 #include <QueueArray.h>
+#include "Cell.h"
 #include "Managers.h"
 
 class ChessBoard {
@@ -50,8 +51,8 @@ class ChessBoard {
       /**
        * Public Chessboard variables
        *
-       * cells    : keep track of the state of the white and black pieces in the chessboard cells
-       *            Matrix:
+       * cbState    : keep track of the state of the white and black pieces in the chessboard cells
+       *              Matrix:
        *                                  1  2  3  4  5  6  7  8
        *                               A                          A
        *                               B                          B
@@ -70,7 +71,7 @@ class ChessBoard {
        *            pawns are positioned (true = free space, false = busy space)
        * turn     : keep track if moves the white (false) or the black (true)
        */
-      Cell * cells[8][8];
+      Cell * cbState[8][8];
       bool cemetery[2][16]    = {{true,true,true,true,true,true,true,true,
                                   true,true,true,true,true,true,true,true},
                                  {true,true,true,true,true,true,true,true,

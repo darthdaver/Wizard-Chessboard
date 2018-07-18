@@ -51,7 +51,7 @@ class BishopsManager: public Manager{
 
         /**
          * Find the bishop to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the bishop to be removed
@@ -127,7 +127,7 @@ class KingsManager: public Manager{
 
         /**
          * Find the king to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the king to be removed
@@ -206,7 +206,7 @@ class KnightsManager: public Manager{
 
         /**
          * Find the knight to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the knight to be removed
@@ -282,7 +282,7 @@ class QueensManager: public Manager{
 
         /**
          * Find the queen to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the queen to be removed
@@ -385,7 +385,7 @@ class PawnsManager: public Manager{
 
         /**
          * Find the pawn to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the pawn to be removed
@@ -487,7 +487,7 @@ class RooksManager: public Manager{
 
         /**
          * Find the rook to be remove and set it as dead
-         * 
+         *
          * - Parameters :
          *      - turn        : indicates if move the white (false) or the black (true)
          *      - destination : the coordinates of the cell in where there is the rook to be removed
