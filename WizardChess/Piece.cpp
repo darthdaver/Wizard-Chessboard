@@ -35,5 +35,10 @@ bool Piece::getAlive(){
 };
 
 void Piece::setPosition(const char * newCoordinates){
-  position = newCoordinates;
+  position[0] = newCoordinates[0];
+  position[1] = newCoordinates[1];
+};
+
+void Piece::setAlive(){
+  alive = !alive;
 };

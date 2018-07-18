@@ -24,12 +24,10 @@ Bishop::Bishop(){};
 // Constructor
 Bishop::Bishop(const char * initialPosition): Piece(initialPosition){};
 
-bool Bishop::checkPathIsFree(const char * destination){
-  return true;
-};
-
 void Bishop::toString(){
   Serial.println("Type     : Bishop");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
   Serial.print("Position : ");
   Serial.println(getPosition());
 };

@@ -44,9 +44,9 @@ PawnsManager::PawnsManager(): Manager() {
 // checkCandidates implementation
 char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   // auxiliary variables
+  char candidate[3];
   int numCandidates = 0;
   int indexCandidate;
-  bool removeEnpassant = false;
   int row;
   int col;
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
@@ -68,7 +68,7 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           hDiff = destination[0] - pawns[turn][i].getPosition()[0];
         } else {               // ambiguous cases --> from ≠ NULL
           // control if actually a pawn of the player occupy the position expressed by the variable from 
-          if(checkSource(cbState, turn, from)){
+          if(!checkSource(cbState, turn, from, 'P')){
             return NULL;
           }
           // calculate the vertical difference yd - yf
@@ -79,34 +79,46 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
         if(hDiff) == 0 && abs(vDiff) == 1){   // classical move
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
           if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
-            // a one-step movement eliminate previous eventual en passant
-            if(turn){   // if move black
-              enPassantBlack = NULL;
-            } else{     // if move white
-              enPassantWhite = NULL;
-            }
             // add candidate
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
             } else {
+              // a one-step movement eliminate previous eventual en passant
+              enPassantBlack = NULL;
+              enPassantWhite = NULL;
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+
+              setNewPosition(from, destination);
               return from;
             }
           }
         } else if(pawns[turn][i].getFirstMove() && (hDiff) == 0 && abs(vDiff) == 2){   // double step move
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
           if(checkDirection(turn, vDiff) && checkPathIsFree(cbState[][8], vDiff, hDiff, row, col)){
-            // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
-            if(turn){   // if move black
-              strcpy(enPassantWhite, destination);
-            } else{     // if move white
-              strcpy(enPassantBlack, destination);
-            }
             // add candidate
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
             } else {
+              // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
+              if(turn){   // if move black
+                strcpy(enPassantWhite, destination);
+                enPassantBlack = NULL;
+              } else{     // if move white
+                strcpy(enPassantBlack, destination);
+                enPassantWhite = NULL;
+              }
+
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+              
+              setNewPosition(from, destination);
               return from;
             }
             
@@ -115,27 +127,39 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
           if(checkDirection(turn, vDiff) && !checkPathIsFree(cbState, vDiff, hDiff, row, col)){
             // a eat move eliminate previous eventual en passant
-            if(turn){   // if move black
-              enPassantBlack = NULL;
-            } else{     // if move white
-              enPassantWhite = NULL;
-            }
             // add candidate
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
             } else {
+              enPassantBlack = NULL;
+              enPassantWhite = NULL;
+
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+
+              setNewPosition(from, destination);
               return from;
             }
           }
         } else if(turn && enPassantBlack != NULL && abs(hDiff) == 1 && vDiff == 0){    // en passant black --> white
           // verify immediatly if the path is correct (the destination must be busy by another pawn in order to perform an en passant)
           if(strcmp(enPassantBlack,destination) == 0){
-            enPassantBlack = NULL;
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
             } else {  
+              enPassantBlack = NULL;
+              enPassantWhite = NULL;
+
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+
+              setNewPosition(from, destination);
               return from;
             }
             
@@ -143,11 +167,19 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
         } else if(!turn && enPassantWhite != NULL && abs(hDiff) == 1 && vDiff == 0){   // en passant white --> black
           // verify immediatly if the path is correct (the destination must be busy by another pawn in order to perform an en passant)
           if(strcmp(enPassantWhite,destination) == 0){
-            enPassantWhite = NULL;
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
             } else {
+              enPassantBlack = NULL;
+              enPassantWhite = NULL;
+
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+
+              setNewPosition(from, destination);
               return from;
             }
           }
@@ -156,7 +188,29 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     }
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
-      return pawns[turn][indexCandidate].getPosition();
+      if(vDiff == 2){
+        pawns[turn][indexCandidate].setFirstmove();
+        // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
+        if(turn){   // if move black
+          strcpy(enPassantWhite, destination);
+          enPassantBlack = NULL;
+        } else{     // if move white
+          strcpy(enPassantBlack, destination);
+          enPassantWhite = NULL;
+        }
+      } else {
+        enPassantBlack = NULL;
+        enPassantWhite = NULL;
+      }
+
+      if(cbState[row][col].getBusy()){
+        // set a memo to remember that the opponent piece in the destination cell must be removed
+        cbState[row][col].setColor('D');
+      }
+
+      strcpy(candidate, pawns[turn][indexCandidate]);
+      pawns[turn][indexCandidate].setPosition(destination);
+      return candidate;
     }
   }
   //move not valid
@@ -176,7 +230,7 @@ char * PawnsManager::checkPromotedCandidates(Cell * cbState[][8], bool turn, con
       if(strcmp(promotype, "PEDINA") == 0){
         return NULL;
       }
-      if(from != NULL && checkSource(cbState, turn, from)){
+      if(from != NULL && checkSource(cbState, turn, from, 'P')){
         return from;
       } else {
         numCandidates ++;
@@ -191,7 +245,7 @@ char * PawnsManager::checkPromotedCandidates(Cell * cbState[][8], bool turn, con
   }
 };
 
-bool checkDirection(bool turn, int vDiff){
+bool PawnsManager::checkDirection(bool turn, int vDiff){
   if(turn){   // if move black
     if(hDiff) < 0){
       return false;
@@ -205,7 +259,7 @@ bool checkDirection(bool turn, int vDiff){
   }
 }
 
-virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+bool PawnsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // note that the case of en passant is not considered because the control is already performed
   // in the main function through the variable enPassantWhite (or enPassantBlack)
 
@@ -245,4 +299,42 @@ virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row,
     }
   }
   return false;
+};
+
+void PawnsManager::toString(){
+  Serial.println("--- Pawns ---");
+  Serial.println();
+
+  for(int i = 0; i < 2; i ++){
+    if(i == 0){
+      Serial.println("Black: ");
+      Serial.println();
+    } else{
+      Serial.println("White: ");
+      Serial.println();
+    }
+
+    for(int j = 0; i < 8; i ++){
+      Serial.println(pawns[i][j].toString());
+    }
+  }
+}
+
+void PawnsManager::setNewPosition(bool turn, const char * from, const char * destination){
+  for(int i = 0; i < 8; i++){
+    if(strcmp(pawns[turn][i],from) == 0){
+      pawns[turn][i].setPosition(destination);
+    }
+  }
+};
+
+void PawnsManager::findAndRemove(bool turn, const char * destination){
+  for(int i = 0; i < 8; i++){
+    if(strcmp(pawns[turn][i].getPosition(),destination){
+      pawns[turn][i].setAlive();
+      pawns[turn][i].setPosition("Z9");
+
+      return;
+    }
+  }
 };

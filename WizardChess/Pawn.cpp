@@ -28,11 +28,6 @@ Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
   pawnFirstMove = true:
 };
 
-void Pawn::toString(){
-  Serial.println("Type     : Pawn");
-  Serial.print("Position : ");
-  Serial.println(getPosition());
-};
 
 char * getPromotion(){
   return pawnPromotion;
@@ -48,4 +43,12 @@ void setPromotion(const char * newType){
 
 void setFirstMove(){
   pawnFirstMove = false;
+};
+
+void Pawn::toString(){
+  Serial.println("Type     : Pawn");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
+  Serial.print("Position : ");
+  Serial.println(getPosition());
 };

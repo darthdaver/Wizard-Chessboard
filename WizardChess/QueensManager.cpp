@@ -42,8 +42,8 @@ char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char
     // calculate the horizontal difference xd - xf
     hDiff = destination[0] - queens[turn][0].getPosition()[0];
   } else{               // ambiguous cases --> from ≠ NULL
-    // control if actually a pawn of the player occupy the position expressed by the variable from
-    if(checkSource(cbState, turn, from)){
+    // control if actually a queen of the player occupy the position expressed by the variable from
+    if(checkSource(cbState, turn, from, 'Q')){
       return NULL;
     }
     // calculate the vertical difference yd - yf
@@ -61,7 +61,13 @@ char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char
     if(queens[turn][0].getAlive()){
       // check if path is licit
       if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
-        return queens[turn][i].getPosition();
+        if(cbState[row][col].getBusy()){
+          // set a memo to remember that the opponent piece in the destination cell must be removed
+          cbState[row][col].setColor('D');
+        }
+        strcpy(candidate, queens[turn][indexCandidate]);
+        queens[turn][indexCandidate].setPosition(destination);
+        return candidate;
       }
     }
   }
@@ -69,7 +75,7 @@ char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char
   return NULL;
 };
 
-virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+virtual bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // horizontal or vertical movement
   if(abs(vDiff) != abs(hDiff)){
     if(abs(vDiff) > 0 && hDiff == 0){           // vertical movement
@@ -129,4 +135,31 @@ virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row,
   }
   // all constraints, overcome
   return true;
+};
+
+void QueensManager::toString(){
+  Serial.println("--- Queen ---");
+  Serial.println();
+
+  for(int i = 0; i < 2; i ++){
+    if(i == 0){
+      Serial.println("Black: ");
+      Serial.println();
+    } else{
+      Serial.println("White: ");
+      Serial.println();
+    }
+    
+    Serial.println(bishops[i][j].toString());
+  }
+}
+
+void QueensManager::setNewPosition(bool turn, const char * from, const char * destination){
+};
+
+void QueensManager::findAndRemove(bool turn, const char * destination){
+  if(strcmp(queens[turn][0].getPosition(),destination){
+      queens[turn][0].setAlive();
+      queens[turn][0].setPosition("Z9");
+  }
 };

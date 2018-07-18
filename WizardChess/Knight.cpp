@@ -32,6 +32,8 @@ bool Knight::checkPathIsFree(const char * destination){
 
 void Knight::toString(){
   Serial.println("Type     : Knight");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
   Serial.print("Position : ");
   Serial.println(getPosition());
 };

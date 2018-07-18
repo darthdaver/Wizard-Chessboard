@@ -51,8 +51,8 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
         // calculate the horizontal difference xd - xf
         hDiff = destination[0] - rooks[turn][i].getPosition()[0];
       } else{               // ambiguous cases --> from ≠ NULL
-        // control if actually a pawn of the player occupy the position expressed by the variable from
-        if(checkSource(cbState, turn, from)){
+        // control if actually a rook of the player occupy the position expressed by the variable from
+        if(checkSource(cbState, turn, from, 'R')){
           return NULL;
         }
         // calculate the vertical difference yd - yf
@@ -70,6 +70,12 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               numCandidates++;
               indexCandidate = i;
             } else{
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+
+              setNewPosition(from, destination);
               return from;
             }
           }
@@ -78,7 +84,13 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     }
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
-      return bishops[turn][i].getPosition();
+      if(cbState[row][col].getBusy()){
+        // set a memo to remember that the opponent piece in the destination cell must be removed
+        cbState[row][col].setColor('D');
+      }
+      strcpy(candidate, rooks[turn][indexCandidate]);
+      rooks[turn][indexCandidate].setPosition(destination);
+      return candidate;
     }
   }
   // move not valid
@@ -86,7 +98,7 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
 };
 
 // checkPathIsFree implementation
-virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+virtual bool RooksManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // consider the parameters from and destination as points ( from = (xf,yf), destination = (xd,yd))
 
   if(abs(vDiff) > 0 && hDiff == 0){           // vertical movement
@@ -120,4 +132,42 @@ virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row,
   }
   // all constraints, overcome
   return true;
+};
+
+void RooksManager::toString(){
+  Serial.println("--- Rooks ---");
+  Serial.println();
+
+  for(int i = 0; i < 2; i ++){
+    if(i == 0){
+      Serial.println("Black: ");
+      Serial.println();
+    } else{
+      Serial.println("White: ");
+      Serial.println();
+    }
+
+    for(int j = 0; i < 2; i ++){
+      Serial.println(rooks[i][j].toString());
+    }
+  }
+}
+
+void RooksManager::setNewPosition(bool turn, const char * from, const char * destination){
+  for(int i = 0; i < 2; i++){
+    if(strcmp(rooks[turn][i],from) == 0){
+      rooks[turn][i].setPosition(destination);
+    }
+  }
+};
+
+void RooksManager::findAndRemove(bool turn, const char * destination){
+  for(int i = 0; i < 2; i++){
+    if(strcmp(rooks[turn][i].getPosition(),destination){
+      rooks[turn][i].setAlive();
+      rooks[turn][i].setPosition("Z9");
+
+      return;
+    }
+  }
 };

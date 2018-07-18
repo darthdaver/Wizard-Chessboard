@@ -46,6 +46,30 @@ class Manager {
          */
         virtual int checkCandidates(Cell * cbState[][8],bool turn, const char * from, const char * destination) = 0;
 
+        /**
+         * Find the king to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the king to be removed
+         */
+        void findAndRemove(bool turn, const char * destination) = 0;
+
+        /**
+         * Set to dead the piece in the position expressed by the parameter
+         * 
+         * - Parameters :
+         *      - position : the position of the cell that has to be set to dead
+         */
+        void setDead(const char * position);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString() = 0;
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -71,10 +95,20 @@ class Manager {
          *      - cbState : indicates the position of all the pieces on the chessboard
          *      - turn    : indicates if move the white (false) or the black (true)
          *      - from    : indicates the source cell of the piece that the player wants to move
+         *      - type    : indicates the type of the piece that has to be moved
          *
          * - Return : a bool indicating if (or not) the pawn move forward
          */
-        bool checkSource(Cell * cbState[][8], bool, turn, const char * from);
+        bool checkSource(Cell * cbState[][8], bool, turn, const char * from, char type);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination) = 0;
 };
 
 #endif

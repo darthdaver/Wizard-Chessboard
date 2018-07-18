@@ -33,22 +33,19 @@ class ChessBoard {
       ChessBoard();
 
       /**
-       * Getter of the turn variable
-       *
-       * - Return : a bool representing the player who has the right to move
-       *      - true  : move the black
-       *      - false : move the white
-       *
-       */
-      bool getTurnPlayer();
-
-      /**
        * Verifies if it is possible to make the move expressed by the player and, in that case, executes it
        *
        * - Parameters :
        *      - wordsQueue : a queue containing the words relative to the move that the player want to perform
        */
       void move(QueueArray <char *> wordsQueue);
+
+      /**
+       * Show a string representation of the object
+       *
+       * - Return : a string representation of the object
+       */
+      void toString();
 
       /**
        * Public Chessboard variables
@@ -102,13 +99,60 @@ class ChessBoard {
       void stepperMovement (bool dir, byte dirPin, byte stepperPin, int steps);
 
       /**
-       * Activate (deactivate) the electromagnet in order to attract (release) the pawn.
-       * The action is performed giving/removing voltage to the relay connected to the solenoid
+       * Transport a piece from a source cell to a destination cell with the electromagnet switched on
        *
        * - Parameters :
-       *      - condition : if true activate the cathing, if false release the catching
+       *      - from : represents the coordinates of the source cell
+       *      - to   : represents the coordinates of the destination cell
+       *
+       * - Return : a boolean value indicating if the move has been succesfully performed
        */
-      void electromagnet(bool condition);
+      bool navigate(char * from, char * to);
+
+      /**
+       * Transport the electromagnet switched off from a source cell to a destination cell
+       *
+       * - Parameters :
+       *      - from : represents the coordinates of the source cell
+       *      - to   : represents the coordinates of the destination cell
+       */
+      void direct(char * from, char * to);
+
+      /**
+       * Execute the move in three phases :
+       *  1. Transport the electromagnet switched off from A1 (default position of the magnet) to the cell
+       *     in which is positioned the pieced that has to be moved
+       *  2. Trasport the piece to the destination with the electromagnet switched on
+       *  3. Trasport the electromagnet switched off to the default position (A1)
+       *
+       * Parameters :
+       *      - type : represents the type of piece that must be moved
+       *      - from : represents the coordinates of the source cell
+       *      - to   : represents the coordinates of the destination cell
+       */
+      void performMove(char type, char * from, char * to);
+
+      /**
+       * Execute the process to remove a dead piece
+       * 
+       * - Parameters :
+       *      - destination : the coordiantes of the cell occupied by the piece that has to be removed
+       *      - row         : the row index indicating the position in the cbState of the piece that 
+       *                      must be removed
+       *      - col         : the column index indicating the position in the cbStateof the piece that
+       *                      must be removed
+       * 
+       */
+      void removeDead(char * destination, int row, int col);
+
+      /**
+       * Update the state of the ChessBoard after a move has been performed
+       * 
+       * - Parameters :
+       *      - oldPosition : represents the old position of the moved piece
+       *      - newPosition : represents the new position of the moved piece
+       */
+      void updateState(const char * oldPosition, const char * newPosition);
 
       /**
        * Change the player turn

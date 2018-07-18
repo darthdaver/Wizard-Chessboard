@@ -41,8 +41,10 @@ void setup() {
   pinMode (EN, OUTPUT);
   digitalWrite (EN, LOW);
 
-  // RELAY pins setup
-  pinMode(RELAY, OUTPUT);
+  // POWER_CNC pin setup
+  pinMode(POWER_CNC, OUTPUT);
+  // POWER_MAGNET pin setup
+  pinmode(POWER_MAGNET, OUTPUT);
 
   // Instanciate a chessboard
   chessBoard = ChessBoard();

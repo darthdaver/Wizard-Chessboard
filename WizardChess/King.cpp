@@ -26,12 +26,10 @@ King::King(){};
 King::King(const char * initialPosition): Piece(initialPosition) {
 };
 
-bool King::checkPathIsFree(const char * destination){
-  return true;
-};
-
-void King::toString(){
+virtual void King::toString(){
   Serial.println("Type     : King");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
   Serial.print("Position : ");
   Serial.println(getPosition());
 };

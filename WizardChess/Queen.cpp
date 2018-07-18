@@ -32,6 +32,8 @@ bool Queen::checkPathIsFree(const char * destination){
 
 void Queen::toString(){
   Serial.println("Type     : Queen");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
   Serial.print("Position : ");
   Serial.println(getPosition());
 };

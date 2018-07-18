@@ -53,7 +53,11 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
           int vDiff = destination[1] - bishops[turn][i].getPosition()[1];
           // calculate the horizontal difference xd - xf
           int hDiff = destination[0] - bishops[turn][i].getPosition()[0];
-        } else {              //manage pawn promotion and ambiguous cases --> from ≠ NULL
+        } else {              //manage bishop promotion and ambiguous cases --> from ≠ NULL
+          // control if actually a bishop of the player occupy the position expressed by the variable from 
+          if(!checkSource(cbState, turn, from, 'B')){
+            return NULL;
+          }
           // calculate the vertical difference yd - yf
           int vDiff = destination[1] - from[1];
           // calculate the horizontal difference xd - xf
@@ -67,6 +71,11 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
               numCandidates++;
               indexCandidate = i;
             } else{
+              if(cbState[row][col].getBusy()){
+                // set a memo to remember that the opponent piece in the destination cell must be removed
+                cbState[row][col].setColor('D');
+              }
+              setNewPosition(from, destination);
               return from;
             }
           }
@@ -75,14 +84,21 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
     }
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
-      return bishops[turn][i].getPosition();
+      if(cbState[row][col].getBusy()){
+        // set a memo to remember that the opponent piece in the destination cell must be removed
+        cbState[row][col].setColor('D');
+      }
+      strcpy(candidate, bishops[turn][indexCandidate]);
+      bishops[turn][indexCandidate].setPosition(destination);
+      return candidate;
     }
   }
+
   // move not valid
   return NULL;
 };
 
-virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+bool BishopsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // move along the diagonal to search for busy cells (remember that abs(vDiff) == abs(hDiff))
   for(int i = 1; i < abs(vDiff); i++){
     if(vDiff > 0 && hDiff > 0){         // up - right real chessboard (from white player point of view)
@@ -109,4 +125,42 @@ virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row,
   }
   // all constraints, overcome
   return true;
+};
+
+void BishopsManager::setNewPosition(bool turn, const char * from, const char * destination){
+  for(int i = 0; i < 2; i++){
+    if(strcmp(bishops[turn][i],from) == 0){
+      bishops[turn][i].setPosition(destination);
+    }
+  }
+};
+
+void KingsManager::toString(){
+  Serial.println("--- Bishops ---");
+  Serial.println();
+
+  for(int i = 0; i < 2; i ++){
+    if(i == 0){
+      Serial.println("Black: ");
+      Serial.println();
+    } else{
+      Serial.println("White: ");
+      Serial.println();
+    }
+
+    for(int j = 0; i < 2; i ++){
+      Serial.println(bishops[i][j].toString());
+    }
+  }
+};
+
+void BishopsManager::findAndRemove(bool turn, const char * destination){
+  for(int i = 0; i < 2; i++){
+    if(strcmp(bishops[turn][i].getPosition(),destination){
+      bishops[turn][i].setAlive();
+      bishops[turn][i].setPosition("Z9");
+
+      return;
+    }
+  }
 };

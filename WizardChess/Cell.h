@@ -34,13 +34,15 @@ class Cell {
          * Define the constructor of the class
          *
          * - Parameters :
-         *      - initialBusy  : a boolean representing if the cell is empty or busy
-         *      - initialColor : a char representing the color of the piece (if the cell is busy)
-         *                       N.B. : 'B' stands for BLACK, 'W' stands for WHITE, 'E' stands for EMPTY
+         *      - initialBusy  : a boolean representing if the cell is empty or busy at the start of the game
+         *      - initialColor : a char representing the color of the piece (if the cell is busy) at the start 
+         *                       of the game
+         *      - initialType  : a char representing the type of the piece (if the cell is busy) at the start
+         *                       of the game
          * 
          * - Return : an initialized instance of the class
          */
-        Cell(bool initialBusy, char initialColor);
+        Cell(bool initialBusy, char initialColor, char initialType);
 
         /**
          * Getter for busy variable
@@ -50,7 +52,7 @@ class Cell {
         bool getBusy();
 
         /**
-         * Getter for alive variable
+         * Getter for color variable
          *
          * - Return : a char representing the color of the piece (if the cell is busy)
          *            N.B. : 'B' stands for BLACK, 'W' stands for WHITE, 'E' stands for EMPTY
@@ -59,13 +61,21 @@ class Cell {
         char getColor();
 
         /**
+         * Getter for piece variable
+         *
+         * - Return : a char representing the type of the piece (if the cell is busy)
+         * 
+         */
+        char getPiece();
+
+        /**
          * Setter for busy variable
          * 
          */
         void setBusy();
 
         /**
-         * Getter for alive variable
+         * Setter for color variable
          *
          * - Parameters : 
          *      - newColor : a char representing the color of the piece (if the cell is busy)
@@ -75,23 +85,43 @@ class Cell {
         void setColor(char newColor);
 
         /**
+         * Setter for piece variable
+         *
+         * - Parameters : 
+         *      - newPiece : a char representing the type of the piece (if the cell is busy)
+         */
+        void setPiece(char newType);
+
+        /**
          * Show a string representation of the object
          *
          * - Return : a string representation of the object
          * 
          */
-        virtual void toString();
+        void toString();
 
     protected:
         /**
          * Piece variables
          *
          * - Parameters :
-         *      -busy : string that represents the coordinates of the busy
-         *              of the piece
+         *      - busy  : a string representing the coordinates of the busy
+         *                of the piece
+         *      - color : a char representing the color of the piece (if the cell is busy)
+         *                N.B. : 'B' stands for BLACK, 'W' stands for WHITE, 'E' stands for EMPTY
+         *                       'D' stands dor DEAD (transition phase before to remove a dead piece)
+         *      - piece : a char representing the type of piece in the cell
+         *                  - 'P' ---> PAWN
+         *                  - 'R' ---> ROOK
+         *                  - 'B' ---> BISHOP
+         *                  - 'H' ---> KNIGHT (HORSE)
+         *                  - 'K' ---> KING
+         *                  - 'Q' ---> QUEEN
+         *                  - 'E' ---> EMPTY
          */
         bool busy;
         char color;
+        char piece;
 };
 
 #endif

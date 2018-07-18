@@ -31,6 +31,8 @@ bool Rook::checkPathIsFree(const char * destination){
 
 void Rook::toString(){
   Serial.println("Type     : Rook");
+  Serial.print("Alive    : ");
+  Serial.println(getAlive());
   Serial.print("Position : ");
   Serial.println(getPosition());
 };

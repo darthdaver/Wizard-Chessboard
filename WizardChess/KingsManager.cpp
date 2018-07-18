@@ -42,8 +42,8 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     // calculate the horizontal difference xd - xf
     hDiff = destination[0] - kings[turn][0].getPosition()[0];
   } else{               // ambiguous cases --> from ≠ NULL
-    // control if actually a pawn of the player occupy the position expressed by the variable from
-    if(checkSource(cbState, turn, from)){
+    // control if actually a king of the player occupy the position expressed by the variable from
+    if(!checkSource(cbState, turn, from, 'K')){
       return NULL;
     }
     // calculate the vertical difference yd - yf
@@ -61,7 +61,13 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     if(kings[turn][0].getAlive()){
       // check if path is licit
       if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
-        return kings[turn][i].getPosition();
+        if(cbState[row][col].getBusy()){
+          // set a memo to remember that the opponent piece in the destination cell must be removed
+          cbState[row][col].setColor('D');
+        }
+        strcpy(candidate, kings[turn][indexCandidate]);
+        kings[turn][indexCandidate].setPosition(destination);
+        return candidate;
       }
     }
   }
@@ -69,10 +75,36 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   return NULL;
 };
 
-virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+bool KingsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   if(abs(vDiff) <= 1 && abs(hDiff) <= 1){
     return true;
   } else{
     return false;
+  }
+};
+
+void KingsManager::toString(){
+  Serial.println("--- King ---");
+  Serial.println();
+
+  for(int i = 0; i < 2; i ++){
+    if(i == 0){
+      Serial.println("Black: ");
+      Serial.println();
+    } else{
+      Serial.println("White: ");
+      Serial.println();
+    }
+
+    Serial.println(kings[i][0].toString());
+  }
+};
+
+void KingsManager::setNewPosition(bool turn, const char * from, const char * destination){};
+
+void KingsManager::findAndRemove(bool turn, const char * destination){
+  if(strcmp(kings[turn][0].getPosition(),destination){
+      kings[turn][0].setAlive();
+      kings[turn][0].setPosition("Z9");
   }
 };

@@ -23,30 +23,41 @@
 Cell::Cell(){};
 
 // Constructor
-Cell::Cell(bool initialBusy, char initialColor) {
+Cell::Cell(bool initialBusy, char initialColor, char initialType) {
   busy  = initialBusy;
   color = initialColor:
+  piece = initialType;
 };
 
-bool getBusy(){
+bool Cell::getBusy(){
   return busy;
 };
 
-char getColor(){
+char Cell::getColor(){
   return color;
 };
 
-void setBusy(){
+char Cell::getPiece(){
+  return piece;
+};
+
+void Cell::setBusy(){
   busy = !busy;
 };
 
-void setColor(char newColor){
+void Cell::setColor(char newColor){
   color = newColor;
 };
 
+void Cell::setPiece(char newPiece){
+  piece = newPiece;
+};
+
 void Cell::toString(){
-  Serial.println("Busy   :");
+  Serial.println("Busy  :");
   Serial.println(getBusy());
   Serial.print("Color : ");
   Serial.println(getColor());
+  Serial.print("Type : ");
+  Serial.println(getPiece);
 };

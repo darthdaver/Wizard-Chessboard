@@ -49,6 +49,22 @@ class BishopsManager: public Manager{
          */
         char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
+        /**
+         * Find the bishop to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the bishop to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -65,6 +81,15 @@ class BishopsManager: public Manager{
          *            for the piece or not (false)
          */
         virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
@@ -100,6 +125,22 @@ class KingsManager: public Manager{
          */
         char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
+        /**
+         * Find the king to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the king to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -116,6 +157,15 @@ class KingsManager: public Manager{
          *            for the piece or not (false)
          */
         virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
@@ -154,6 +204,22 @@ class KnightsManager: public Manager{
          */
         char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
+        /**
+         * Find the knight to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the knight to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -170,6 +236,15 @@ class KnightsManager: public Manager{
          *            for the piece or not (false)
          */
         virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
@@ -205,6 +280,22 @@ class QueensManager: public Manager{
          */
         char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
+        /**
+         * Find the queen to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the queen to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
    private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -221,6 +312,15 @@ class QueensManager: public Manager{
          *            for the piece or not (false)
          */
         virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
@@ -283,6 +383,22 @@ class PawnsManager: public Manager{
          */
         char * checkPromotedCandidates(Cell * cbState[][8], bool turn, const char * promoType, const char * from);
 
+        /**
+         * Find the pawn to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the pawn to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -310,6 +426,15 @@ class PawnsManager: public Manager{
          * - Return : a bool indicating if (or not) the pawn move forward
          */
         bool checkDirection(bool turn, int vDiff);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
@@ -360,6 +485,22 @@ class RooksManager: public Manager{
          */
         char * checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination);
 
+        /**
+         * Find the rook to be remove and set it as dead
+         * 
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - destination : the coordinates of the cell in where there is the rook to be removed
+         */
+        void findAndRemove(bool turn, const char * destination);
+
+        /**
+         * Show a string representation of the object
+         *
+         * - Return : a string representation of the object
+         */
+        virtual void toString();
+
     private:
         /**
          * Implement the virtual function with the scope to check if the destination path is
@@ -376,6 +517,15 @@ class RooksManager: public Manager{
          *            for the piece or not (false)
          */
         virtual bool checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col);
+
+        /* Set the new position of the unique candidate
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         */
+        void setNewPosition(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables
