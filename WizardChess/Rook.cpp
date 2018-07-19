@@ -25,10 +25,6 @@ Rook::Rook(){};
 // Constructor
 Rook::Rook(const char * initialPosition): Piece(initialPosition) {};
 
-bool Rook::checkPathIsFree(const char * destination){
-  return true;
-};
-
 void Rook::toString(){
   Serial.println("Type     : Rook");
   Serial.print("Alive    : ");

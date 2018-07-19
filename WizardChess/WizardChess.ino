@@ -18,6 +18,7 @@
 
 #include <SoftwareSerial.h>
 #include <QueueArray.h>
+#include "Config.h"
 #include "ChessBoard.h"
 
 // Bluetooth: define software serial
@@ -43,12 +44,19 @@ void setup() {
 
   // POWER_CNC pin setup
   pinMode(POWER_CNC, OUTPUT);
+  digitalWrite (POWER_CNC, LOW);
   // POWER_MAGNET pin setup
-  pinmode(POWER_MAGNET, OUTPUT);
+  pinMode(POWER_MAGNET, OUTPUT);
+  digitalWrite (POWER_MAGNET, LOW);
 
   // Instanciate a chessboard
   chessBoard = ChessBoard();
 
+  Serial.println("Inizializzazione gioco completata");
+  Serial.println();
+
+  chessBoard.toString();
+  
   delay(1000);
 }
 
@@ -66,6 +74,10 @@ void loop(){
    *  via bluetooth communication.
    *  The charachters are stored in the voice variable (String type).
   */
+
+  Serial.println("Esprimere un comando : ");
+  Serial.println();
+  
   // Speech recognition phase
   while(command){
     // Check if there is an available byte to read

@@ -213,7 +213,7 @@ class Pawn: public Piece {
          *                 of this variable is referred to the possibility to
          *                 perform an en passant or a first "two-cells" motion)
          */
-        char pawnPromotion[8];
+        char * pawnPromotion;
         bool pawnFirstMove;
 };
 

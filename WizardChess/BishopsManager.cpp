@@ -32,7 +32,7 @@ BishopsManager::BishopsManager(): Manager(){
 // checkCandidates implementation
 char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   // auxiliary variables
-  char candidate[3];
+  char * candidate;
   int numCandidates = 0;
   int indexCandidate;
   int vDiff;
@@ -89,7 +89,7 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
         // set a memo to remember that the opponent piece in the destination cell must be removed
         cbState[row][col]->setColor('D');
       }
-      strcpy(candidate, bishops[turn][indexCandidate].getPosition());
+      candidate = bishops[turn][indexCandidate].getPosition();
       bishops[turn][indexCandidate].setPosition(destination);
       return candidate;
     }

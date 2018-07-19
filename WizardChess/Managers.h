@@ -454,8 +454,8 @@ class PawnsManager: public Manager{
          *                  first move
          */
         Pawn pawns [2][8];
-        char enPassantWhite[3];
-        char enPassantBlack[3];
+        char * enPassantWhite;
+        char * enPassantBlack;
 };
 
 class RooksManager: public Manager{

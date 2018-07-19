@@ -31,13 +31,16 @@ RooksManager::RooksManager(): Manager() {
 
 // checkCandidates implementation
 char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
+  char * candidate;
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
   int col = destination[1] - 49;
+  int vDiff;
+  int hDiff;
 
   // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
-  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){  
+  if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){  
     // auxiliary variables
     int numCandidates = 0;
     int indexCandidate;
@@ -70,12 +73,12 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               numCandidates++;
               indexCandidate = i;
             } else{
-              if(cbState[row][col].getBusy()){
+              if(cbState[row][col]->getBusy()){
                 // set a memo to remember that the opponent piece in the destination cell must be removed
-                cbState[row][col].setColor('D');
+                cbState[row][col]->setColor('D');
               }
 
-              setNewPosition(from, destination);
+              setNewPosition(turn, from, destination);
               return from;
             }
           }
@@ -84,11 +87,11 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     }
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
-      if(cbState[row][col].getBusy()){
+      if(cbState[row][col]->getBusy()){
         // set a memo to remember that the opponent piece in the destination cell must be removed
-        cbState[row][col].setColor('D');
+        cbState[row][col]->setColor('D');
       }
-      strcpy(candidate, rooks[turn][indexCandidate]);
+      candidate = rooks[turn][indexCandidate].getPosition();
       rooks[turn][indexCandidate].setPosition(destination);
       return candidate;
     }
@@ -98,19 +101,19 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
 };
 
 // checkPathIsFree implementation
-virtual bool RooksManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
+bool RooksManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // consider the parameters from and destination as points ( from = (xf,yf), destination = (xd,yd))
 
   if(abs(vDiff) > 0 && hDiff == 0){           // vertical movement
     for(int i = 1; i < abs(vDiff); i++){
       if(vDiff > 0){
         // cell busy
-        if(cbState[row][col + i].getBusy()){
+        if(cbState[row][col + i]->getBusy()){
           return false;
         }
       } else {
         // cell busy
-        if(cbState[row][col - i].getBusy()){
+        if(cbState[row][col - i]->getBusy()){
           return false;
         }
       }
@@ -119,12 +122,12 @@ virtual bool RooksManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int h
     for(int i = 1; i < abs(hDiff); i++){
       if(hDiff > 0){
         // cell busy
-        if(cbState[row + i][col].getBusy()){
+        if(cbState[row + i][col]->getBusy()){
           return false;
         }
       } else {
         // cell busy
-        if(cbState[row - i][col].getBusy()){
+        if(cbState[row - i][col]->getBusy()){
           return false;
         }
       }
@@ -148,14 +151,14 @@ void RooksManager::toString(){
     }
 
     for(int j = 0; i < 2; i ++){
-      Serial.println(rooks[i][j].toString());
+      rooks[i][j].toString();
     }
   }
 }
 
 void RooksManager::setNewPosition(bool turn, const char * from, const char * destination){
   for(int i = 0; i < 2; i++){
-    if(strcmp(rooks[turn][i],from) == 0){
+    if(strcmp(rooks[turn][i].getPosition(),from) == 0){
       rooks[turn][i].setPosition(destination);
     }
   }
@@ -163,7 +166,7 @@ void RooksManager::setNewPosition(bool turn, const char * from, const char * des
 
 void RooksManager::findAndRemove(bool turn, const char * destination){
   for(int i = 0; i < 2; i++){
-    if(strcmp(rooks[turn][i].getPosition(),destination){
+    if(strcmp(rooks[turn][i].getPosition(),destination) == 0){
       rooks[turn][i].setAlive();
       rooks[turn][i].setPosition("Z9");
 

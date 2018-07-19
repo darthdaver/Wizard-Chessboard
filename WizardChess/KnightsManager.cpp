@@ -23,15 +23,16 @@
 
 // Constructor
 KnightsManager::KnightsManager(): Manager() {
-  knights[WHITE_KNIGHT][0] = Knight("B1");
-  knights[WHITE_KNIGHT][1] = Knight("G1");
-  knights[BLACK_KNIGHT][0] = Knight("B8");
-  knights[BLACK_KNIGHT][1] = Knight("G8");
+  knights[WHITE][0] = Knight("B1");
+  knights[WHITE][1] = Knight("G1");
+  knights[BLACK][0] = Knight("B8");
+  knights[BLACK][1] = Knight("G8");
 };
 
 // checkCandidates implementation
 char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const char* from, const char* destination){
   // auxiliary variables
+  char * candidate = new char[3];
   int numCandidates = 0;
   int indexCandidate;
   int vDiff;
@@ -42,7 +43,7 @@ char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
   int col = destination[1] - 49;
 
   // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
-  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){
+  if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){
     // control the position of any knight of the player in order to find a possible candidate
     for(int i = 0; i < 2; i++){
       // check the queen is alive
@@ -67,17 +68,17 @@ char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
       // verify that the move is two-steps in one direction and one-step in the other direction
       if((abs(vDiff) == 2 && abs(hDiff) == 1) || (abs(vDiff) == 1 && abs(hDiff)) == 2){
         // check path is licit
-        if(checkPathIsFree(cbState[], vDiff, hDiff, row, col)){
+        if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
           if(from == NULL){
             numCandidates++;
             indexCandidate = i;
           } else {
-            if(cbState[row][col].getBusy()){
+            if(cbState[row][col]->getBusy()){
               // set a memo to remember that the opponent piece in the destination cell must be removed
-              cbState[row][col].setColor('D');
+              cbState[row][col]->setColor('D');
             }
 
-            setNewPosition(from, destination);
+            setNewPosition(turn, from, destination);
             return from;
           }
         }
@@ -85,11 +86,11 @@ char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
     }
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
-      if(cbState[row][col].getBusy()){
+      if(cbState[row][col]->getBusy()){
         // set a memo to remember that the opponent piece in the destination cell must be removed
-        cbState[row][col].setColor('D');
+        cbState[row][col]->setColor('D');
       }
-      strcpy(candidate, knights[turn][indexCandidate]);
+      candidate = knights[turn][indexCandidate].getPosition();
       knights[turn][indexCandidate].setPosition(destination);
       return candidate;
     }
@@ -107,13 +108,13 @@ bool KnightsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, 
 
 void KnightsManager::setNewPosition(bool turn, const char * from, const char * destination){
   for(int i = 0; i < 2; i++){
-    if(strcmp(knights[turn][i],from) == 0){
+    if(strcmp(knights[turn][i].getPosition(),from) == 0){
       knights[turn][i].setPosition(destination);
     }
   }
 };
 
-void KingsManager::toString(){
+void KnightsManager::toString(){
   Serial.println("--- Knights ---");
   Serial.println();
 
@@ -127,14 +128,14 @@ void KingsManager::toString(){
     }
 
     for(int j = 0; i < 2; i ++){
-      Serial.println(knights[i][j].toString());
+      knights[i][j].toString();
     }
   }
 };
 
 void KnightsManager::findAndRemove(bool turn, const char * destination){
   for(int i = 0; i < 2; i++){
-    if(strcmp(knights[turn][i].getPosition(),destination){
+    if(strcmp(knights[turn][i].getPosition(),destination) == 0){
       knights[turn][i].setAlive();
       knights[turn][i].setPosition("Z9");
 

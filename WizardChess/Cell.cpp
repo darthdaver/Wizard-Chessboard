@@ -53,10 +53,10 @@ void Cell::setPiece(char newPiece){
 };
 
 void Cell::toString(){
-  Serial.println("Busy  :");
+  Serial.print("Busy  :");
   Serial.println(getBusy());
   Serial.print("Color : ");
   Serial.println(getColor());
-  Serial.print("Type : ");
+  Serial.print("Type  : ");
   Serial.println(getPiece());
 };

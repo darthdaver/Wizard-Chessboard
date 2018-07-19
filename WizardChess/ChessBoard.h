@@ -108,7 +108,7 @@ class ChessBoard {
        *
        * - Return : a boolean value indicating if the move has been succesfully performed
        */
-      bool navigate(char * from, char * to);
+      bool navigate(const char * from, const char * to);
 
       /**
        * Transport the electromagnet switched off from a source cell to a destination cell
@@ -117,7 +117,7 @@ class ChessBoard {
        *      - from : represents the coordinates of the source cell
        *      - to   : represents the coordinates of the destination cell
        */
-      void direct(char * from, char * to);
+      void direct(const char * from, const char * to);
 
       /**
        * Execute the move in three phases :
@@ -131,7 +131,7 @@ class ChessBoard {
        *      - from : represents the coordinates of the source cell
        *      - to   : represents the coordinates of the destination cell
        */
-      void performMove(char type, char * from, char * to);
+      void performMove(const char type, const char * from, const char * to);
 
       /**
        * Execute the process to remove a dead piece
@@ -144,7 +144,7 @@ class ChessBoard {
        *                      must be removed
        * 
        */
-      void removeDead(char * destination, int row, int col);
+      void removeDead(const char * destination, int row, int col);
 
       /**
        * Update the state of the ChessBoard after a move has been performed
@@ -182,7 +182,7 @@ class ChessBoard {
        * pawnsManager   : keep track the position of any pawn in the chessboard and manage any phase of a move
        *                  which involve a pawn
        */
-      char * solenoid = "A1";
+      char * solenoid;
       BishopsManager bishopsManager;
       KingsManager kingsManager;
       KnightsManager knightsManager;

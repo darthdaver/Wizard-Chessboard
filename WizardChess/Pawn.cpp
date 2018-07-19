@@ -25,23 +25,34 @@ Pawn::Pawn(){};
 // Constructor
 Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
   pawnPromotion = "PEDINA";
-  pawnFirstMove = true:
+  pawnFirstMove = true;
 };
 
 
-char * getPromotion(){
-  return pawnPromotion;
+char * Pawn::getPromotion(){
+  // create a copy to return the pointer in a safety way
+  char * copy = new char [strlen(pawnPromotion)];
+    
+  for(int i=0; i<strlen(pawnPromotion); i++){
+      copy[i] = pawnPromotion[i];
+  }
+    
+  return copy;
 };
 
-bool getFirstMove(){
+bool Pawn::getFirstMove(){
   return pawnFirstMove;
 };
 
-void setPromotion(const char * newType){
-  strcpy(pawnPromotion,newType);
+void Pawn::setPromotion(const char * newType){
+  pawnPromotion = new char [strlen(newType)];
+    
+  for(int i = 0; i<strlen(newType); i++){
+      pawnPromotion[i] = newType[i];
+  }
 };
 
-void setFirstMove(){
+void Pawn::setFirstMove(){
   pawnFirstMove = false;
 };
 

@@ -23,8 +23,8 @@
 
 // Constructor
 KingsManager::KingsManager(): Manager() {
-  kings[WHITE_KING][0] = King::King("E1");
-  kings[BLACK_KING][0] = King::King("E8");
+  kings[WHITE][0] = King::King("E1");
+  kings[BLACK][0] = King::King("E8");
 };
 
 // checkCandidates implementation
@@ -34,6 +34,8 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
   int col = destination[1] - 49;
+  int vDiff;
+  int hDiff;
 
   // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
   if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
@@ -53,7 +55,7 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   }
 
   // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
-  if((turn && cbState[row][col].getColor() != 'B') || (!turn && cbState[row][col].getColor() != 'W')){
+  if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){
     // the king is unique for any player so the case from = NULL and from ≠ NULL is manageable
     // in a single case (considering from = NULL in any case)
 
@@ -61,13 +63,12 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     if(kings[turn][0].getAlive()){
       // check if path is licit
       if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
-        if(cbState[row][col].getBusy()){
+        if(cbState[row][col]->getBusy()){
           // set a memo to remember that the opponent piece in the destination cell must be removed
-          cbState[row][col].setColor('D');
+          cbState[row][col]->setColor('D');
         }
-        strcpy(candidate, kings[turn][indexCandidate]);
-        kings[turn][indexCandidate].setPosition(destination);
-        return candidate;
+        kings[turn][0].setPosition(destination);
+        return kings[turn][0].getPosition();
       }
     }
   }
@@ -96,14 +97,16 @@ void KingsManager::toString(){
       Serial.println();
     }
 
-    Serial.println(kings[i][0].toString());
+    kings[i][0].toString();
   }
 };
 
-void KingsManager::setNewPosition(bool turn, const char * from, const char * destination){};
+void KingsManager::setNewPosition(bool turn, const char * from, const char * destination){
+  kings[turn][0].setPosition(destination);
+};
 
 void KingsManager::findAndRemove(bool turn, const char * destination){
-  if(strcmp(kings[turn][0].getPosition(),destination){
+  if(strcmp(kings[turn][0].getPosition(),destination) == 0){
       kings[turn][0].setAlive();
       kings[turn][0].setPosition("Z9");
   }

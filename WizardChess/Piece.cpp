@@ -27,7 +27,14 @@ Piece::Piece(const char * initialPosition){
 };
 
 char * Piece::getPosition(){
-  return position;
+  // get position in a safety way
+  char * copy = new char [strlen(position)];
+    
+  for(int i=0; i<strlen(position); i++){
+      copy[i] = position[i];
+  }
+  
+  return copy;
 };
 
 bool Piece::getAlive(){
@@ -35,6 +42,7 @@ bool Piece::getAlive(){
 };
 
 void Piece::setPosition(const char * newCoordinates){
+  // set position in a safety way
   position[0] = newCoordinates[0];
   position[1] = newCoordinates[1];
 };

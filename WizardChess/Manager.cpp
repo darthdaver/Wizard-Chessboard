@@ -20,14 +20,14 @@
 
 Manager::Manager(){};
 
-bool Manager::checkSource(Cell * cbState[][8], bool, turn, const char * from, char type){
+bool Manager::checkSource(Cell * cbState[][8], bool turn, const char * from, char type){
     // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
     int row = from[0] - 65;
     // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
     int col = from[1] - 49;
-    if(cbState[row][column].getBusy()){
-      if((turn && cbState[row][column].getColor() == 'B' || !turn && cbState[row][column].getColor() == 'W')) && 
-            cbState[row][column].getPiece() == type){
+    if(cbState[row][col]->getBusy()){
+      if((turn && cbState[row][col]->getColor() == 'B' || !turn && cbState[row][col]->getColor() == 'W') && 
+            cbState[row][col]->getPiece() == type){
         return true;
       }
     }

@@ -24,11 +24,7 @@ Queen::Queen(){};
 
 // Constructor
 Queen::Queen(const char * initialPosition): Piece(initialPosition) {
-};
-
-bool Queen::checkPathIsFree(const char * destination){
-  return true;
-};
+}
 
 void Queen::toString(){
   Serial.println("Type     : Queen");

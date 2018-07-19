@@ -26,10 +26,6 @@ Knight::Knight(){};
 Knight::Knight(const char * initialPosition): Piece(initialPosition) {
 };
 
-bool Knight::checkPathIsFree(const char * destination){
-  return true;
-};
-
 void Knight::toString(){
   Serial.println("Type     : Knight");
   Serial.print("Alive    : ");

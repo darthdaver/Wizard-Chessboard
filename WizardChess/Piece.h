@@ -83,7 +83,7 @@ class Piece {
          *      - position : string that represents the coordinates of the position
          *                   of the piece
          */
-        char position[3];
+        char * position;
         bool alive;
 };
 

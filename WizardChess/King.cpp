@@ -26,7 +26,7 @@ King::King(){};
 King::King(const char * initialPosition): Piece(initialPosition) {
 };
 
-virtual void King::toString(){
+void King::toString(){
   Serial.println("Type     : King");
   Serial.print("Alive    : ");
   Serial.println(getAlive());

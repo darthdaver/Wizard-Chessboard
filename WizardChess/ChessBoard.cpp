@@ -23,6 +23,7 @@
 ChessBoard::ChessBoard() {
     // Turn controller inizialization (start the white player - WHITE --> 0)
     turn = false;
+    solenoid = "A1";
 
     for(int i = 0; i < 8; i++){
         for(int j = 0; i < 8; i++){
@@ -70,10 +71,10 @@ void ChessBoard::move(QueueArray <char *> wordsQueue){
     // Auxiliary variables
     bool promotion = false;
     bool errorFlag = false;
-    char * promoType = new char[8];
-    char * from = new char[3];
-    char * destination = new char[3];
-    char * candidate = new char[3];
+    char * promoType;
+    char * from;
+    char * destination;
+    char * candidate;
 
     /*
      *  Command interpretation and move execution phase
@@ -158,7 +159,7 @@ void ChessBoard::move(QueueArray <char *> wordsQueue){
     }
 
     // if there is a candidate, perform the move
-    if(candidate != NULL){
+    if(candidate != NULL && strlen(candidate) == 2){
       // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
       int row = destination[0] - 65;
       // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
@@ -177,6 +178,7 @@ void ChessBoard::move(QueueArray <char *> wordsQueue){
       updateState(candidate, destination);
     } else{
         Serial.println("Invalid move! Try again!");
+        Serial.println();
     }
 
     Serial.println();
@@ -190,7 +192,7 @@ void ChessBoard::move(QueueArray <char *> wordsQueue){
     toString();
 };
 
-void ChessBoard::performMove(char type, char * from, char * to) {
+void ChessBoard::performMove(const char type, const  char * from, const char * to) {
   // transport the electromagnet in the cell where is positioned the piece that has to be moved
   direct("A1", from);
 
@@ -210,7 +212,7 @@ void ChessBoard::performMove(char type, char * from, char * to) {
 };
 
 // Navigate funtion implementation
-bool ChessBoard::navigate(char * from, char * to) {
+bool ChessBoard::navigate(const char * from, const char * to) {
   // power up the CNC board
   digitalWrite (POWER_CNC, HIGH);
   //power up the magnet
@@ -255,7 +257,7 @@ bool ChessBoard::navigate(char * from, char * to) {
 };
 
 // Direct function implementation
-void ChessBoard::direct(char * from, char * to) {
+void ChessBoard::direct(const char * from, const char * to) {
   // power up the CNC board
   digitalWrite (POWER_CNC, HIGH);
 
@@ -293,7 +295,7 @@ void ChessBoard::stepperMovement (bool dir, byte dirPin, byte stepperPin, int st
 };
 
 // Remove dead implementation
-void ChessBoard::removeDead(char * destination, int row, int col){
+void ChessBoard::removeDead(const char * destination, int row, int col){
     if(cbState[row][col]->getPiece() == 'P'){
       pawnsManager.findAndRemove(turn, destination);
     } else if(cbState[row][col]->getPiece() == 'R'){
@@ -354,7 +356,7 @@ void ChessBoard::toString(){
     Serial.println("Chessboard : ");
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            Serial.println("Cell   : ");
+            Serial.print("Cell  : ");
             Serial.print(char(i + 65));
             Serial.println(char(j + 48));
             cbState[i][j]->toString();
