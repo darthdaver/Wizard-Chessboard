@@ -25,7 +25,7 @@ ChessBoard::ChessBoard() {
     turn = false;
     solenoid = "A1";
 
-    for(int i = 0; i < 8; i++){
+    /*for(int i = 0; i < 8; i++){
         for(int j = 0; i < 8; i++){
             if(j == 0 || j == 1){
               if(j == 0){
@@ -62,8 +62,76 @@ ChessBoard::ChessBoard() {
             } else{
                 cbState[i][j] = new Cell(false,'E','E');    // empty cbState 
             }
+            delay(1000);
+            //Serial.println("init");
         }
-    }
+    }*/
+
+    
+    /*cbState[0][0] = new Cell(true,'W', 'P');
+    cbState[0][1] = new Cell(true,'W', 'P');
+    cbState[0][2] = new Cell(true,'W', 'P');
+    cbState[0][3] = new Cell(true,'W', 'P');
+    cbState[0][4] = new Cell(true,'W', 'P');
+    cbState[0][5] = new Cell(true,'W', 'P');
+    cbState[0][6] = new Cell(true,'W', 'P');
+    cbState[0][7] = new Cell(true,'W', 'P');
+    cbState[1][0] = new Cell(true,'W', 'R');
+    cbState[1][1] = new Cell(true,'W', 'B');
+    cbState[1][2] = new Cell(true,'W', 'H');
+    cbState[1][3] = new Cell(true,'W', 'Q');
+    cbState[1][4] = new Cell(true,'W', 'K');
+    cbState[1][5] = new Cell(true,'W', 'H');
+    cbState[1][6] = new Cell(true,'W', 'B');
+    cbState[1][7] = new Cell(true,'W', 'R');
+    cbState[2][0] = new Cell(false,'E', 'E');
+    cbState[2][1] = new Cell(false,'E', 'E');
+    cbState[2][2] = new Cell(false,'E', 'E');
+    cbState[2][3] = new Cell(false,'E', 'E');
+    cbState[2][4] = new Cell(false,'E', 'E');
+    cbState[2][5] = new Cell(false,'E', 'E');
+    cbState[2][6] = new Cell(false,'E', 'E');
+    cbState[2][7] = new Cell(false,'E', 'E');
+    cbState[3][0] = new Cell(false,'E', 'E');
+    cbState[3][1] = new Cell(false,'E', 'E');
+    cbState[3][2] = new Cell(false,'E', 'E');
+    cbState[3][3] = new Cell(false,'E', 'E');
+    cbState[3][4] = new Cell(false,'E', 'E');
+    cbState[3][5] = new Cell(false,'E', 'E');
+    cbState[3][6] = new Cell(false,'E', 'E');
+    cbState[3][7] = new Cell(false,'E', 'E');
+    cbState[4][0] = new Cell(false,'E', 'E');
+    cbState[4][1] = new Cell(false,'E', 'E');
+    cbState[4][2] = new Cell(false,'E', 'E');
+    cbState[4][3] = new Cell(false,'E', 'E');
+    cbState[4][4] = new Cell(false,'E', 'E');
+    cbState[4][5] = new Cell(false,'E', 'E');
+    cbState[4][6] = new Cell(false,'E', 'E');
+    cbState[4][7] = new Cell(false,'E', 'E');
+    cbState[5][0] = new Cell(false,'E', 'E');
+    cbState[5][1] = new Cell(false,'E', 'E');
+    cbState[5][2] = new Cell(false,'E', 'E');
+    cbState[5][3] = new Cell(false,'E', 'E');
+    cbState[5][4] = new Cell(false,'E', 'E');
+    cbState[5][5] = new Cell(false,'E', 'E');
+    cbState[5][6] = new Cell(false,'E', 'E');
+    cbState[5][7] = new Cell(false,'E', 'E');
+    cbState[6][0] = new Cell(true,'B', 'P');
+    cbState[6][1] = new Cell(true,'B', 'P');
+    cbState[6][2] = new Cell(true,'B', 'P');
+    cbState[6][3] = new Cell(true,'B', 'P');
+    cbState[6][4] = new Cell(true,'B', 'P');
+    cbState[6][5] = new Cell(true,'B', 'P');
+    cbState[6][6] = new Cell(true,'B', 'P');
+    cbState[6][7] = new Cell(true,'B', 'P');
+    cbState[7][0] = new Cell(true,'B', 'R');
+    cbState[7][1] = new Cell(true,'B', 'B');
+    cbState[7][2] = new Cell(true,'B', 'H');
+    cbState[7][3] = new Cell(true,'B', 'Q');
+    cbState[7][4] = new Cell(true,'B', 'K');
+    cbState[7][5] = new Cell(true,'B', 'H');
+    cbState[7][6] = new Cell(true,'B', 'B');
+    cbState[7][7] = new Cell(true,'B', 'R');*/
 };
 
 // Move function implementation
@@ -177,18 +245,18 @@ void ChessBoard::move(QueueArray <char *> wordsQueue){
       // Update state of the game
       updateState(candidate, destination);
     } else{
-        Serial.println("Invalid move! Try again!");
-        Serial.println();
+        //Serial.println("Invalid move! Try again!");
+        //Serial.println();
     }
 
-    Serial.println();
-    Serial.println(piece);
-    Serial.print(" moved from ");
-    Serial.print(candidate);
-    Serial.print(" to ");
-    Serial.print(destination);
-    Serial.print(" succesfully executed.");
-    Serial.println();
+    //Serial.println();
+    //Serial.println(piece);
+    //Serial.print(" moved from ");
+    //Serial.print(candidate);
+    //Serial.print(" to ");
+    //Serial.print(destination);
+    //Serial.print(" succesfully executed.");
+    //Serial.println();
     toString();
 };
 
@@ -347,22 +415,22 @@ void ChessBoard::setTurnPlayer(){
 };
 
 void ChessBoard::toString(){
-    Serial.println();
-    Serial.println("--- Game State ---");
-    Serial.println();
-    Serial.print("Turn : ");
-    Serial.println(turn);
-    Serial.println();
-    Serial.println("Chessboard : ");
+    //Serial.println();
+    //Serial.println("--- Game State ---");
+    //Serial.println();
+    //Serial.print("Turn : ");
+    //Serial.println(turn);
+    //Serial.println();
+    //Serial.println("Chessboard : ");
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            Serial.print("Cell  : ");
-            Serial.print(char(i + 65));
-            Serial.println(char(j + 48));
+            //Serial.print("Cell  : ");
+            //Serial.print(char(i + 65));
+            //Serial.println(char(j + 48));
             cbState[i][j]->toString();
         }
     }
-    Serial.println();
+    //Serial.println();
 
     pawnsManager.toString();
 };

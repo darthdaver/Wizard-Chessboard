@@ -26,9 +26,9 @@ Rook::Rook(){};
 Rook::Rook(const char * initialPosition): Piece(initialPosition) {};
 
 void Rook::toString(){
-  Serial.println("Type     : Rook");
-  Serial.print("Alive    : ");
-  Serial.println(getAlive());
-  Serial.print("Position : ");
-  Serial.println(getPosition());
+  //Serial.println("Type     : Rook");
+  //Serial.print("Alive    : ");
+  //Serial.println(getAlive());
+  //Serial.print("Position : ");
+  //Serial.println(getPosition());
 };

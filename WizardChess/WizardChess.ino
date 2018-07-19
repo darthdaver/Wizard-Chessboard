@@ -19,12 +19,12 @@
 #include <SoftwareSerial.h>
 #include <QueueArray.h>
 #include "Config.h"
-#include "ChessBoard.h"
+//#include "ChessBoard.h"
 
 // Bluetooth: define software serial
-SoftwareSerial BT(BT_RX, BT_TX);
+//SoftwareSerial BT(BT_RX, BT_TX);
 
-ChessBoard chessBoard;
+//ChessBoard chessBoard;
 
 void setup() {
 
@@ -32,7 +32,7 @@ void setup() {
   Serial.begin(9600);
 
   // Software serial setup
-  BT.begin(9600);
+  //BT.begin(9600);
 
   // NEMA 17 pins setup
   pinMode (X_DIR, OUTPUT);
@@ -49,13 +49,13 @@ void setup() {
   pinMode(POWER_MAGNET, OUTPUT);
   digitalWrite (POWER_MAGNET, LOW);
 
-  // Instanciate a chessboard
-  chessBoard = ChessBoard();
-
   Serial.println("Inizializzazione gioco completata");
   Serial.println();
 
-  chessBoard.toString();
+  // Instanciate a chessboard
+  //chessBoard = ChessBoard();
+
+  //chessBoard.toString();
   
   delay(1000);
 }
@@ -118,7 +118,7 @@ void loop(){
     }
   }
 
-  chessBoard.move(wordsQueue);
+  //chessBoard.move(wordsQueue);
 
   // else Serial.println("Unrecognized command. Please, try again!");
 }

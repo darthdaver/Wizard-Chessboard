@@ -21,7 +21,7 @@
 Piece::Piece(){};
 
 Piece::Piece(const char * initialPosition){
-  //Serial.println(initialPosition);
+  ////Serial.println(initialPosition);
   position = initialPosition;
   alive = true;
 };

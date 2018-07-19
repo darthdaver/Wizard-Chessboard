@@ -138,16 +138,16 @@ bool RooksManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, in
 };
 
 void RooksManager::toString(){
-  Serial.println("--- Rooks ---");
-  Serial.println();
+  //Serial.println("--- Rooks ---");
+  //Serial.println();
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      Serial.println("Black: ");
-      Serial.println();
+      //Serial.println("Black: ");
+      //Serial.println();
     } else{
-      Serial.println("White: ");
-      Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     }
 
     for(int j = 0; i < 2; i ++){

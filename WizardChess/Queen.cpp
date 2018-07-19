@@ -27,9 +27,9 @@ Queen::Queen(const char * initialPosition): Piece(initialPosition) {
 }
 
 void Queen::toString(){
-  Serial.println("Type     : Queen");
-  Serial.print("Alive    : ");
-  Serial.println(getAlive());
-  Serial.print("Position : ");
-  Serial.println(getPosition());
+  //Serial.println("Type     : Queen");
+  //Serial.print("Alive    : ");
+  //Serial.println(getAlive());
+  //Serial.print("Position : ");
+  //Serial.println(getPosition());
 };

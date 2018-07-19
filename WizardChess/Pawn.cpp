@@ -57,9 +57,9 @@ void Pawn::setFirstMove(){
 };
 
 void Pawn::toString(){
-  Serial.println("Type     : Pawn");
-  Serial.print("Alive    : ");
-  Serial.println(getAlive());
-  Serial.print("Position : ");
-  Serial.println(getPosition());
+  //Serial.println("Type     : Pawn");
+  //Serial.print("Alive    : ");
+  //Serial.println(getAlive());
+  //Serial.print("Position : ");
+  //Serial.println(getPosition());
 };

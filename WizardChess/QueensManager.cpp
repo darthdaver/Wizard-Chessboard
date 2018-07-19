@@ -139,16 +139,16 @@ bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, i
 };
 
 void QueensManager::toString(){
-  Serial.println("--- Queen ---");
-  Serial.println();
+  //Serial.println("--- Queen ---");
+  //Serial.println();
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      Serial.println("Black: ");
-      Serial.println();
+      //Serial.println("Black: ");
+      //Serial.println();
     } else{
-      Serial.println("White: ");
-      Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     }
     
     queens[i][0].toString();

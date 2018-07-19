@@ -27,9 +27,9 @@ King::King(const char * initialPosition): Piece(initialPosition) {
 };
 
 void King::toString(){
-  Serial.println("Type     : King");
-  Serial.print("Alive    : ");
-  Serial.println(getAlive());
-  Serial.print("Position : ");
-  Serial.println(getPosition());
+  ////Serial.println("Type     : King");
+  ////Serial.print("Alive    : ");
+  ////Serial.println(getAlive());
+  ////Serial.print("Position : ");
+  ////Serial.println(getPosition());
 };

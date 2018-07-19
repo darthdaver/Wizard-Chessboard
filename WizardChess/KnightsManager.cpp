@@ -32,7 +32,7 @@ KnightsManager::KnightsManager(): Manager() {
 // checkCandidates implementation
 char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const char* from, const char* destination){
   // auxiliary variables
-  char * candidate = new char[3];
+  char * candidate;
   int numCandidates = 0;
   int indexCandidate;
   int vDiff;
@@ -115,16 +115,16 @@ void KnightsManager::setNewPosition(bool turn, const char * from, const char * d
 };
 
 void KnightsManager::toString(){
-  Serial.println("--- Knights ---");
-  Serial.println();
+  //Serial.println("--- Knights ---");
+  //Serial.println();
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      Serial.println("Black: ");
-      Serial.println();
+      //Serial.println("Black: ");
+      //Serial.println();
     } else{
-      Serial.println("White: ");
-      Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     }
 
     for(int j = 0; i < 2; i ++){
