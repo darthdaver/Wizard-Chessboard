@@ -35,6 +35,7 @@ QueensManager::QueensManager(): Manager() {
 // checkCandidates implementation
 char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   /// auxiliary variables
+  char * candidate;
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
@@ -72,13 +73,15 @@ char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char
     // check the queen is alive
     if(queens[turn][0].getAlive()){
       // check if path is licit
+        printf("\n\n %d %d  %d  %d\n",vDiff,hDiff,row,col);
       if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
         if(cbState[row][col]->getBusy()){
           // set a memo to remember that the opponent piece in the destination cell must be removed
           cbState[row][col]->setColor('D');
         }
+        candidate = queens[turn][0].getPosition();
         queens[turn][0].setPosition(destination);
-        return queens[turn][0].getPosition();
+        return candidate;
       }
     }
   }
@@ -93,12 +96,12 @@ bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, i
       for(int i = 1; i < abs(vDiff); i++){
         if(vDiff > 0){
           // cell busy
-          if(cbState[row][col + i]->getBusy()){
+          if(cbState[row][col - i]->getBusy()){
             return false;
           }
         } else {
           // cell busy
-          if(cbState[row][col - i]->getBusy()){
+          if(cbState[row][col + i]->getBusy()){
             return false;
           }
         }
@@ -107,12 +110,12 @@ bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, i
       for(int i = 1; i < abs(hDiff); i++){
         if(hDiff > 0){
           // cell busy
-          if(cbState[row + i][col]->getBusy()){
+          if(cbState[row - i][col]->getBusy()){
             return false;
           }
         } else {
           // cell busy
-          if(cbState[row - i][col]->getBusy()){
+          if(cbState[row + i][col]->getBusy()){
             return false;
           }
         }
@@ -123,22 +126,22 @@ bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, i
     for(int i = 1; i < abs(vDiff); i++){
       if(vDiff > 0 && hDiff > 0){         // up - right real chessboard (from white player point of view)
         // cell busy
-        if(cbState[row + i][col + i]->getBusy()){
+        if(cbState[row - i][col - i]->getBusy()){
           return false;
         }
       } else if(vDiff > 0 && hDiff < 0){  // up - left real chessboard (from white player point of view)
         // cell busy
-        if(cbState[row + i][col - i]->getBusy()){
+        if(cbState[row - i][col + i]->getBusy()){
           return false;
         }
       } else if(vDiff < 0 && hDiff > 0){  // down - right real chessboard (from white player point of view)
         // cell busy
-        if(cbState[row - i][col + i]->getBusy()){
+        if(cbState[row + i][col - i]->getBusy()){
           return false;
         }
       } else if(vDiff < 0 && hDiff < 0){  // down - left real chessboard (from white player point of view)
         // cell busy
-        if(cbState[row - i][col - i]->getBusy()){
+        if(cbState[row + i][col + i]->getBusy()){
           return false;
         }
       }
@@ -159,7 +162,7 @@ void QueensManager::toString(){
       //Serial.println("Black: ");
       //Serial.println();
     } else{
-      printf("Black: \n");
+      printf("\nBlack: \n");
       //Serial.println("White: ");
       //Serial.println();
     }

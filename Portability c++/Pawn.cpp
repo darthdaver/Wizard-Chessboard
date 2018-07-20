@@ -67,8 +67,9 @@ void Pawn::toString(){
   //Serial.println(getAlive());
   //Serial.print("Position : ");
   //Serial.println(getPosition());
-  printf("\nType      : Pawn\n");
-  printf("Alive     : %d\n",getAlive());
-  printf("Promotion : %s\n",getPromotion());
-  printf("Position  : %s\n",getPosition());
+  printf("\nType       : Pawn\n");
+  printf("Alive      : %d\n",getAlive());
+  printf("Promotion  : %s\n",getPromotion());
+  printf("Position   : %s\n",getPosition());
+  printf("First move : %d\n",getFirstMove());
 };

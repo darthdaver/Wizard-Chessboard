@@ -44,6 +44,9 @@ PawnsManager::PawnsManager(): Manager() {
   pawns[BLACK][5] = Pawn::Pawn("F7");
   pawns[BLACK][6] = Pawn::Pawn("G7");
   pawns[BLACK][7] = Pawn::Pawn("H7");
+  
+  enPassantWhite = NULL;
+  enPassantBlack = NULL;
 };
 
 // checkCandidates implementation
@@ -54,6 +57,7 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   int indexCandidate;
   int vDiff;
   int hDiff;
+  int colFrom;
   printf("Arrivo!");
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int row = destination[0] - 65;
@@ -70,6 +74,7 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){
     // control the position of any pawn of the player in order to find a possible candidate
     for(int i = 0; i < 8; i++){
+        //printf("\n\n variable i %d  %s  %s ",i, pawns[turn][i].getPosition(),destination);
       // check the queen is alive
       if(pawns[turn][i].getAlive()){  
         
@@ -90,6 +95,8 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           vDiff = destination[1] - from[1];
           // calculate the horizontal difference xd - xf
           hDiff = destination[0] - from[0];
+          // calculate column index of the pawn in pawns, when from ≠ 0
+          colFrom = searchCol(turn,from,destination);
         }
         if(hDiff == 0 && abs(vDiff) == 1){   // classical move
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
@@ -110,54 +117,59 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
+              candidate = new char[2];
+              candidate[0] = from[0];
+              candidate[1] = from[1];
               return candidate;
             }
           }
-        } else if(pawns[turn][i].getFirstMove() && hDiff == 0 && abs(vDiff) == 2){   // double step move
-          // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
-            printf("\n\nentro!!   %d\n",checkDirection(turn, vDiff));
-          if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
-              printf("\n\nentro!!\n");
-            // add candidate
-            if(from == NULL){
-              numCandidates++;
-              indexCandidate = i;
-              printf("\n\nnumCand2 %d\n", numCandidates);
-            } else {
-              // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
-              pawns[turn][indexCandidate].setFirstMove();
-              // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
-              if(turn){   // if move black
-                enPassantWhite = new char[3];
-                enPassantWhite[0] = destination[0];
-                enPassantWhite[1] = destination[1];
-                enPassantBlack = NULL;
-              } else{     // if move white
-                enPassantBlack = new char[3];
-                enPassantBlack[0] = destination[0];
-                enPassantBlack[1] = destination[1];
-                enPassantWhite = NULL;
-              }
-
-              if(cbState[row][col]->getBusy()){
-                // set a memo to remember that the opponent piece in the destination cell must be removed
-                cbState[row][col]->setColor('D');
-              }
-              
-              setNewPosition(turn, from, destination);
-              candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
-              return candidate;
+        } else if(hDiff == 0 && abs(vDiff) == 2){   // double step move pawns[turn][colFrom].getFirstMove()
+            if(from == NULL && pawns[turn][i].getFirstMove()){
+                if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+                    printf("\n\nentro!!\n");
+                    // add candidate
+                    if(from == NULL){
+                        numCandidates++;
+                        indexCandidate = i;
+                        printf("\n\nnumCand2 %d\n", numCandidates);
+                    }
+                }
+            } else if(from != NULL && pawns[turn][colFrom].getFirstMove()){
+                if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+                    pawns[turn][colFrom].setFirstMove();
+                    printf("\n\nnumCandABC1 %d\n", numCandidates);
+                    printf("\n\nnumCandABC2 %d\n", numCandidates);
+                    
+                    // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
+                    if(turn){   // if move black
+                        enPassantWhite = new char[2];
+                        enPassantWhite[0] = destination[0];
+                        enPassantWhite[1] = destination[1];
+                        enPassantBlack = NULL;
+                    } else{     // if move white
+                        enPassantBlack = new char[2];
+                        enPassantBlack[0] = destination[0];
+                        enPassantBlack[1] = destination[1];
+                        printf("\n\nnumCandABC3 %d\n", numCandidates);
+                        enPassantWhite = NULL;
+                    }
+                    
+                    if(cbState[row][col]->getBusy()){
+                        // set a memo to remember that the opponent piece in the destination cell must be removed
+                        cbState[row][col]->setColor('D');
+                    }
+                    
+                    printf("\n\nnumCand2 %d\n", numCandidates);
+                    setNewPosition(turn, from, destination);
+                    printf("\n\nnumCand2 %d\n", numCandidates);
+                    candidate = new char[2];
+                    candidate[0] = from[0];
+                    candidate[1] = from[1];
+                    return candidate;
+                }
             }
-            
-          }
-        } else if(abs(hDiff) == 1 && abs(vDiff == 1)){    // eat the opposing piece
+        } else if(abs(hDiff) == 1 && abs(vDiff) == 1){    // eat the opposing piece
+                    printf("\n\nQui arrivi?\n");
           // check direction and path is licit : if yes, add the corresponding pawn to the list of candidates
           if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
             // a eat move eliminate previous eventual en passant
@@ -176,10 +188,9 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
+              candidate = new char[2];
+              candidate[0] = from[0];
+              candidate[1] = from[1];
               return candidate;
             }
           }
@@ -200,10 +211,9 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
+              candidate = new char[2];
+              candidate[0] = from[0];
+              candidate[1] = from[1];
               return candidate;
             }
             
@@ -225,37 +235,46 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
+              candidate = new char[2];
+              candidate[0] = from[0];
+              candidate[1] = from[1];
               return candidate;
             }
           }
         }
       }
+        printf("\n\nQui arrivi?\n");
     }
     printf("\n\nnumcand %d\n",numCandidates);
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
         printf("\n\nentro\n");
-      if(vDiff == 2){
-        pawns[turn][indexCandidate].setFirstMove();
+      if(abs(vDiff) == 2){
         // a two-step movement generate the possibility for the opponent player to perform an en passant in the next move
         if(turn){   // if move black
-          enPassantWhite = new char[3];
+            
+          enPassantWhite = new char[2];
           enPassantWhite[0] = destination[0];
           enPassantWhite[1] = destination[1];
           enPassantBlack = NULL;
+          printf("EnPassant %s %s   %s  destination ", enPassantWhite,enPassantBlack, destination);
         } else{     // if move white
-          enPassantBlack = new char[3];
+            
+          enPassantBlack = new char[2];
           enPassantBlack[0] = destination[0];
           enPassantBlack[1] = destination[1];
           enPassantWhite = NULL;
+          
+          printf("EnPassant %s %s   %s  destination ", enPassantWhite,enPassantBlack,destination);
         }
       } else {
         enPassantBlack = NULL;
         enPassantWhite = NULL;
+        printf("EnPassant che non mi piace?  %s %s", enPassantWhite,enPassantBlack);
+      }
+        
+      if(pawns[turn][indexCandidate].getFirstMove()){
+          pawns[turn][indexCandidate].setFirstMove();
       }
 
       if(cbState[row][col]->getBusy()){
@@ -268,6 +287,7 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
       return candidate;
     }
   }
+          printf("\n\nQui arrivi?\n");
   //move not valid
   return NULL;
 };
@@ -287,7 +307,7 @@ char * PawnsManager::checkPromotedCandidates(Cell * cbState[][8], bool turn, con
         return NULL;
       }
       if(from != NULL && checkSource(cbState, turn, from, 'P')){
-        candidate = new char[3];
+        candidate = new char[2];
             for(int i = 0; i<strlen(from);i++){
             candidate[i] = from[i];
         }
@@ -380,7 +400,7 @@ void PawnsManager::toString(){
       //Serial.println("Black: ");
       //Serial.println();
     } else{
-      printf("Black: \n");
+      printf("\nBlack: \n");
       //Serial.println("White: ");
       //Serial.println();
     }
@@ -396,16 +416,25 @@ void PawnsManager::toString(){
 void PawnsManager::setNewPosition(bool turn, const char * from, const char * destination){
   for(int i = 0; i < 8; i++){
     if(strcmp(pawns[turn][i].getPosition(),from) == 0){
+        printf("\n\nnew position %d\n",i);
       pawns[turn][i].setPosition(destination);
+    }
+  }
+};
+
+int PawnsManager::searchCol(bool turn, const char * from, const char * destination){
+  for(int i = 0; i < 8; i++){
+    if(strcmp(pawns[turn][i].getPosition(),from) == 0){
+        return i;
     }
   }
 };
 
 void PawnsManager::findAndRemove(bool turn, const char * destination){
   for(int i = 0; i < 8; i++){
-    if(strcmp(pawns[turn][i].getPosition(),destination) == 0){
-      pawns[turn][i].setAlive();
-      pawns[turn][i].setPosition("Z9");
+    if(strcmp(pawns[!turn][i].getPosition(),destination) == 0){
+      pawns[!turn][i].setAlive();
+      pawns[!turn][i].setPosition("Z9");
 
       return;
     }

@@ -155,8 +155,9 @@ class ChessBoard {
        * - Parameters :
        *      - oldPosition : represents the old position of the moved piece
        *      - newPosition : represents the new position of the moved piece
+       *      - type        : represents the type of the moved piece
        */
-      void updateState(const char * oldPosition, const char * newPosition);
+      void updateState(const char * type, const char * oldPosition, const char * newPosition);
 
       /**
        * Change the player turn

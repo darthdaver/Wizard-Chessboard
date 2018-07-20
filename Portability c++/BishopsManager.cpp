@@ -61,23 +61,26 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
         if(from == NULL){     // ordinary cases without ambiguity --> from set to NULL
           // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
           // calculate the vertical difference yd - yf
-          int vDiff = destination[1] - bishops[turn][i].getPosition()[1];
+          vDiff = destination[1] - bishops[turn][i].getPosition()[1];
           // calculate the horizontal difference xd - xf
-          int hDiff = destination[0] - bishops[turn][i].getPosition()[0];
+          hDiff = destination[0] - bishops[turn][i].getPosition()[0];
         } else {              //manage bishop promotion and ambiguous cases --> from ≠ NULL
           // control if actually a bishop of the player occupy the position expressed by the variable from 
           if(!checkSource(cbState, turn, from, 'B')){
             return NULL;
           }
           // calculate the vertical difference yd - yf
-          int vDiff = destination[1] - from[1];
+          vDiff = destination[1] - from[1];
           // calculate the horizontal difference xd - xf
-          int hDiff = destination[0] - from[0];
+          hDiff = destination[0] - from[0];
         }
+        
+        printf("\n\nvdiff1 %d    hdiff %d\n",vDiff,hDiff);
         // verify that the move is not not vertical or horizontal move, but only diagonal (abs(vDiff) == abs(hDiff))
         if(abs(vDiff) == abs(hDiff)){
           // check path is licit
           if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
+              printf("\n\nvdiff2 %d    hdiff %d\n",vDiff,hDiff);
             if(from == NULL){
               numCandidates++;
               indexCandidate = i;
@@ -115,10 +118,11 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
 
 bool BishopsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, int row, int col){
   // move along the diagonal to search for busy cells (remember that abs(vDiff) == abs(hDiff))
+    printf("\n\nvdiff3 %d    hdiff %d\n",vDiff,hDiff);
   for(int i = 1; i < abs(vDiff); i++){
     if(vDiff > 0 && hDiff > 0){         // up - right real chessboard (from white player point of view)
       // cell busy
-      if(cbState[row + i][col + i]->getBusy()){
+      if(cbState[row - i][col - i]->getBusy()){
         return false;
       }
     } else if(vDiff > 0 && hDiff < 0){  // up - left real chessboard (from white player point of view)
@@ -133,7 +137,7 @@ bool BishopsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, 
       }
     } else if(vDiff < 0 && hDiff < 0){  // down - left real chessboard (from white player point of view)
       // cell busy
-      if(cbState[row - i][col - i]->getBusy()){
+      if(cbState[row + i][col + i]->getBusy()){
         return false;
       }
     }
@@ -161,12 +165,12 @@ void BishopsManager::toString(){
       //Serial.println("Black: ");
       //Serial.println();
     } else{
-      printf("Black: \n");
+      printf("\nBlack: \n");
       //Serial.println("White: ");
       //Serial.println();
     }
 
-    for(int j = 0; i < 2; i ++){
+    for(int j = 0; j < 2; j ++){
       bishops[i][j].toString();
     }
   }

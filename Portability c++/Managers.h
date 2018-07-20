@@ -435,6 +435,17 @@ class PawnsManager: public Manager{
          *      - destination : the coordinates of the new position
          */
         void setNewPosition(bool turn, const char * from, const char * destination);
+        
+        /* Search the index of the pawn in the pawns list
+         *
+         * - Parameters :
+         *      - turn        : indicates if move the white (false) or the black (true)
+         *      - from        : the coordinates of the old position
+         *      - destination : the coordinates of the new position
+         * 
+         * - Return : the column index of the pawn in the pawns list
+         */
+        int searchCol(bool turn, const char * from, const char * destination);
 
         /**
          * Private variables

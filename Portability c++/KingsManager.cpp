@@ -35,6 +35,7 @@ KingsManager::KingsManager(): Manager() {
 // checkCandidates implementation
 char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char * from, const char * destination){
   // auxiliary variables
+  char * candidate;
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
@@ -78,8 +79,9 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           // set a memo to remember that the opponent piece in the destination cell must be removed
           cbState[row][col]->setColor('D');
         }
+        candidate = kings[turn][0].getPosition();
         kings[turn][0].setPosition(destination);
-        return kings[turn][0].getPosition();
+        return candidate;
       }
     }
   }
@@ -106,7 +108,7 @@ void KingsManager::toString(){
       printf("White: \n");
       //Serial.println();
     } else{
-      printf("Black: \n");
+      printf("\nBlack: \n");
       //Serial.println("White: ");
       //Serial.println();
     }

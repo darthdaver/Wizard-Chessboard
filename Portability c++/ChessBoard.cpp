@@ -192,6 +192,7 @@ void ChessBoard::move(queue<char *> wordsQueue){
     } else if(strcmp(piece,"TORRE") == 0 && !errorFlag){
         candidate = rooksManager.checkCandidates(cbState, turn,from,destination);
     } else if(strcmp(piece,"ALFIERE") == 0 && !errorFlag){
+        printf("\n\nentro\n");
         candidate = bishopsManager.checkCandidates(cbState, turn,from,destination);
     } else if(strcmp(piece,"CAVALLO") == 0 && !errorFlag){
         candidate = knightsManager.checkCandidates(cbState, turn,from,destination);
@@ -216,8 +217,8 @@ void ChessBoard::move(queue<char *> wordsQueue){
             // switch on alert led for 5s
             performMove(piece, candidate, destination);
             
-              // Update state of the game
-              updateState(candidate, destination);
+            // Update state of the game
+            updateState(piece, candidate, destination);
               
               //toString();
               
@@ -350,7 +351,7 @@ void ChessBoard::stepperMovement (bool dir, int dirPin, int stepperPin, int step
 void ChessBoard::removeDead(const char * destination, int row, int col){
     printf("\nInside removedDead\n");
     
-    /*if(cbState[row][col]->getPiece() == 'P'){
+    if(cbState[row][col]->getPiece() == 'P'){
       pawnsManager.findAndRemove(turn, destination);
     } else if(cbState[row][col]->getPiece() == 'R'){
       rooksManager.findAndRemove(turn, destination);
@@ -371,11 +372,11 @@ void ChessBoard::removeDead(const char * destination, int row, int col){
     // implementation of the algorithm to remove the piece
 
     // led signal to indicate the removal of the piece
-    */
+    
 };
 
 // Update State function implementation
-void ChessBoard::updateState(const char * oldPosition, const char * newPosition) {
+void ChessBoard::updateState(const char * type, const char * oldPosition, const char * newPosition) {
   // update position of the piece on the ChessBoard
   // 'A' corresponds to 65 - 65 = 0, 'B' to 66 - 65 = 1, 'C' to 67 - 65 = 2, etc.
   int rowOld = oldPosition[0] - 65;
@@ -386,10 +387,38 @@ void ChessBoard::updateState(const char * oldPosition, const char * newPosition)
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
   int colNew = newPosition[1] - 49;
 
+  printf("\n\n Question: %d   %d  %d  %d",rowOld,colOld,rowNew,colNew);
+  
+  // set the old cell color to empty
+  cbState[rowOld][colOld]->setColor('E');
+  // set the old piece to empty
+  cbState[rowOld][colOld]->setPiece('E');
   // set the old position to empty
   cbState[rowOld][colOld]->setBusy();
   // set the new position to busy
   cbState[rowNew][colNew]->setBusy();
+  
+  // set the new color
+  if(turn){
+      cbState[rowNew][colNew]->setColor('B');
+  } else{
+      cbState[rowNew][colNew]->setColor('W');
+  }
+  
+  // set the new cell type
+  if(strcmp(type,"PEDINA") == 0){
+      cbState[rowNew][colNew]->setPiece('P');
+  } else if(strcmp(type,"TORRE") == 0){
+      cbState[rowNew][colNew]->setPiece('R');
+  } else if(strcmp(type,"ALFIERE") == 0){
+      cbState[rowNew][colNew]->setPiece('B');
+  } else if(strcmp(type,"CAVALLO") == 0){
+      cbState[rowNew][colNew]->setPiece('H');
+  } else if(strcmp(type,"REGINA") == 0){
+      cbState[rowNew][colNew]->setPiece('Q');
+  } else if(strcmp(type,"RE") == 0){
+      cbState[rowNew][colNew]->setPiece('K');
+  } 
 
   // change the turn of the player
   setTurnPlayer();

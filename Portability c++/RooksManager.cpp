@@ -162,12 +162,12 @@ void RooksManager::toString(){
       //Serial.println("Black: ");
       //Serial.println();
     } else{
-      printf("Black: \n");
+      printf("\nBlack: \n");
       //Serial.println("White: ");
       //Serial.println();
     }
 
-    for(int j = 0; i < 2; i ++){
+    for(int j = 0; j < 2; j ++){
       rooks[i][j].toString();
     }
   }
