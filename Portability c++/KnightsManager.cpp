@@ -46,6 +46,11 @@ char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
   int row = destination[0] - 65;
   // '1' corresponds to 49 - 49 = 0, '2' to 50 - 49 = 1, etc.
   int col = destination[1] - 49;
+  
+  // row or column out of chessboard limits
+  if(row < 0 || col < 0 || row > 7 || col > 7){
+      return NULL;
+  }
 
   // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
   if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){

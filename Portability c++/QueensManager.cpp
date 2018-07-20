@@ -41,6 +41,11 @@ char * QueensManager::checkCandidates(Cell * cbState[][8], bool turn, const char
   int col = destination[1] - 49;
   int vDiff;
   int hDiff;
+  
+  // row or column out of chessboard limits
+  if(row < 0 || col < 0 || row > 7 || col > 7){
+      return NULL;
+  }
 
   // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
   if(from == NULL){     // ordinary cases without ambiguity --> from = NULL

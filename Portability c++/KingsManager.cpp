@@ -41,9 +41,14 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   int col = destination[1] - 49;
   int vDiff;
   int hDiff;
-
+  printf("\n\n %d   %d",row,col);
+  // row or column out of chessboard limits
+  if(row < 0 || col < 0 || row > 7 || col > 7){
+      return NULL;
+  }
+  printf("re del mio cuore");
   // consider the parameters from and destination as points (from = (xf,yf), destination = (xd,yd))
-  if(from = NULL){     // ordinary cases without ambiguity --> from = NULL
+  if(from == NULL){     // ordinary cases without ambiguity --> from = NULL
     // calculate the vertical difference yd - yf
     vDiff = destination[1] - kings[turn][0].getPosition()[1];
     // calculate the horizontal difference xd - xf
@@ -67,6 +72,7 @@ char * KingsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
     // check the king is alive
     if(kings[turn][0].getAlive()){
       // check if path is licit
+        printf("re del mio cuore");
       if(checkPathIsFree(cbState, vDiff, hDiff, row, col)){
         if(cbState[row][col]->getBusy()){
           // set a memo to remember that the opponent piece in the destination cell must be removed

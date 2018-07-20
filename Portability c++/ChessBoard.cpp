@@ -104,6 +104,12 @@ void ChessBoard::move(queue<char *> wordsQueue){
     wordsQueue.pop();
     printf("\n\n%s\n",piece);
     
+    // Print state of the game
+    if(strcmp(piece,"CHECK\n") == 0){
+        printf("\n\nentro!\n");
+        toString();
+        return;
+    }
 
     // If the piece is a pawn, verify if the move refers to a promoted pawn
     if(strcmp(piece,"PEDINA") == 0){
@@ -151,12 +157,14 @@ void ChessBoard::move(queue<char *> wordsQueue){
         } else{
             errorFlag = true;
         }
+    } else{
+            errorFlag = true;
     }
     
-    printf("\n\n%d  %d %s  %s\n\n", promotion,errorFlag,from,destination);
+    //printf("\n\n%d  %d %s  %s\n\n", promotion,errorFlag,from,destination);
     // verify if there is a candidate for the move
-    if(strcmp(piece,"PEDINA") == 0 && !errorFlag){printf("\n\nentro\n");
-        if(promotion){
+    if(strcmp(piece,"PEDINA") == 0 && !errorFlag){//printf("\n\nentro----\n");
+        if(promotion){printf("\n\nentro promotion");
             candidate = pawnsManager.checkPromotedCandidates(cbState, turn, promoType, from);
             if(candidate != NULL){
                 if(promoType == "TORRE"){
@@ -177,9 +185,10 @@ void ChessBoard::move(queue<char *> wordsQueue){
                 }
             }
         } else{
-            printf("\n\nentro");
+            printf("\n\nentro\n");
             candidate = pawnsManager.checkCandidates(cbState,turn,from,destination);
         }
+        printf("Arrivo!");
     } else if(strcmp(piece,"TORRE") == 0 && !errorFlag){
         candidate = rooksManager.checkCandidates(cbState, turn,from,destination);
     } else if(strcmp(piece,"ALFIERE") == 0 && !errorFlag){
@@ -189,9 +198,9 @@ void ChessBoard::move(queue<char *> wordsQueue){
     } else if(strcmp(piece,"REGINA") == 0 && !errorFlag){
         candidate = queensManager.checkCandidates(cbState, turn,from,destination);
     } else if(strcmp(piece,"RE") == 0 && !errorFlag){
-        candidate = kingsManager.checkCandidates(cbState, turn,from,destination);
+        candidate = kingsManager.checkCandidates(cbState, turn, from,destination);
     }
-
+    printf("Arrivo!!!!!!");
     // if there is a candidate, perform the move
     if(candidate != NULL){
         if(strlen(candidate) == 2){                                         

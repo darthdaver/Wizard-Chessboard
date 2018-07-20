@@ -43,6 +43,11 @@ char * RooksManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   int col = destination[1] - 49;
   int vDiff;
   int hDiff;
+  
+  // row or column out of chessboard limits
+  if(row < 0 || col < 0 || row > 7 || col > 7){
+      return NULL;
+  }
 
   // it is legal to look for candidates only if the destination cell is not already occupied by a piece of the same color
   if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){  

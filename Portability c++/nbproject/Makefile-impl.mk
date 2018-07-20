@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Wizard
+PROJECTNAME=Portability c++
 
 # Active Configuration
 DEFAULTCONF=Debug

@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-MacOSX
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-MacOSX
-CND_ARTIFACT_NAME_Debug=wizard
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-MacOSX/wizard
+CND_ARTIFACT_NAME_Debug=portability_c__
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-MacOSX/portability_c__
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-MacOSX/package
-CND_PACKAGE_NAME_Debug=wizard.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-MacOSX/package/wizard.tar
+CND_PACKAGE_NAME_Debug=portabilityc++.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-MacOSX/package/portabilityc++.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-MacOSX
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-MacOSX
-CND_ARTIFACT_NAME_Release=wizard
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/wizard
+CND_ARTIFACT_NAME_Release=portability_c__
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-MacOSX/portability_c__
 CND_PACKAGE_DIR_Release=dist/Release/GNU-MacOSX/package
-CND_PACKAGE_NAME_Release=wizard.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/wizard.tar
+CND_PACKAGE_NAME_Release=portabilityc++.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-MacOSX/package/portabilityc++.tar
 #
 # include compiler specific variables
 #
