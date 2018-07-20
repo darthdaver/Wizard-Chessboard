@@ -356,19 +356,21 @@ bool PawnsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, in
 };
 
 void PawnsManager::toString(){
-  //Serial.println("--- Pawns ---");
-  //Serial.println();
-  printf("\n\n--- Pawns ---\n\n");
+  Serial.println("--- Pawns ---");
+  Serial.println();
+  //printf("\n\n--- Pawns ---\n\n");
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      printf("White: \n");
-      //Serial.println("Black: ");
-      //Serial.println();
+      //printf("White: \n");
+      Serial.println();
+      Serial.println("White: ");
+      Serial.println();
     } else{
-      printf("\nBlack: \n");
-      //Serial.println("White: ");
-      //Serial.println();
+      //printf("\nBlack: \n");
+      Serial.println();
+      Serial.println("Black: ");
+      Serial.println();
     }
 
     for(int j = 0; j < 8; j ++){

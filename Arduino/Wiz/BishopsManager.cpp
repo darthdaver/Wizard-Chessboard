@@ -158,13 +158,14 @@ void BishopsManager::toString(){
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      printf("White: \n");
-      //Serial.println("Black: ");
-      //Serial.println();
+      //printf("White: \n");
+      Serial.println("White: ");
+      Serial.println();
     } else{
       printf("\nBlack: \n");
-      //Serial.println("White: ");
-      //Serial.println();
+      Serial.println();
+      Serial.println("White: ");
+      Serial.println();
     }
 
     for(int j = 0; j < 2; j ++){

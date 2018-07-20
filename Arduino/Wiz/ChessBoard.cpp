@@ -71,7 +71,7 @@ ChessBoard::ChessBoard() {
 }
 
 // Move function implementation
-void ChessBoard::move(queue<char *> wordsQueue){
+void ChessBoard::move(QueueArray<char *> wordsQueue){
     // Auxiliary variables
     bool promotion = false;
     bool errorFlag = false;
@@ -85,8 +85,7 @@ void ChessBoard::move(queue<char *> wordsQueue){
      *  Analysis of the single words splitted in the previous phase.
      *  If the move is validated, it is performed.
      */
-    char * piece = wordsQueue.front();
-    wordsQueue.pop();
+    char * piece = wordsQueue.pop();
 
     // Print state of the game
     if(strcmp(piece,"CHECK\n") == 0){
@@ -96,24 +95,22 @@ void ChessBoard::move(queue<char *> wordsQueue){
 
     // If the piece is a pawn, verify if the move refers to a promoted pawn
     if(strcmp(piece,"PEDINA") == 0){
-        if((wordsQueue.size() == 5 || wordsQueue.size() == 3) && wordsQueue.front() == "TORRE" || wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA"){
-            promoType = wordsQueue.front();
-            wordsQueue.pop();
+        if((wordsQueue.count() == 5 || wordsQueue.count() == 3) && wordsQueue.front() == "TORRE" || wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA"){
+            promoType = wordsQueue.pop();
             promotion = true;
         }
     }
 
-    if(wordsQueue.size() > 0){
+    if(wordsQueue.count() > 0){
         // Superfluous word (preposition)
         wordsQueue.pop();
     }
 
     // Analyze the cases
-    if (wordsQueue.size() == 3){       // ambiguous cases
+    if (wordsQueue.count() == 3){       // ambiguous cases
         // prevents errors if the source is a non valid word
         if(strlen(wordsQueue.front()) == 2){
-            from = wordsQueue.front();
-            wordsQueue.pop();
+            from = wordsQueue.pop();
         } else {
             errorFlag = true;
         }
@@ -122,18 +119,17 @@ void ChessBoard::move(queue<char *> wordsQueue){
 
         // prevents errors if the destination is a non valid word
         if(strlen(wordsQueue.front()) == 3){
-            destination = wordsQueue.front();
+            destination = wordsQueue.pop();
             // remove last character that is the terminal character
             destination[strlen(destination)-1]=NULL;
-            wordsQueue.pop();
         } else{
             errorFlag = true;
         }
-    } else if(wordsQueue.size() == 1){ // ordinary cases
+    } else if(wordsQueue.count() == 1){ // ordinary cases
         from = NULL;
         // prevents errors if the destination is a non valid word
         if(strlen(wordsQueue.front()) == 3){
-            destination = wordsQueue.front();
+            destination = wordsQueue.pop();
             // remove last character that is the terminal character
             destination[strlen(destination)-1]=NULL;
         } else{
@@ -396,7 +392,7 @@ void ChessBoard::updateState(const char * type, const char * oldPosition, const 
   // change the turn of the player
   setTurnPlayer();
 
-  printf("\nInside updateState\n");
+  //printf("\nInside updateState\n");
 };
 
 // SetTurnPlayer function implementation
@@ -405,34 +401,40 @@ void ChessBoard::setTurnPlayer(){
 };
 
 void ChessBoard::toString(){
-    //Serial.println();
-    //Serial.println("--- Game State ---");
-    //Serial.println();
-    //Serial.print("Turn : ");
-    //Serial.println(turn);
-    //Serial.println();
-    //Serial.println("Chessboard : ");
-    printf("\n\n--- Game State ---\n\n");
-    printf("Turn : %d\n\n",turn);
-    printf("Chessboard : \n");
+    Serial.println();
+    Serial.println("--- Game State ---");
+    Serial.println();
+    Serial.print("Turn : ");
+    Serial.println(turn);
+    Serial.println();
+    Serial.println("Chessboard : ");
+    Serial.println();
+    //printf("\n\n--- Game State ---\n\n");
+    //printf("Turn : %d\n\n",turn);
+    //printf("Chessboard : \n");
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            //Serial.print("Cell  : ");
-            //Serial.print(char(i + 65));
-            //Serial.println(char(j + 48));
-            printf("\n\nCell  : ");
-            printf("%c",char(i + 65));
-            printf("%c\n",char(j + 49));
-            //printf("\n%d   %d\n",i,j);
+            Serial.print("Cell  : ");
+            Serial.print(char(i + 65));
+            Serial.println(char(j + 49));
+            //printf("\n\nCell  : ");
+            //printf("%c",char(i + 65));
+            //printf("%c\n",char(j + 49));
             cbState[i][j]->toString();
         }
     }
     //Serial.println();
+    delay(500);
 
     pawnsManager.toString();
+    delay(500);
     rooksManager.toString();
+    delay(500);
     bishopsManager.toString();
+    delay(500);
     knightsManager.toString();
     queensManager.toString();
+    delay(500);
     kingsManager.toString();
+    delay(500);
 };
