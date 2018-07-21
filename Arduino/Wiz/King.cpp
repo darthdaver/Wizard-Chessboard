@@ -28,12 +28,12 @@ King::King(const char * initialPosition): Piece(initialPosition) {
 };
 
 void King::toString(){
-  Serial.println("Type     : King");
-  Serial.print("Alive    : ");
-  Serial.println(alive);
-  Serial.print("Position : ");
-  Serial.print(position[0]);
-  Serial.println(position[1]);
+  //Serial.println("Type     : King");
+  //Serial.print("Alive    : ");
+  //Serial.println(alive);
+  //Serial.print("Position : ");
+  //Serial.print(position[0]);
+  //Serial.println(position[1]);
   //printf("\nType     : King\n");
   //printf("Alive    : %d\n",getAlive());
   //printf("Position : %s\n",getPosition());

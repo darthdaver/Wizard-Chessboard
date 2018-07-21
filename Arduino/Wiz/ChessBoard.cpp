@@ -71,7 +71,7 @@ ChessBoard::ChessBoard() {
 }
 
 // Move function implementation
-void ChessBoard::move(QueueArray<char *> wordsQueue){
+void ChessBoard::move(queue<char *> wordsQueue){
     // Auxiliary variables
     bool promotion = false;
     bool errorFlag = false;
@@ -85,7 +85,8 @@ void ChessBoard::move(QueueArray<char *> wordsQueue){
      *  Analysis of the single words splitted in the previous phase.
      *  If the move is validated, it is performed.
      */
-    char * piece = wordsQueue.pop();
+    char * piece = wordsQueue.front();
+    wordsQueue.pop();
 
     // Print state of the game
     if(strcmp(piece,"CHECK\n") == 0){
@@ -95,22 +96,26 @@ void ChessBoard::move(QueueArray<char *> wordsQueue){
 
     // If the piece is a pawn, verify if the move refers to a promoted pawn
     if(strcmp(piece,"PEDINA") == 0){
-        if((wordsQueue.count() == 5 || wordsQueue.count() == 3) && wordsQueue.front() == "TORRE" || wordsQueue.front() == "CAVALLO" || wordsQueue.front() == "ALFIERE" || wordsQueue.front() == "REGINA"){
-            promoType = wordsQueue.pop();
+        //Serial.println("Entro1");
+        if((wordsQueue.size() == 5 || wordsQueue.size() == 3) && wordsQueue.size() == "TORRE" || wordsQueue.size() == "CAVALLO" || wordsQueue.size() == "ALFIERE" || wordsQueue.size() == "REGINA"){
+            promoType = wordsQueue.front();
+            wordsQueue.pop();
             promotion = true;
         }
     }
 
-    if(wordsQueue.count() > 0){
+    if(wordsQueue.size() > 0){
         // Superfluous word (preposition)
         wordsQueue.pop();
     }
 
     // Analyze the cases
-    if (wordsQueue.count() == 3){       // ambiguous cases
+    if (wordsQueue.size() == 3){       // ambiguous cases
+      //Serial.println("Entro 3");
         // prevents errors if the source is a non valid word
         if(strlen(wordsQueue.front()) == 2){
-            from = wordsQueue.pop();
+            from = wordsQueue.front();
+            wordsQueue.pop();
         } else {
             errorFlag = true;
         }
@@ -118,26 +123,33 @@ void ChessBoard::move(QueueArray<char *> wordsQueue){
         wordsQueue.pop();
 
         // prevents errors if the destination is a non valid word
-        if(strlen(wordsQueue.front()) == 3){
-            destination = wordsQueue.pop();
+        if(strlen(wordsQueue.front()) == 2){
+            destination = wordsQueue.front();
+            wordsQueue.pop();
             // remove last character that is the terminal character
-            destination[strlen(destination)-1]=NULL;
+            //destination[strlen(destination)-1]=NULL;
         } else{
             errorFlag = true;
         }
-    } else if(wordsQueue.count() == 1){ // ordinary cases
+    } else if(wordsQueue.size() == 1){ // ordinary cases
+      //Serial.println("Entro5");
         from = NULL;
         // prevents errors if the destination is a non valid word
-        if(strlen(wordsQueue.front()) == 3){
-            destination = wordsQueue.pop();
+        if(strlen(wordsQueue.front()) == 2){
+            destination = wordsQueue.front();
+            wordsQueue.pop();
             // remove last character that is the terminal character
-            destination[strlen(destination)-1]=NULL;
+            //destination[strlen(destination)-1]=NULL;
         } else{
             errorFlag = true;
         }
     } else{
             errorFlag = true;
     }
+
+    //Serial.print("Destination  ");
+    //Serial.print(destination[0]);
+    //Serial.println(destination[1]);
 
     //printf("\n\n%d  %d %s  %s\n\n", promotion,errorFlag,from,destination);
     // verify if there is a candidate for the move
@@ -176,6 +188,9 @@ void ChessBoard::move(QueueArray<char *> wordsQueue){
     } else if(strcmp(piece,"RE") == 0 && !errorFlag){
         candidate = kingsManager.checkCandidates(cbState, turn, from,destination);
     }
+    //Serial.print("Candidate  ");
+    ////Serial.print(candidate[0]);
+    ////Serial.println(candidate[1]);
     // if there is a candidate, perform the move
     if(candidate != NULL){
         if(strlen(candidate) == 2){
@@ -195,26 +210,28 @@ void ChessBoard::move(QueueArray<char *> wordsQueue){
             updateState(piece, candidate, destination);
 
             toString();
+
+            //Serial.println();
+            //Serial.print(piece);
+            //Serial.print(" moved from ");
+            ////Serial.print(candidate[0]);
+            ////Serial.print(candidate[1]);
+            //Serial.print(" to ");
+            //Serial.print(destination[0]);
+            //Serial.print(destination[1]);
+            //Serial.print(" succesfully executed.");
+            //Serial.println();
         }
     } else {
         //Serial.println("Invalid move! Try again!");
         //Serial.println();
-        toString();
+        //toString();
     }
-
-    //Serial.println();
-    //Serial.println(piece);
-    //Serial.print(" moved from ");
-    //Serial.print(candidate);
-    //Serial.print(" to ");
-    //Serial.print(destination);
-    //Serial.print(" succesfully executed.");
-    //Serial.println();
 };
 
 void ChessBoard::performMove(const char * type, const  char * from, const char * to) {
     //printf("\nInside performMove\n");
-  /*// transport the electromagnet in the cell where is positioned the piece that has to be moved
+  // transport the electromagnet in the cell where is positioned the piece that has to be moved
   direct("A1", from);
 
   // for all the pieces different from the knight
@@ -229,13 +246,13 @@ void ChessBoard::performMove(const char * type, const  char * from, const char *
     }
   } else{       // in case of knight move
         //implement all the cases
-  }*/
+  }
 };
 
 // Navigate funtion implementation
 bool ChessBoard::navigate(const char * from, const char * to) {
   //printf("\nInside navigate\n");
-  /*// power up the CNC board
+  // power up the CNC board
   digitalWrite (POWER_CNC, HIGH);
   //power up the magnet
   digitalWrite (POWER_MAGNET, HIGH);
@@ -273,7 +290,7 @@ bool ChessBoard::navigate(const char * from, const char * to) {
   //power off the electromagnet
   digitalWrite (POWER_MAGNET, LOW);
   //power off the CNC board
-  digitalWrite (POWER_CNC, LOW);*/
+  digitalWrite (POWER_CNC, LOW);
 
   return true;
 };
@@ -281,7 +298,7 @@ bool ChessBoard::navigate(const char * from, const char * to) {
 // Direct function implementation
 void ChessBoard::direct(const char * from, const char * to) {
   //printf("\nInside direct\n");
-  /*// power up the CNC board
+  // power up the CNC board
   digitalWrite (POWER_CNC, HIGH);
 
   // wait the board to power up
@@ -301,13 +318,13 @@ void ChessBoard::direct(const char * from, const char * to) {
   delay(500);
 
   //power off the CNC board
-  digitalWrite (POWER_CNC, LOW);*/
+  digitalWrite (POWER_CNC, LOW);
 };
 
 // Stepper movement function implementation
 void ChessBoard::stepperMovement (bool dir, int dirPin, int stepperPin, int steps){
     //printf("\nInside stepperMovement\n");
-    /*digitalWrite (dirPin, dir);
+    digitalWrite (dirPin, dir);
     delay (50);
 
     for (int i = 0; i < steps; i++) {
@@ -315,7 +332,7 @@ void ChessBoard::stepperMovement (bool dir, int dirPin, int stepperPin, int step
         delayMicroseconds (800);
         digitalWrite (stepperPin, LOW);
         delayMicroseconds (800);
-    }*/
+    }
 };
 
 // Remove dead implementation
@@ -401,40 +418,40 @@ void ChessBoard::setTurnPlayer(){
 };
 
 void ChessBoard::toString(){
-    Serial.println();
-    Serial.println("--- Game State ---");
-    Serial.println();
-    Serial.print("Turn : ");
-    Serial.println(turn);
-    Serial.println();
-    Serial.println("Chessboard : ");
-    Serial.println();
+    ////Serial.println();
+    ////Serial.println("--- Game State ---");
+    ////Serial.println();
+    ////Serial.print("Turn : ");
+    ////Serial.println(turn);
+    ////Serial.println();
+    ////Serial.println("Chessboard : ");
+    ////Serial.println();
     //printf("\n\n--- Game State ---\n\n");
     //printf("Turn : %d\n\n",turn);
     //printf("Chessboard : \n");
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            Serial.print("Cell  : ");
-            Serial.print(char(i + 65));
-            Serial.println(char(j + 49));
+            ////Serial.print("Cell  : ");
+            ////Serial.print(char(i + 65));
+            ////Serial.println(char(j + 49));
             //printf("\n\nCell  : ");
             //printf("%c",char(i + 65));
             //printf("%c\n",char(j + 49));
-            cbState[i][j]->toString();
+            //cbState[i][j]->toString();
         }
     }
-    //Serial.println();
-    delay(500);
+    ////Serial.println();
+    //delay(500);
 
-    pawnsManager.toString();
-    delay(500);
-    rooksManager.toString();
-    delay(500);
-    bishopsManager.toString();
-    delay(500);
-    knightsManager.toString();
-    queensManager.toString();
-    delay(500);
-    kingsManager.toString();
-    delay(500);
+    //pawnsManager.toString();
+    //delay(500);
+    //rooksManager.toString();
+    //delay(500);
+    //bishopsManager.toString();
+    //delay(500);
+    //knightsManager.toString();
+    //queensManager.toString();
+    //delay(500);
+    //kingsManager.toString();
+    //delay(500);
 };

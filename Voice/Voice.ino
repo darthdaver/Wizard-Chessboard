@@ -32,6 +32,9 @@ void setup(){
   pinMode(redled, OUTPUT);
   pinMode(yellowled, OUTPUT);
   pinMode(greenled, OUTPUT);
+
+  Serial.println("Inizializzazione completata");
+  Serial.println();
 }
 
 void loop() {

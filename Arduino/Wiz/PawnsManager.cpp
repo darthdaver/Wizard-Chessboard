@@ -72,6 +72,9 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){
     // control the position of any pawn of the player in order to find a possible candidate
     for(int i = 0; i < 8; i++){
+      delay(1000);
+      Serial.print("Candidates  ");
+      Serial.println(numCandidates);
       // check the queen is alive
       if(pawns[turn][i].getAlive()){
 
@@ -81,6 +84,9 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           vDiff = destination[1] - pawns[turn][i].getPosition()[1];
           // calculate the horizontal difference xd - xf
           hDiff = destination[0] - pawns[turn][i].getPosition()[0];
+          Serial.print("VDiff HDiff  ");
+          Serial.println(vDiff);
+          Serial.println(hDiff);
         } else {               // ambiguous cases --> from ≠ NULL
           // control if actually a pawn of the player occupy the position expressed by the variable from
           if(!checkSource(cbState, turn, from, 'P')){
@@ -117,7 +123,13 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
             }
           }
         } else if(hDiff == 0 && abs(vDiff) == 2){   // double step move pawns[turn][colFrom].getFirstMove()
+          Serial.print("VDiff HDiff  ");
+          Serial.println(vDiff);
+          Serial.println(hDiff);
             if(from == NULL && pawns[turn][i].getFirstMove()){
+              Serial.print("VDiff HDiff  ");
+          Serial.println(vDiff);
+          Serial.println(hDiff);
                 if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
                     // add candidate
                     if(from == NULL){
@@ -226,6 +238,7 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
         }
       }
     }
+    
     // in case from = NULL verify that the search of candidates return only one candidate
     if(numCandidates == 1){
       if(abs(vDiff) == 2){
@@ -363,14 +376,14 @@ void PawnsManager::toString(){
   for(int i = 0; i < 2; i ++){
     if(i == 0){
       //printf("White: \n");
-      Serial.println();
-      Serial.println("White: ");
-      Serial.println();
+      //Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     } else{
       //printf("\nBlack: \n");
-      Serial.println();
-      Serial.println("Black: ");
-      Serial.println();
+      //Serial.println();
+      //Serial.println("Black: ");
+      //Serial.println();
     }
 
     for(int j = 0; j < 8; j ++){

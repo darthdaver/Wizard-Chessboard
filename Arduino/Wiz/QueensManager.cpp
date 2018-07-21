@@ -152,9 +152,9 @@ bool QueensManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, i
 };
 
 void QueensManager::toString(){
-  //Serial.println("--- Queen ---");
-  //Serial.println();
-  printf("\n\n--- Queen ---\n\n");
+  Serial.println("--- Queen ---");
+  Serial.println();
+  //printf("\n\n--- Queen ---\n\n");
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){

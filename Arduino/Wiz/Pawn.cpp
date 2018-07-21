@@ -62,16 +62,16 @@ void Pawn::setFirstMove(){
 };
 
 void Pawn::toString(){
-  Serial.println("Type       : Pawn");
-  Serial.print("Alive      : ");
-  Serial.println(alive);
-  Serial.print("Position   : ");
-  Serial.print(position[0]);
-  Serial.println(position[1]);
-  Serial.print("Promotion  : ");
-  Serial.println(pawnPromotion);
-  Serial.print("First Move : ");
-  Serial.println(pawnFirstMove);
+  //Serial.println("Type       : Pawn");
+  //Serial.print("Alive      : ");
+  //Serial.println(alive);
+  //Serial.print("Position   : ");
+  //Serial.print(position[0]);
+  //Serial.println(position[1]);
+  //Serial.print("Promotion  : ");
+  //Serial.println(pawnPromotion);
+  //Serial.print("First Move : ");
+  //Serial.println(pawnFirstMove);
   //printf("\nType       : Pawn\n");
   //printf("Alive      : %d\n",getAlive());
   //printf("Promotion  : %s\n",getPromotion());

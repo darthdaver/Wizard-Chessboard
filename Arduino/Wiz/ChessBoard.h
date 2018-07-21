@@ -20,9 +20,10 @@
 #define CHESSBOARD_H
 
 #include <Arduino.h>
-#include <QueueArray.h>
+#include <StandardCplusplus.h>
 #include "Cell.h"
 #include "Managers.h"
+#include <queue>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ class ChessBoard {
        * - Parameters :
        *      - wordsQueue : a queue containing the words relative to the move that the player want to perform
        */
-      void move(QueueArray<char *> wordsQueue);
+      void move(queue<char *> wordsQueue);
 
       /**
        * Show a string representation of the object

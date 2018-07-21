@@ -7,28 +7,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Rook.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Manager.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/BishopsManager.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Pawn.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/ChessBoard.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Bishop.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/QueensManager.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Pieces.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Managers.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/KingsManager.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/King.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Queen.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Piece.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Cell.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Piece.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Cell.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/KnightsManager.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/RooksManager.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/ChessBoard.h</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/Knight.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/main.cpp</file>
-            <file>file:/Users/molinelli/NetBeansProjects/Wizard/PawnsManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Piece.h</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/BishopsManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Knight.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/RooksManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Cell.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/PawnsManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/ChessBoard.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Pawn.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Managers.h</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/main.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/KnightsManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Manager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/QueensManager.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/Piece.cpp</file>
+            <file>file:/Users/molinelli/Documents/Documenti%20-%20MacBook%20Pro%20di%20Davide/GitHub/Wizard-Chessboard/Portability%20c++/KingsManager.cpp</file>
         </group>
     </open-files>
 </project-private>

@@ -154,18 +154,18 @@ void BishopsManager::setNewPosition(bool turn, const char * from, const char * d
 void BishopsManager::toString(){
   //Serial.println("--- Bishops ---");
   //Serial.println();
-  printf("\n\n--- Bishops ---\n\n");
+  //printf("\n\n--- Bishops ---\n\n");
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
       //printf("White: \n");
-      Serial.println("White: ");
-      Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     } else{
-      printf("\nBlack: \n");
-      Serial.println();
-      Serial.println("White: ");
-      Serial.println();
+      //printf("\nBlack: \n");
+      //Serial.println();
+      //Serial.println("White: ");
+      //Serial.println();
     }
 
     for(int j = 0; j < 2; j ++){

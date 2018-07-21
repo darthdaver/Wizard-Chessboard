@@ -198,22 +198,14 @@ void ChessBoard::move(queue<char *> wordsQueue){
             // Update state of the game
             updateState(piece, candidate, destination);
 
-            toString();
+            //pedina toString();
         }
     } else {
-        //Serial.println("Invalid move! Try again!");
-        //Serial.println();
-        toString();
+        printf("\n\nInvalid move! Try again!\n");
     }
-
-    //Serial.println();
-    //Serial.println(piece);
-    //Serial.print(" moved from ");
-    //Serial.print(candidate);
-    //Serial.print(" to ");
-    //Serial.print(destination);
-    //Serial.print(" succesfully executed.");
-    //Serial.println();
+    
+    printf("\n\n%s moved from %.2s to %.2s\n", piece, candidate, destination);
+    
 };
 
 void ChessBoard::performMove(const char * type, const  char * from, const char * to) {
@@ -238,14 +230,14 @@ void ChessBoard::performMove(const char * type, const  char * from, const char *
 
 // Navigate funtion implementation
 bool ChessBoard::navigate(const char * from, const char * to) {
-  //printf("\nInside navigate\n");
-  /*// power up the CNC board
-  digitalWrite (POWER_CNC, HIGH);
+  printf("\nInside navigate\n");
+  // power up the CNC board
+  //digitalWrite (POWER_CNC, HIGH);
   //power up the magnet
-  digitalWrite (POWER_MAGNET, HIGH);
+  //digitalWrite (POWER_MAGNET, HIGH);
 
   // wait the board to power up
-  delay(1000);
+  //delay(1000);
 
   // es: navigate from A1 to C3
   bool dirX = to[0] > from[0]; // es: C > A --> true
@@ -266,30 +258,30 @@ bool ChessBoard::navigate(const char * from, const char * to) {
       stepperMovement(dirY, Y_DIR, Y_STP, STEPS * deltaY);
     } else {      // move not valid
       // switch off the electromagnet
-      digitalWrite (POWER_MAGNET, LOW);
+      //digitalWrite (POWER_MAGNET, LOW);
       return false;
     }
   }
 
   // wait the CNC to finish
-  delay(500);
+  //delay(500);
 
   //power off the electromagnet
-  digitalWrite (POWER_MAGNET, LOW);
+  //digitalWrite (POWER_MAGNET, LOW);
   //power off the CNC board
-  digitalWrite (POWER_CNC, LOW);*/
+  //digitalWrite (POWER_CNC, LOW);
 
   return true;
 };
 
 // Direct function implementation
 void ChessBoard::direct(const char * from, const char * to) {
-  //printf("\nInside direct\n");
-  /*// power up the CNC board
-  digitalWrite (POWER_CNC, HIGH);
+  printf("\nInside direct\n");
+  // power up the CNC board
+  //digitalWrite (POWER_CNC, HIGH);
 
   // wait the board to power up
-  delay(1000);
+  //delay(1000);
 
   // es: navigate from A1 to C3
   bool dirX = to[0] > from[0]; // es: C > A --> true
@@ -302,19 +294,19 @@ void ChessBoard::direct(const char * from, const char * to) {
   stepperMovement(dirY, Y_DIR, Y_STP, STEPS * deltaY);
 
   // wait the CNC to finish
-  delay(500);
+  //delay(500);
 
   //power off the CNC board
-  digitalWrite (POWER_CNC, LOW);*/
+  //digitalWrite (POWER_CNC, LOW);
 };
 
 // Stepper movement function implementation
 void ChessBoard::stepperMovement (bool dir, int dirPin, int stepperPin, int steps){
-    //printf("\nInside stepperMovement\n");
-    /*digitalWrite (dirPin, dir);
-    delay (50);
+    printf("\nInside stepperMovement\n");
+    //digitalWrite (dirPin, dir);
+    //delay (50);
 
-    for (int i = 0; i < steps; i++) {
+    /*for (int i = 0; i < steps; i++) {
         digitalWrite (stepperPin, HIGH);
         delayMicroseconds (800);
         digitalWrite (stepperPin, LOW);
@@ -324,7 +316,7 @@ void ChessBoard::stepperMovement (bool dir, int dirPin, int stepperPin, int step
 
 // Remove dead implementation
 void ChessBoard::removeDead(const char * destination, int row, int col){
-    //printf("\nInside removedDead\n");
+    printf("\nInside removedDead\n");
 
     if(cbState[row][col]->getPiece() == 'P'){
       pawnsManager.findAndRemove(turn, destination);
@@ -405,29 +397,17 @@ void ChessBoard::setTurnPlayer(){
 };
 
 void ChessBoard::toString(){
-    //Serial.println();
-    //Serial.println("--- Game State ---");
-    //Serial.println();
-    //Serial.print("Turn : ");
-    //Serial.println(turn);
-    //Serial.println();
-    //Serial.println("Chessboard : ");
     printf("\n\n--- Game State ---\n\n");
     printf("Turn : %d\n\n",turn);
     printf("Chessboard : \n");
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
-            //Serial.print("Cell  : ");
-            //Serial.print(char(i + 65));
-            //Serial.println(char(j + 48));
             printf("\n\nCell  : ");
             printf("%c",char(i + 65));
             printf("%c\n",char(j + 49));
-            //printf("\n%d   %d\n",i,j);
             cbState[i][j]->toString();
         }
     }
-    //Serial.println();
 
     pawnsManager.toString();
     rooksManager.toString();

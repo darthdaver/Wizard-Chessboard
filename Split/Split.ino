@@ -10,6 +10,9 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   BT.begin(9600);
+
+  Serial.println("Inizializzazione completata!");
+  Serial.println();
 }
 
 void loop(){ 
@@ -20,13 +23,11 @@ void loop(){
 
   /* Speech recognition phase */
   while(command){
-    
     // Check if there is an available byte to read
     // Cycle waiting for a communication with the speech source
     while (BT.available()){ 
       // Delay added to make thing stable
       delay(10);
-      
       // Conduct a serial read
       char c = BT.read();
 
@@ -37,6 +38,7 @@ void loop(){
       // (communication with the speech source completed)
       command = false;
     }
+    delay(1000);
   }
 
   /* Split phase: if the string obtained from the previous recognition phase
@@ -45,7 +47,7 @@ void loop(){
    * Each word of the string is stored inside the playerMove array of words (String).
    */
    if (voice.length() > 0){
-
+    
     // Transform voice in a string in lowercase characters to avoid misunderstanding
     voice.toLowerCase();
 
@@ -66,4 +68,5 @@ void loop(){
         }
       }
   }
+  delay(1000);
 }

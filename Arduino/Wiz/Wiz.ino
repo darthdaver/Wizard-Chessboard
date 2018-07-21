@@ -17,12 +17,17 @@
  */
 
 #include <SoftwareSerial.h>
-#include <QueueArray.h>
+#include <StandardCplusplus.h>
+#include <queue>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
 #include "Config.h"
 #include "ChessBoard.h"
 
 // Bluetooth: define software serial
-//SoftwareSerial BT(BT_RX, BT_TX);
+SoftwareSerial BT(BT_RX, BT_TX);
 
 ChessBoard chessBoard = ChessBoard();
 
@@ -32,7 +37,7 @@ void setup() {
   Serial.begin(9600);
 
   // Software serial setup
-  //BT.begin(9600);
+  BT.begin(9600);
 
   // NEMA 17 pins setup
   pinMode (X_DIR, OUTPUT);
@@ -52,10 +57,7 @@ void setup() {
   Serial.println("Inizializzazione gioco completata");
   Serial.println();
 
-  // Instanciate a chessboard
-  //chessBoard = ChessBoard();
-
-  chessBoard.toString();
+  //chessBoard.toString();
   
   delay(1000);
 }
@@ -65,8 +67,8 @@ void loop(){
   // Speech to text auxiliary variables
   bool command = true;
   int index = 0;
-  char voice[256] = "";
-  QueueArray<char *> wordsQueue;
+  char voice[30] = "";
+  queue<char *> wordsQueue;
 
   /*
    *  Speech recognition and speech-to-text translation phase
@@ -75,9 +77,9 @@ void loop(){
    *  The charachters are stored in the voice variable (String type).
   */
 
-  //Serial.println("Esprimere un comando : ");
-  //Serial.println();
-  /*
+  Serial.println("Esprimere un comando : ");
+  Serial.println();
+  
   // Speech recognition phase
   while(command){
     // Check if there is an available byte to read
@@ -85,40 +87,33 @@ void loop(){
     while (BT.available()){
       // Delay added to make thing stable
       delay(10);
-
       // Conduct a serial read
       char c = toupper(BT.read());
-
       // Add the character read to the speech-to-text string
       voice[index] = c;
-
       // Set command to false in order to exit from the external cycle
       // (communication with the speech source completed)
       command = false;
-
       index++;
     }
-
     /* Split phase: if the string obtained from the previous recognition phase
     * is not a empty string, it is splitted in order to analyze the words contained in it
     * and perform the player move.
     * Each word of the string is stored inside a queue of words.
-    *//*
+    */
     if (strlen(voice) > 0){
       char * temp = strtok(voice, " ");
-      wordsQueue.enqueue(temp);
-
+      Serial.println(temp);
+      wordsQueue.push(temp);
       while(temp != NULL){
         temp = strtok(NULL," ");
-
         if(temp != NULL){
-          wordsQueue.enqueue(temp);
+          Serial.println(temp);
+          wordsQueue.push(temp);
         }
       }
     }
-  }*/
+  }
   
-  //chessBoard.move(wordsQueue);
-
-  // else Serial.println("Unrecognized command. Please, try again!");
+  chessBoard.move(wordsQueue);
 }

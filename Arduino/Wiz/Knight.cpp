@@ -30,12 +30,12 @@ Knight::Knight(const char * initialPosition): Piece(initialPosition) {
 };
 
 void Knight::toString(){
-  Serial.println("Type     : Knight");
-  Serial.print("Alive    : ");
-  Serial.println(alive);
-  Serial.print("Position : ");
-  Serial.print(position[0]);
-  Serial.println(position[1]);
+  //Serial.println("Type     : Knight");
+  //Serial.print("Alive    : ");
+  //Serial.println(alive);
+  //Serial.print("Position : ");
+  //Serial.print(position[0]);
+  //Serial.println(position[1]);
   //printf("\nType     : Knight\n");
   //printf("Alive    : %d\n",getAlive());
   //printf("Position : %s\n",getPosition());

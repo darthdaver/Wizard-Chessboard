@@ -28,12 +28,12 @@ Bishop::Bishop(){};
 Bishop::Bishop(const char * initialPosition): Piece(initialPosition){};
 
 void Bishop::toString(){
-  Serial.println("Type     : Bishop");
-  Serial.print("Alive    : ");
-  Serial.println(alive);
-  Serial.print("Position : ");
-  Serial.print(position[0]);
-  Serial.println(position[1]);
+  //Serial.println("Type     : Bishop");
+  //Serial.print("Alive    : ");
+  //Serial.println(alive);
+  //Serial.print("Position : ");
+  //Serial.print(position[0]);
+  //Serial.println(position[1]);
   //printf("\nType     : Bishop\n");
   //printf("Alive    : %d\n",getAlive());
   //printf("Position : %s\n",getPosition());
