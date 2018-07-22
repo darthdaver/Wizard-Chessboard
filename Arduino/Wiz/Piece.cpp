@@ -27,7 +27,7 @@ Piece::Piece(){};
 
 Piece::Piece(const char * initialPosition){
   ////Serial.println(initialPosition);
-  position = new char[3];
+  position = new char[2];
   position[0] = initialPosition[0];
   position[1] = initialPosition[1];
   alive = true;
@@ -35,11 +35,15 @@ Piece::Piece(const char * initialPosition){
 
 char * Piece::getPosition(){
   // get position in a safety way
-  char * copy = new char [strlen(position)];
-    
+  Serial.print("Get position:    ");
+  Serial.println(strlen(position));
+  
+  char * copy = new char [3];
+
   for(int i=0; i<strlen(position); i++){
       copy[i] = position[i];
   }
+  copy[strlen(position) - 1] = '\0';
   
   return copy;
 };

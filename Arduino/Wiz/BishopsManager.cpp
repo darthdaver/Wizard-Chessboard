@@ -88,10 +88,11 @@ char * BishopsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
                 cbState[row][col]->setColor('D');
               }
               setNewPosition(turn, from, destination);
-              candidate = new char[3];
+              candidate = new char[strlen(from) + 1];
               for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
+                candidate[i] = from[i];
               }
+              candidate[strlen(candidate) -1] = '\0';
               return candidate;
             }
           }

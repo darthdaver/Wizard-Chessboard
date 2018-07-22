@@ -36,11 +36,12 @@ Pawn::Pawn(const char * initialPosition): Piece(initialPosition) {
 
 char * Pawn::getPromotion(){
   // create a copy to return the pointer in a safety way
-  char * copy = new char [strlen(pawnPromotion)];
+  char * copy = new char [strlen(pawnPromotion) + 1];
     
   for(int i=0; i<strlen(pawnPromotion); i++){
       copy[i] = pawnPromotion[i];
   }
+  copy[strlen(copy) - 1] = '\0';
     
   return copy;
 };
@@ -50,11 +51,12 @@ bool Pawn::getFirstMove(){
 };
 
 void Pawn::setPromotion(const char * newType){
-  pawnPromotion = new char [strlen(newType)];
+  pawnPromotion = new char [strlen(newType) + 1];
     
   for(int i = 0; i<strlen(newType); i++){
       pawnPromotion[i] = newType[i];
   }
+  pawnPromotion[strlen(pawnPromotion) - 1] = '\0';
 };
 
 void Pawn::setFirstMove(){
@@ -62,19 +64,14 @@ void Pawn::setFirstMove(){
 };
 
 void Pawn::toString(){
-  //Serial.println("Type       : Pawn");
-  //Serial.print("Alive      : ");
-  //Serial.println(alive);
-  //Serial.print("Position   : ");
-  //Serial.print(position[0]);
-  //Serial.println(position[1]);
-  //Serial.print("Promotion  : ");
-  //Serial.println(pawnPromotion);
-  //Serial.print("First Move : ");
-  //Serial.println(pawnFirstMove);
-  //printf("\nType       : Pawn\n");
-  //printf("Alive      : %d\n",getAlive());
-  //printf("Promotion  : %s\n",getPromotion());
-  //printf("Position   : %s\n",getPosition());
-  //printf("First move : %d\n",getFirstMove());
+  Serial.println("Type       : Pawn");
+  Serial.print("Alive      : ");
+  Serial.println(alive);
+  Serial.print("Position   : ");
+  Serial.print(position[0]);
+  Serial.println(position[1]);
+  Serial.print("Promotion  : ");
+  Serial.println(pawnPromotion);
+  Serial.print("First Move : ");
+  Serial.println(pawnFirstMove);
 };

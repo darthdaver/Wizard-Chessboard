@@ -96,22 +96,19 @@ bool KingsManager::checkPathIsFree(Cell * cbState[][8], int vDiff, int hDiff, in
 };
 
 void KingsManager::toString(){
-  //Serial.println();
-  //Serial.println();
-  //Serial.println("--- King ---");
-  //Serial.println();
-  //printf("\n\n--- King ---\n\n");
+  Serial.println();
+  Serial.println();
+  Serial.println("--- King ---");
+  Serial.println();
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      //Serial.println("White: ");
-      //printf("White: \n");
-      //Serial.println();
+      Serial.println("White: ");
+      Serial.println();
     } else{
-      //printf("\nBlack: \n");
-      //Serial.println();
-      //Serial.println("Black: ");
-      //Serial.println();
+      Serial.println();
+      Serial.println("Black: ");
+      Serial.println();
     }
 
     kings[i][0].toString();

@@ -72,9 +72,6 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
   if((turn && cbState[row][col]->getColor() != 'B') || (!turn && cbState[row][col]->getColor() != 'W')){
     // control the position of any pawn of the player in order to find a possible candidate
     for(int i = 0; i < 8; i++){
-      delay(1000);
-      Serial.print("Candidates  ");
-      Serial.println(numCandidates);
       // check the queen is alive
       if(pawns[turn][i].getAlive()){
 
@@ -84,9 +81,6 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
           vDiff = destination[1] - pawns[turn][i].getPosition()[1];
           // calculate the horizontal difference xd - xf
           hDiff = destination[0] - pawns[turn][i].getPosition()[0];
-          Serial.print("VDiff HDiff  ");
-          Serial.println(vDiff);
-          Serial.println(hDiff);
         } else {               // ambiguous cases --> from ≠ NULL
           // control if actually a pawn of the player occupy the position expressed by the variable from
           if(!checkSource(cbState, turn, from, 'P')){
@@ -116,20 +110,16 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[2];
-              candidate[0] = from[0];
-              candidate[1] = from[1];
+              candidate = new char[strlen(from) + 1];
+              for(int i = 0; i<strlen(from);i++){
+                candidate[i] = from[i];
+              }
+              candidate[strlen(candidate) -1] = '\0';
               return candidate;
             }
           }
         } else if(hDiff == 0 && abs(vDiff) == 2){   // double step move pawns[turn][colFrom].getFirstMove()
-          Serial.print("VDiff HDiff  ");
-          Serial.println(vDiff);
-          Serial.println(hDiff);
             if(from == NULL && pawns[turn][i].getFirstMove()){
-              Serial.print("VDiff HDiff  ");
-          Serial.println(vDiff);
-          Serial.println(hDiff);
                 if(checkDirection(turn, vDiff) && checkPathIsFree(cbState, vDiff, hDiff, row, col)){
                     // add candidate
                     if(from == NULL){
@@ -160,9 +150,10 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
                     }
 
                     setNewPosition(turn, from, destination);
-                    candidate = new char[2];
+                    candidate = new char[3];
                     candidate[0] = from[0];
                     candidate[1] = from[1];
+                    candidate[2] = '\0';
                     return candidate;
                 }
             }
@@ -184,9 +175,11 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[2];
-              candidate[0] = from[0];
-              candidate[1] = from[1];
+              candidate = new char[strlen(from) + 1];
+              for(int i = 0; i<strlen(from);i++){
+                candidate[i] = from[i];
+              }
+              candidate[strlen(candidate) -1] = '\0';
               return candidate;
             }
           }
@@ -206,9 +199,11 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[2];
-              candidate[0] = from[0];
-              candidate[1] = from[1];
+              candidate = new char[strlen(from) + 1];
+              for(int i = 0; i<strlen(from);i++){
+                candidate[i] = from[i];
+              }
+              candidate[strlen(candidate) -1] = '\0';
               return candidate;
             }
 
@@ -229,9 +224,11 @@ char * PawnsManager::checkCandidates(Cell * cbState[][8], bool turn, const char 
               }
 
               setNewPosition(turn, from, destination);
-              candidate = new char[2];
-              candidate[0] = from[0];
-              candidate[1] = from[1];
+              candidate = new char[strlen(from) + 1];
+              for(int i = 0; i<strlen(from);i++){
+                candidate[i] = from[i];
+              }
+              candidate[strlen(candidate) -1] = '\0';
               return candidate;
             }
           }
@@ -294,10 +291,12 @@ char * PawnsManager::checkPromotedCandidates(Cell * cbState[][8], bool turn, con
         return NULL;
       }
       if(from != NULL && checkSource(cbState, turn, from, 'P')){
-        candidate = new char[2];
+        candidate = new char[strlen(from) + 1];
             for(int i = 0; i<strlen(from);i++){
             candidate[i] = from[i];
         }
+        candidate[strlen(candidate) -1] = '\0';
+        
         return candidate;
       } else {
         numCandidates ++;

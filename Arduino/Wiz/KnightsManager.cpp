@@ -89,11 +89,12 @@ char * KnightsManager::checkCandidates(Cell * cbState[][8], bool turn, const cha
             }
 
             setNewPosition(turn, from, destination);
-            candidate = new char[3];
-              for(int i = 0; i<strlen(from);i++){
-                  candidate[i] = from[i];
-              }
-              return candidate;
+            candidate = new char[strlen(from) + 1];
+            for(int i = 0; i<strlen(from);i++){
+              candidate[i] = from[i];
+            }
+            candidate[strlen(candidate) -1] = '\0';
+            return candidate;
           }
         }
       }
@@ -129,20 +130,17 @@ void KnightsManager::setNewPosition(bool turn, const char * from, const char * d
 };
 
 void KnightsManager::toString(){
-  //printf("\n\n--- Knights ---\n\n");
-  //Serial.println("--- Knights ---");
-  //Serial.println();
+  Serial.println("--- Knights ---");
+  Serial.println();
 
   for(int i = 0; i < 2; i ++){
     if(i == 0){
-      //printf("White: \n");
-      //Serial.println("White: ");
-      //Serial.println();
+      Serial.println("White: ");
+      Serial.println();
     } else{
-      //printf("\nBlack: \n");
-      //Serial.println();
-      //Serial.println("Black: ");
-      //Serial.println();
+      Serial.println();
+      Serial.println("Black: ");
+      Serial.println();
     }
 
     for(int j = 0; j < 2; j ++){

@@ -56,13 +56,10 @@ void Cell::setPiece(char newPiece){
 };
 
 void Cell::toString(){
-  //Serial.print("Busy  : ");
-  //Serial.println(busy);
-  //Serial.print("Color : ");
-  //Serial.println(color);
-  //Serial.print("Type  : ");
-  //Serial.println(piece);
-  //printf("Busy  : %d\n",getBusy());
-  //printf("Color : %c\n",getColor());
-  //printf("Type  : %c\n",getPiece());
+ Serial.print("Busy  : ");
+  Serial.println(busy);
+  Serial.print("Color : ");
+  Serial.println(color);
+  Serial.print("Type  : ");
+  Serial.println(piece);
 };
